@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "PUT",
+    "url": "https://brewpage.app/api/kv/myapp/kvstore123/feature-flag",
+    "headers": {
+      "User-Agent": "MyBot/2.1",
+      "Content-Type": "application/json",
+      "X-Owner-Token": "owner_a9b8c7d6e5f4a3b2"
+    },
+    "body": {
+      "value": {"enabled": true, "rolloutPercent": 25}
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "namespace": "myapp",
+      "id": "kvstore123",
+      "key": "feature-flag",
+      "updatedAt": "2026-05-16T12:34:56Z"
+    }
+  }
+}

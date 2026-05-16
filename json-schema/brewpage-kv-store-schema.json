@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/brewpage/main/json-schema/brewpage-kv-store-schema.json",
+  "title": "BrewPage KV Store",
+  "description": "A namespaced key-value store with up to 1000 keys, created via POST /api/kv.",
+  "type": "object",
+  "required": ["id", "namespace", "ownerToken"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 10,
+      "description": "10-char short identifier for the store."
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{1,32}$"
+    },
+    "ownerLink": {"type": "string", "format": "uri"},
+    "ownerToken": {"type": "string"},
+    "keys": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "required": ["key", "updatedAt"],
+        "properties": {
+          "key": {"type": "string"},
+          "value": {},
+          "updatedAt": {"type": "string", "format": "date-time"}
+        }
+      },
+      "description": "Up to 1000 keys per store. Values are arbitrary JSON."
+    },
+    "ttlDays": {"type": "integer", "minimum": 1, "maximum": 30},
+    "passwordProtected": {"type": "boolean"},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "expiresAt": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

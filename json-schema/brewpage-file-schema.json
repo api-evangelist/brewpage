@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/brewpage/main/json-schema/brewpage-file-schema.json",
+  "title": "BrewPage File",
+  "description": "A binary or text file uploaded to BrewPage via POST /api/files (multipart). Files are 5 MB max and 1000 per namespace.",
+  "type": "object",
+  "required": ["id", "namespace", "link", "ownerToken"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 10,
+      "description": "10-char short identifier assigned by the server."
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{1,32}$"
+    },
+    "link": {
+      "type": "string",
+      "format": "uri",
+      "description": "Short URL: https://brewpage.app/{ns}/{id}. Append ?dl=1 to force download."
+    },
+    "ownerLink": {"type": "string", "format": "uri"},
+    "ownerToken": {"type": "string"},
+    "filename": {
+      "type": "string",
+      "description": "Original filename preserved on upload."
+    },
+    "contentType": {
+      "type": "string",
+      "description": "Detected MIME type used to choose inline preview vs download."
+    },
+    "size": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5242880,
+      "description": "File size in bytes. Per-file cap is 5 MB."
+    },
+    "ttlDays": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 30
+    },
+    "passwordProtected": {"type": "boolean"},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "expiresAt": {"type": "string", "format": "date-time"},
+    "downloads": {"type": "integer", "minimum": 0}
+  },
+  "additionalProperties": false
+}

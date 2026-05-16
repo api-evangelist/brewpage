@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://brewpage.app/api/sites?ns=demo&ttl=30",
+    "headers": {
+      "User-Agent": "Claude/4.5",
+      "Content-Type": "multipart/form-data; boundary=----brewpageBoundary"
+    },
+    "body": "(multipart form: 'archive' field = ZIP archive containing index.html, page2.html, styles.css, script.js)"
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "site9zx8y7",
+      "namespace": "demo",
+      "link": "https://brewpage.app/demo/site9zx8y7",
+      "ownerLink": "https://brewpage.app/api/sites/demo/site9zx8y7",
+      "ownerToken": "owner_z1y2x3w4v5u6t7s8",
+      "entry": "index.html",
+      "files": [
+        {"path": "index.html", "size": 2048, "contentType": "text/html"},
+        {"path": "page2.html", "size": 1536, "contentType": "text/html"},
+        {"path": "styles.css", "size": 512, "contentType": "text/css"},
+        {"path": "script.js", "size": 768, "contentType": "application/javascript"}
+      ]
+    }
+  }
+}

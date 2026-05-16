@@ -1,0 +1,95 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: BrewPage
+providerId: brewpage
+created: '2026-05-16'
+modified: '2026-05-16'
+reconciled: false
+notes: >-
+  As of May 2026 BrewPage is a free, no-registration service. There is no
+  pricing page, no paid tier, and no documented commercial offering — the
+  homepage and llms.txt describe a single free plan with documented platform
+  caps (TTL 1..30 days default 15; 5 MB per file; 1000 files per namespace;
+  1000 keys per KV store; 10,000 JSON documents per collection; multi-file
+  sites ≤20 MB total / 100 files / 5 MB each). Set reconciled to true if
+  BrewPage publishes a paid tier.
+tags:
+  - Free
+  - Hosting
+  - No Registration
+  - AI Friendly
+description: >-
+  BrewPage offers a single free tier with no signup. The product surface
+  (HTML, Markdown, files, multi-file sites, KV, JSON) is governed by hard
+  platform caps rather than priced meters.
+sources:
+  - https://brewpage.app/
+  - https://brewpage.app/llms.txt
+  - https://brewpage.app/llms-full.txt
+  - https://brewpage.app/api/openapi.yaml
+plans:
+  - id: brewpage-free
+    name: Free
+    type: free
+    description: Free instant hosting with no registration. Caps apply per namespace and per artifact.
+    entries:
+      - label: Hosted HTML / Markdown pages
+        name: html_pages
+        type: flat
+        metric: page
+        limit: -1
+        timeFrame: 30-days-ttl
+        geo: global
+        unit: 1
+        price: '$0'
+      - label: File uploads
+        name: file_uploads
+        type: flat
+        metric: file
+        limit: 1000
+        timeFrame: namespace
+        geo: global
+        unit: 1
+        price: '$0'
+      - label: Multi-file site uploads
+        name: site_uploads
+        type: flat
+        metric: site
+        limit: -1
+        timeFrame: 30-days-ttl
+        geo: global
+        unit: 1
+        price: '$0'
+      - label: KV store keys
+        name: kv_keys
+        type: flat
+        metric: key
+        limit: 1000
+        timeFrame: per-store
+        geo: global
+        unit: 1
+        price: '$0'
+      - label: JSON documents
+        name: json_documents
+        type: flat
+        metric: document
+        limit: 10000
+        timeFrame: per-collection
+        geo: global
+        unit: 1
+        price: '$0'
+    elements:
+      - name: No registration required
+      - name: REST and AI-agent friendly (MCP server, Claude Code skill)
+      - name: 10-char short URLs at /{ns}/{id}
+      - name: Owner token grouping across creates
+      - name: Password-protected namespaces (X-Password)
+      - name: Public gallery listing for the `public` namespace
+      - name: OpenGraph image and HTML stub for social bots
+      - name: Per-page OG image at /preview/{ns}/{id}.png
+      - name: Update-in-place via PUT (HTML, JSON, KV)
+      - name: Idempotent POST within 24h for byte-identical owner reposts
+      - name: TTL 1..30 days, default 15
+      - name: File upload cap 5 MB; site upload cap 20 MB total / 100 files
+      - name: Access logs retained 30 days

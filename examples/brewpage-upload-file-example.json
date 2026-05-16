@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://brewpage.app/api/files?ns=agent-outputs&ttl=7",
+    "headers": {
+      "User-Agent": "MyBot/2.1",
+      "Content-Type": "multipart/form-data; boundary=----brewpageBoundary"
+    },
+    "body": "(multipart form: file field 'file' = binary contents of report.pdf)"
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "fjk39ab4c1",
+      "namespace": "agent-outputs",
+      "link": "https://brewpage.app/agent-outputs/fjk39ab4c1",
+      "ownerLink": "https://brewpage.app/api/files/agent-outputs/fjk39ab4c1",
+      "ownerToken": "owner_a9b8c7d6e5f4a3b2",
+      "filename": "report.pdf",
+      "contentType": "application/pdf",
+      "size": 184320
+    }
+  }
+}

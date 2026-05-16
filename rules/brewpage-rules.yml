@@ -1,0 +1,168 @@
+extends:
+  - spectral:oas
+rules:
+  brewpage-info-title-prefix:
+    description: All BrewPage OpenAPI titles SHOULD start with "BrewPage ".
+    severity: warn
+    given: $.info.title
+    then:
+      function: pattern
+      functionOptions:
+        match: '^BrewPage '
+  brewpage-server-https:
+    description: All BrewPage API servers MUST use HTTPS.
+    severity: error
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: '^https://'
+  brewpage-server-host:
+    description: BrewPage servers SHOULD be brewpage.app or brewdata.app.
+    severity: warn
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: '^https://(brewpage|brewdata)\.app'
+  brewpage-base-path-api:
+    description: BrewPage REST endpoints SHOULD live under /api/, /preview/, /preview-html/, or be public short-link paths (/{ns}/{id}).
+    severity: warn
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: '^(/api/|/preview/|/preview-html/|/\{|/[a-z0-9-]+\.txt$)'
+  brewpage-operation-id-required:
+    description: Operations MUST have an operationId.
+    severity: error
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: operationId
+      function: truthy
+  brewpage-operation-id-camel-case:
+    description: operationId SHOULD be camelCase.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch].operationId
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9_]*$'
+  brewpage-summary-required:
+    description: Operations MUST have a summary.
+    severity: error
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: summary
+      function: truthy
+  brewpage-summary-prefix:
+    description: Operation summaries SHOULD begin with "BrewPage ".
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch].summary
+    then:
+      function: pattern
+      functionOptions:
+        match: '^BrewPage '
+  brewpage-summary-title-case:
+    description: Operation summaries SHOULD start with a capital letter (Title Case).
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch].summary
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[A-Z]'
+  brewpage-description-required:
+    description: Operations SHOULD have a description.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: description
+      function: truthy
+  brewpage-tags-required:
+    description: Operations MUST be tagged with at least one tag.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch].tags
+    then:
+      function: truthy
+  brewpage-namespace-pattern:
+    description: BrewPage `ns` path parameters SHOULD enforce the kebab-case 1..32 char pattern.
+    severity: warn
+    given: $.paths.*.*.parameters[?(@.name=='ns' && @.in=='path')].schema
+    then:
+      field: pattern
+      function: truthy
+  brewpage-camel-case-properties:
+    description: BrewPage schema properties SHOULD use camelCase (matches API payloads like ownerToken, ownerLink, ttlDays).
+    severity: warn
+    given: $.components.schemas[*].properties[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9]*$'
+  brewpage-tag-title-case:
+    description: Tags SHOULD use Title Case names.
+    severity: warn
+    given: $.tags[*].name
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[A-Z][A-Za-z0-9 -]*$'
+  brewpage-tag-description:
+    description: Tags SHOULD have a description.
+    severity: warn
+    given: $.tags[*]
+    then:
+      field: description
+      function: truthy
+  brewpage-user-agent-header:
+    description: BrewPage requires a User-Agent header — operations SHOULD declare the parameter or describe it.
+    severity: info
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: parameters
+      function: truthy
+  brewpage-owner-token-header-name:
+    description: Mutations SHOULD authenticate via the `X-Owner-Token` header (not query string or body).
+    severity: warn
+    given: $.paths[*][put,delete].parameters[?(@.in=='header')].name
+    then:
+      function: pattern
+      functionOptions:
+        match: '^(X-Owner-Token|X-Password|User-Agent|Content-Type)$'
+  brewpage-success-response:
+    description: Operations MUST define a 2xx response.
+    severity: error
+    given: $.paths[*][get,post,put,delete,patch].responses
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          patternProperties:
+            '^2[0-9][0-9]$':
+              type: object
+          additionalProperties: true
+  brewpage-error-responses:
+    description: Mutating operations SHOULD document 403 (wrong owner token) and 404 responses.
+    severity: warn
+    given: $.paths[*][put,delete].responses
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required: ['404']
+  brewpage-ttl-bounds:
+    description: TTL parameters SHOULD bound 1..30 days to match BrewPage's published retention window.
+    severity: info
+    given: $.paths[*][post].parameters[?(@.name=='ttl' || @.name=='ttl_days')]
+    then:
+      field: schema
+      function: truthy
+  brewpage-short-id-length:
+    description: BrewPage short ids are 10-char base32-like strings — descriptions SHOULD note this where the `id` path parameter appears.
+    severity: info
+    given: $.paths.*.*.parameters[?(@.name=='id' && @.in=='path')]
+    then:
+      field: description
+      function: truthy

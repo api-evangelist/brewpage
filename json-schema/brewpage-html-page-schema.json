@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/brewpage/main/json-schema/brewpage-html-page-schema.json",
+  "title": "BrewPage HTML Page",
+  "description": "An HTML or Markdown page hosted on BrewPage. Created via POST /api/html and addressable at the short URL /{ns}/{id}.",
+  "type": "object",
+  "required": ["id", "namespace", "link", "ownerToken"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 10,
+      "description": "10-char short identifier assigned by the server."
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{1,32}$",
+      "description": "Logical bucket the page lives under. Defaults to `public` when omitted."
+    },
+    "link": {
+      "type": "string",
+      "format": "uri",
+      "description": "Short, shareable URL of the page: https://brewpage.app/{ns}/{id}."
+    },
+    "ownerLink": {
+      "type": "string",
+      "format": "uri",
+      "description": "Owner API URL used for updates/deletes."
+    },
+    "ownerToken": {
+      "type": "string",
+      "description": "Bearer-style owner token returned at creation. Sent as `X-Owner-Token` for mutation."
+    },
+    "filename": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Optional filename, used as a title fallback when no <title>/<h1> is present. Immutable on update."
+    },
+    "format": {
+      "type": "string",
+      "enum": ["html", "markdown", "md"],
+      "description": "Storage format. `markdown` is rendered to styled HTML at view time."
+    },
+    "tags": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Free-form tags supplied at creation time."
+    },
+    "ttlDays": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 30,
+      "description": "Time-to-live in days. Default 15, max 30."
+    },
+    "passwordProtected": {
+      "type": "boolean",
+      "description": "True if an X-Password is required to read the resource."
+    },
+    "showTopBar": {
+      "type": "boolean",
+      "description": "When true, the served page includes a toolbar (filename, download, theme toggle)."
+    },
+    "createdAt": {"type": "string", "format": "date-time"},
+    "expiresAt": {"type": "string", "format": "date-time"},
+    "views": {"type": "integer", "minimum": 0}
+  },
+  "additionalProperties": false
+}

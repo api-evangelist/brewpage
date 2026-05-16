@@ -1,0 +1,106 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: BrewPage
+providerId: brewpage
+created: '2026-05-16'
+modified: '2026-05-16'
+reconciled: false
+notes: >-
+  BrewPage does not publish numeric per-IP or per-token rate limits in its
+  public docs (homepage, llms.txt, llms-full.txt, OpenAPI). The platform
+  states that "Requests without User-Agent may be rate-limited or rejected"
+  and that "anonymous or spoofed UAs may be flagged," and it logs every
+  request server-side (IP, UA, method, path, status, duration, timestamp)
+  with 30-day retention. Numeric ceilings are inferred from documented
+  platform caps (per-namespace and per-resource maxima) rather than from
+  published throughput limits. Set reconciled to true once BrewPage publishes
+  per-IP / per-owner-token rate numbers.
+tags:
+  - Rate Limiting
+  - Hosting
+  - Anti-Abuse
+description: >-
+  BrewPage relies primarily on hard structural caps (TTL, per-namespace
+  counts, per-file size) and on User-Agent validation rather than on
+  published numeric rate limits. The service reserves the right to throttle
+  or reject anonymous or spoofed User-Agent requests and to flag abusive
+  usage based on its 30-day access log.
+sources:
+  - https://brewpage.app/llms.txt
+  - https://brewpage.app/llms-full.txt
+  - https://brewpage.app/api/openapi.yaml
+headers:
+  requestId: not-documented
+responseCodes:
+  throttled: 429
+  unauthorized: 403
+  badRequest: 400
+  notFound: 404
+  payloadTooLarge: 413
+  unsupportedMediaType: 415
+  conflict: 409
+limits:
+  - name: User-Agent gating
+    scope: ip
+    metric: request
+    limit: 'rejected or rate-limited if User-Agent is missing or spoofed'
+    notes: User-Agent is REQUIRED on every request. Use a realistic identifiable UA in the form AgentName/version.
+  - name: Owner-token scoped list visibility
+    scope: token
+    metric: result-set
+    limit: 'list endpoints return empty without a valid X-Owner-Token'
+    notes: Acts as a soft de-facto rate gate on enumeration.
+  - name: Idempotent POST window
+    scope: token
+    metric: request
+    limit: 'byte-identical POST /api/html from same owner to `public/` within 24h returns existing id'
+    notes: Server header X-Existing-Resource - 1 signals replay; intended for retry safety.
+  - name: TTL cap
+    scope: resource
+    metric: day
+    limit: 30
+    notes: Default 15, max 30. Older content is purged automatically.
+  - name: File size cap
+    scope: resource
+    metric: byte
+    limit: 5242880
+    notes: 5 MB per uploaded file; multipart larger than this returns HTTP 413.
+  - name: Files per namespace
+    scope: namespace
+    metric: file
+    limit: 1000
+  - name: KV keys per store
+    scope: resource
+    metric: key
+    limit: 1000
+    notes: Returns HTTP 409 when exceeded.
+  - name: JSON documents per collection
+    scope: namespace
+    metric: document
+    limit: 10000
+  - name: Site total size
+    scope: resource
+    metric: byte
+    limit: 20971520
+    notes: 20 MB total per multi-file site.
+  - name: Site file count
+    scope: resource
+    metric: file
+    limit: 100
+  - name: IndexNow quota
+    scope: account
+    metric: request
+    limit: 'documented as a finite quota; reuse PUT /api/html/{ns}/{id} for republish'
+    notes: Avoid burning IndexNow quota by preferring PUT over POST for updates.
+policies:
+  - name: User-Agent enforcement
+    description: Send `AgentName/version` (e.g. `Claude/4.5`). Missing or spoofed UAs may be flagged or rejected.
+  - name: 30-day access log retention
+    description: Every request (IP, UA, method, path, query, status, duration, timestamp) is logged for 30 days; visible to admin via GET /api/admin/access.
+  - name: Update in place
+    description: Use PUT /api/html/{ns}/{id}, PUT /api/json/{ns}/{id}, PUT /api/kv/{ns}/{id}/{key} to replace content without changing the short URL — recommended over re-POST.
+  - name: Conflict on namespace collision
+    description: Server returns 409 on `ns+id` collision; retry with a different id or omit id.
+  - name: Blocked file types
+    description: Only safe file types are accepted (images, docs, archives, media, web assets). HTTP 415 for blocked types.

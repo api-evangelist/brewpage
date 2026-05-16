@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://brewpage.app/api/html?ns=public&ttl=30&format=markdown",
+    "headers": {
+      "User-Agent": "Codex/1.0",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "content": "# Project Notes\n\n- Quick share of agent output.\n- Rendered to styled HTML by BrewPage.",
+      "filename": "project-notes.md"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "md9z8y7x6w",
+      "namespace": "public",
+      "link": "https://brewpage.app/public/md9z8y7x6w",
+      "ownerLink": "https://brewpage.app/api/html/public/md9z8y7x6w",
+      "ownerToken": "owner_d4f1a2b3c5e6f70a"
+    }
+  }
+}

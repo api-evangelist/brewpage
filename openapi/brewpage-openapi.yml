@@ -1,0 +1,2378 @@
+openapi: 3.1.0
+info:
+  title: BrewPage API
+  description: "Free instant hosting for HTML, Markdown, AI artifacts and files"
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: preview
+  description: Per-content OpenGraph image (1200×630 PNG)
+- name: Short Links
+  description: Short URL resolver for sharing
+- name: Owner Check
+  description: Lightweight owner-token probe; never increments views or returns content
+- name: HTML
+  description: HTML page hosting with markdown support
+- name: KV
+  description: Key-Value store with up to 1000 keys per namespace
+- name: Sites
+  description: Multi-file HTML site hosting via ZIP or folder upload
+- name: SEO
+  description: Search engine optimization endpoints
+- name: Gallery
+  description: Browse public content from the 'public' namespace without password protection
+- name: JSON
+  description: "JSON document store with up to 10,000 docs per collection"
+- name: Stats
+  description: Platform-wide usage statistics
+- name: Namespace
+  description: "Fresh, collision-free namespace suggestions"
+- name: preview
+  description: OpenGraph metadata for social bots
+- name: Files
+  description: "File hosting up to 5 MB per file, 1000 files per namespace"
+- name: Reports
+  description: Abuse reports for hosted content
+paths:
+  /api/kv/{ns}/{id}/{key}:
+    get:
+      tags:
+      - KV
+      summary: BrewPage Get Key Value
+      description: Returns the value and last update timestamp for a specific key
+      operationId: getKey
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Key value
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvGetResponse"
+        "403":
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvGetResponse"
+        "404":
+          description: Store or key not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvGetResponse"
+    put:
+      tags:
+      - KV
+      summary: BrewPage Upsert Key
+      description: Creates or updates a key in the store; max 1000 keys per store
+      operationId: upsertKey
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KvUpsertKeyRequest"
+        required: true
+      responses:
+        "200":
+          description: Key upserted
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvUpsertKeyResponse"
+        "403":
+          description: Missing or wrong owner token
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvUpsertKeyResponse"
+        "404":
+          description: Store not found or expired
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvUpsertKeyResponse"
+        "409":
+          description: Key limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvUpsertKeyResponse"
+    delete:
+      tags:
+      - KV
+      summary: BrewPage Delete Key
+      description: Removes a single key from the store; deleting the last key does not remove the store
+      operationId: deleteKey
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Key deleted
+        "403":
+          description: Missing or wrong owner token
+        "404":
+          description: Store or key not found
+  /api/json/{ns}/{id}:
+    get:
+      tags:
+      - JSON
+      summary: BrewPage Get JSON Document
+      description: Returns raw JSON content with application/json content type
+      operationId: getById
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: JSON content
+          content:
+            '*/*':
+              schema:
+                type: string
+        "403":
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                type: string
+        "404":
+          description: Document not found or expired
+          content:
+            '*/*':
+              schema:
+                type: string
+    put:
+      tags:
+      - JSON
+      summary: BrewPage Update JSON Document
+      description: Replaces document content; requires the owner token returned at creation
+      operationId: update
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: Document updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/JsonUpdateResponse"
+        "403":
+          description: Missing or wrong owner token
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/JsonUpdateResponse"
+        "404":
+          description: Document not found or expired
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/JsonUpdateResponse"
+    delete:
+      tags:
+      - JSON
+      summary: BrewPage Delete JSON Document
+      description: Permanently removes the document
+      operationId: delete
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Document deleted
+        "403":
+          description: Missing or wrong owner token
+        "404":
+          description: Document not found or expired
+  /api/html/{ns}/{id}:
+    get:
+      tags:
+      - HTML
+      summary: BrewPage Get HTML Page
+      description: Returns rendered HTML content; password-protected pages require X-Password header or ?p= query param
+      operationId: getById_1
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: HTML content
+          content:
+            '*/*':
+              schema:
+                type: string
+        "403":
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                type: string
+        "404":
+          description: Page not found or expired
+          content:
+            '*/*':
+              schema:
+                type: string
+    put:
+      tags:
+      - HTML
+      summary: BrewPage Update HTML Page
+      description: "Replaces page content; requires the owner token returned at creation. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code) bodies — see /llms-full.txt."
+      operationId: update_1
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: "Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript,
+          tsx, jsx, css, properties, docker, txt). When omitted, the row's stored format is preserved. Body field 'format' on HtmlUpdateRequest takes precedence over the query param when both are present."
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HtmlUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: Page updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HtmlUpdateResponse"
+        "403":
+          description: Missing or wrong owner token
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HtmlUpdateResponse"
+        "404":
+          description: Page not found or expired
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HtmlUpdateResponse"
+    delete:
+      tags:
+      - HTML
+      summary: BrewPage Delete HTML Page
+      description: Permanently removes page and frees the short URL
+      operationId: delete_1
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Page deleted
+        "403":
+          description: Missing or wrong owner token
+        "404":
+          description: Page not found or expired
+  /api/sites:
+    post:
+      tags:
+      - Sites
+      summary: BrewPage Upload Site
+      description: Upload a multi-file HTML site as a ZIP archive or as individual files with paths. Returns a link to the published site
+      operationId: upload
+      parameters:
+      - name: files
+        in: query
+        description: Individual files (alternative to archive)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            format: binary
+      - name: paths
+        in: query
+        description: Relative paths for each file (must match files order)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: ns
+        in: query
+        description: "Namespace. Default: public"
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: "demo,portfolio"
+      - name: ttl
+        in: query
+        description: "Time to live in days (1-30, default 15). Site auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+        required: false
+        schema:
+          type: string
+      - name: entry
+        in: query
+        description: "Entry file path override (default: auto-detect index.html)"
+        required: false
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Reuse existing owner token to group entities under one owner
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                archive:
+                  type: string
+                  format: binary
+                  description: ZIP archive containing site files
+      responses:
+        "201":
+          description: Site uploaded
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SiteUploadResponse"
+        "400":
+          description: "Invalid request, no HTML files, or limits exceeded"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SiteUploadResponse"
+        "415":
+          description: Unsupported file type in archive
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SiteUploadResponse"
+        "429":
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SiteUploadResponse"
+  /api/reports:
+    post:
+      tags:
+      - Reports
+      summary: BrewPage Submit Abuse Report
+      description: Records a public report about a resource hosted on brewpage.app for moderator review
+      operationId: create
+      parameters:
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportRequest"
+        required: true
+      responses:
+        "201":
+          description: Report accepted
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReportResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReportResponse"
+  /api/kv:
+    get:
+      tags:
+      - KV
+      summary: BrewPage List KV Stores
+      description: Returns all KV stores owned by the given token in the namespace. Returns empty list without token
+      operationId: listStores
+      parameters:
+      - name: ns
+        in: query
+        description: Namespace
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to filter by ownership. Without token returns empty list
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Store list
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/KvStoreListResponse"
+    post:
+      tags:
+      - KV
+      summary: BrewPage Create KV Store
+      description: Creates a new store with an initial key-value pair and returns a shareable link. Reuse existing owner token to group entities under one owner
+      operationId: createStore
+      parameters:
+      - name: ns
+        in: query
+        description: "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: "demo,test"
+      - name: ttl
+        in: query
+        description: "Time to live in days (1-30, default 15). Store auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+        required: false
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: "Access password. Empty = public store visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL"
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated"
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KvCreateStoreRequest"
+        required: true
+      responses:
+        "201":
+          description: Store created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvCreateStoreResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvCreateStoreResponse"
+        "429":
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvCreateStoreResponse"
+  /api/json:
+    get:
+      tags:
+      - JSON
+      summary: BrewPage List JSON Documents
+      description: Returns documents owned by the given token. Empty list without token
+      operationId: list
+      parameters:
+      - name: ns
+        in: query
+        description: Namespace
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to filter by ownership. Without token returns empty list
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Document list
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JsonListResponse"
+    post:
+      tags:
+      - JSON
+      summary: BrewPage Create JSON Document
+      description: Stores any valid JSON and returns a shareable link. Reuse existing owner token to group entities under one owner
+      operationId: create_1
+      parameters:
+      - name: ns
+        in: query
+        description: "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: "demo,test"
+      - name: ttl
+        in: query
+        description: "Time to live in days (1-30, default 15). Document auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+        required: false
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: "Access password. Empty = public document visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL"
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated"
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "201":
+          description: Document created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/JsonCreateResponse"
+        "400":
+          description: Invalid JSON or request parameters
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/JsonCreateResponse"
+        "429":
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/JsonCreateResponse"
+  /api/html:
+    post:
+      tags:
+      - HTML
+      summary: BrewPage Create HTML Page
+      description: "Stores HTML or markdown content and returns a shareable link. Reuse existing owner token to group entities under one owner. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code)
+        and application/octet-stream bodies — see /llms-full.txt."
+      operationId: create_2
+      parameters:
+      - name: ns
+        in: query
+        description: "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: "demo,test"
+      - name: ttl
+        in: query
+        description: "Time to live in days (1-30, default 15). Page auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+        required: false
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: "Content format. 'html' (default) — stored verbatim. 'markdown' / 'md' — rendered to styled HTML via github-markdown-css. Code/text languages stored and served raw with format-specific
+          MIME (text/csv, application/json, text/xml, text/plain) plus X-Content-Type-Options: nosniff: yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css,
+          properties, docker, txt"
+        required: false
+        schema:
+          type: string
+          default: html
+      - name: X-Password
+        in: header
+        description: "Access password. Empty = public page visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL"
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated"
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HtmlUploadRequest"
+        required: true
+      responses:
+        "201":
+          description: Page created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HtmlUploadResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HtmlUploadResponse"
+        "429":
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HtmlUploadResponse"
+  /api/files:
+    get:
+      tags:
+      - Files
+      summary: BrewPage List Files
+      description: Returns files owned by the given token. Empty list without token
+      operationId: list_1
+      parameters:
+      - name: ns
+        in: query
+        description: Namespace
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to filter by ownership. Without token returns empty list
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: File list
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FileListResponse"
+    post:
+      tags:
+      - Files
+      summary: BrewPage Upload File
+      description: Stores a file via multipart upload and returns a download link. Only safe file types accepted. Reuse existing owner token to group entities under one owner
+      operationId: upload_1
+      parameters:
+      - name: ns
+        in: query
+        description: "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: "demo,test"
+      - name: ttl
+        in: query
+        description: "Time to live in days (1-30, default 15). File auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+        required: false
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: "Access password. Empty = public file visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL"
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated"
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+              - file
+      responses:
+        "201":
+          description: File uploaded
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FileUploadResponse"
+        "400":
+          description: Invalid request or file too large
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FileUploadResponse"
+        "415":
+          description: Unsupported file type
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FileUploadResponse"
+        "429":
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FileUploadResponse"
+  /{ns}/{id}:
+    get:
+      tags:
+      - Short Links
+      operationId: resolve
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password for protected resources
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password (query alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: dl
+        in: query
+        description: Force download as attachment
+        required: false
+        schema:
+          type: boolean
+      - name: Range
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Resolve
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: "Owner token; when supplied, response carries X-Is-Owner: true on match"
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /{ns}/{id}/{sub}:
+    get:
+      tags:
+      - Short Links
+      operationId: resolveWithSub
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: sub
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password for protected resources
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password (query alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: dl
+        in: query
+        description: Force download as attachment
+        required: false
+        schema:
+          type: boolean
+      - name: X-Resolve
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: "Owner token; when supplied, response carries X-Is-Owner: true on match"
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /{key}.txt:
+    get:
+      tags:
+      - SEO
+      summary: BrewPage IndexNow Key Verification
+      description: Serves the IndexNow verification key file for search engine crawlers
+      operationId: serveKeyFile
+      parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Key file content
+          content:
+            text/plain:
+              schema:
+                type: string
+        "404":
+          description: Unknown key
+          content:
+            text/plain:
+              schema:
+                type: string
+  /preview/{ns}/{id}.png:
+    get:
+      tags:
+      - preview
+      summary: BrewPage Per-content OG Image
+      description: "Returns 1200×630 PNG, cached, with ETag/If-None-Match support; falls back to /og-image.png?v=2 on any failure"
+      operationId: preview
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: If-None-Match
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: PNG image bytes
+          content:
+            image/png:
+              schema:
+                type: object
+        "302":
+          description: "Fallback to static og-image.png (flag off, no source, generation error, oversized)"
+          content:
+            image/png:
+              schema:
+                type: object
+        "304":
+          description: Not modified (If-None-Match matched current ETag)
+          content:
+            image/png:
+              schema:
+                type: object
+        "429":
+          description: Per-IP rate limit exceeded
+          content:
+            image/png:
+              schema:
+                type: object
+  /preview-html/{ns}/{id}:
+    get:
+      tags:
+      - preview
+      summary: BrewPage OpenGraph HTML Stub
+      description: Tiny HTML response with og:title/og:description/og:image meta tags for social-bot unfurls
+      operationId: previewHtml
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: HTML stub with OG meta (or generic stub when resource is missing)
+          content:
+            text/html:
+              schema:
+                type: string
+  /api/{ns}/{id}/owner-check:
+    get:
+      tags:
+      - Owner Check
+      summary: BrewPage Verify Whether the Supplied X-Owner-Token Owns the Resource
+      description: "Returns `{isOwner, type}`. Constant-time BCrypt match. 404 when the resource does not exist (or has expired). 200 with `isOwner:false` when the X-Owner-Token header is absent."
+      operationId: ownerCheck
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to verify (constant-time match)
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/OwnerCheckResponse"
+  /api/stats:
+    get:
+      tags:
+      - Stats
+      summary: BrewPage Get Platform Stats
+      description: Returns today's and all-time creation/view counts with per-type breakdown. Optional 'tz' query param (IANA id) controls the boundary of 'today'; defaults to UTC.
+      operationId: getStats
+      parameters:
+      - name: tz
+        in: query
+        description: "IANA timezone id for the 'today' boundary. Defaults to UTC. Example: Europe/Lisbon"
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Platform statistics
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StatsResponse"
+  /api/sites/{ns}/{id}:
+    get:
+      tags:
+      - Sites
+      summary: BrewPage Get Site Info
+      description: Returns site metadata and file list. Requires owner token
+      operationId: info
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Site info
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SiteInfoResponse"
+        "403":
+          description: Missing or wrong owner token
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SiteInfoResponse"
+        "404":
+          description: Site not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SiteInfoResponse"
+    delete:
+      tags:
+      - Sites
+      summary: BrewPage Delete Site
+      description: Permanently removes the site and all its files from storage
+      operationId: delete_2
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Site deleted
+        "403":
+          description: Missing or wrong owner token
+        "404":
+          description: Site not found
+  /api/sites/{ns}/{id}/files/**:
+    get:
+      tags:
+      - Sites
+      summary: BrewPage Serve Site File
+      description: Serves an individual file from the site with correct content type
+      operationId: serveFile
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: File content
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+        "403":
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+        "404":
+          description: Site or file not found
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+  /api/sitemap.xml:
+    get:
+      tags:
+      - SEO
+      summary: BrewPage Dynamic XML Sitemap
+      description: Generates sitemap with static pages and all public gallery entries. Caddy should route /sitemap.xml to this endpoint
+      operationId: sitemap
+      responses:
+        "200":
+          description: Sitemap XML
+          content:
+            application/xml:
+              schema:
+                type: string
+  /api/namespace/random:
+    get:
+      tags:
+      - Namespace
+      summary: BrewPage Suggest a Random Namespace
+      description: Returns a fresh `<word>-<word>-NN` namespace from the EFF Short Wordlist that does not collide with any existing resource. Pure read; no resource is allocated.
+      operationId: random
+      responses:
+        "200":
+          description: Namespace suggested
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RandomNamespaceResponse"
+        "503":
+          description: Namespace pool exhausted — retry budget hit consecutive collisions
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RandomNamespaceResponse"
+  /api/kv/{ns}/{id}:
+    get:
+      tags:
+      - KV
+      summary: BrewPage List Keys
+      description: Returns all key names and total count for a store
+      operationId: listKeys
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Key list
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvListKeysResponse"
+        "403":
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvListKeysResponse"
+        "404":
+          description: Store not found or expired
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KvListKeysResponse"
+    delete:
+      tags:
+      - KV
+      summary: BrewPage Delete Entire KV Bucket (all Keys Under Ns/id)
+      description: Permanently removes all keys in the store; requires the owner token returned at creation
+      operationId: deleteBucket
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Bucket deleted
+        "403":
+          description: Missing or wrong owner token
+        "404":
+          description: Store not found or expired
+  /api/html/{ns}/{id}/source:
+    get:
+      tags:
+      - HTML
+      summary: BrewPage Get HTML Page Raw Source
+      description: "Returns the raw user-submitted content (pre-render, pre-sanitize) plus metadata for republish. Owner-only — requires the owner token returned at creation."
+      operationId: getSource
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for source access
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Raw source body and metadata
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: "Owner token missing (code: OWNER_TOKEN_REQUIRED)"
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Wrong owner token
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Page not found or expired
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/gallery:
+    get:
+      tags:
+      - Gallery
+      summary: BrewPage Browse Gallery
+      description: "Lists public pages (public namespace, no password) with optional case-insensitive search by title/tags. When `mine=true` and `X-Owner-Token` is supplied, results are restricted to the
+        caller's own public publications."
+      operationId: getGallery
+      parameters:
+      - name: q
+        in: query
+        description: Case-insensitive search by title or tags
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page number (1-based)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+        example: 1
+      - name: size
+        in: query
+        description: Items per page (max 100)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+        example: 20
+      - name: sort
+        in: query
+        description: "Sort order: 'date' (newest first, default) or 'views' (most viewed first)"
+        required: false
+        schema:
+          type: string
+          default: date
+        example: date
+      - name: mine
+        in: query
+        description: "When true, restrict results to the caller's owner_id (requires X-Owner-Token)"
+        required: false
+        schema:
+          type: boolean
+      - name: X-Owner-Token
+        in: header
+        description: Owner token; required when mine=true
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Paginated gallery items
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GalleryResponse"
+  /api/files/{ns}/{id}:
+    get:
+      tags:
+      - Files
+      summary: BrewPage Download File
+      description: "Returns file inline for previewable types (images, PDF, media) or as attachment. Add ?dl=1 to force download."
+      operationId: download
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: dl
+        in: query
+        description: Force download as attachment
+        required: false
+        schema:
+          type: boolean
+      - name: Range
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: File content
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: File not found or expired
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Files
+      summary: BrewPage Delete File
+      description: Permanently removes the file from storage
+      operationId: delete_3
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[a-z0-9-]{1,32}$"
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: File deleted
+        "403":
+          description: Missing or wrong owner token
+        "404":
+          description: File not found or expired
+components:
+  schemas:
+    KvUpsertKeyRequest:
+      type: object
+      properties:
+        value:
+          type: string
+          description: New value for the key (max 1 MB)
+    KvUpsertKeyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        key:
+          type: string
+        sizeBytes:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for this key
+        ownerLink:
+          type: string
+          description: API URL for programmatic access
+    JsonUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access
+        sizeBytes:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+    HtmlUpdateRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: New HTML content to replace existing page
+        format:
+          type: string
+          description: "Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript,
+            tsx, jsx, css, properties, docker, txt). When omitted, the row's stored format is preserved. Takes precedence over the 'format' query param when both are present."
+    HtmlUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access
+        expiresAt:
+          type: string
+          format: date-time
+        sizeBytes:
+          type: integer
+          format: int64
+    SiteUploadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric site ID
+        namespace:
+          type: string
+        entryFile:
+          type: string
+          description: Entry HTML file resolved from the upload (e.g. index.html)
+        link:
+          type: string
+          description: Public URL to view the site
+        ownerLink:
+          type: string
+          description: "API URL for programmatic access (info, delete)"
+        fileCount:
+          type: integer
+          format: int32
+        totalSizeBytes:
+          type: integer
+          format: int64
+        expiresAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for info and delete operations. Store it safely -- cannot be recovered
+    ReportRequest:
+      type: object
+      properties:
+        reportedUrl:
+          type: string
+          description: Full URL of the reported resource on brewpage.app or brewdata.app
+        category:
+          type: string
+          description: Abuse category
+          enum:
+          - cannot_delete
+          - spam
+          - phishing
+          - malware
+          - copyright
+          - harassment
+          - illegal
+          - other
+        description:
+          type: string
+          description: Reporter description (10..5000 chars)
+        reporterEmail:
+          type: string
+          description: Optional reporter email for follow-up
+        resourceNamespace:
+          type: string
+          description: Optional namespace of the reported resource (e.g. 'public'). When supplied with resourceId takes priority over URL parsing.
+        resourceId:
+          type: string
+          description: Optional 10-character short ID of the reported resource. When supplied with resourceNamespace takes priority over URL parsing.
+    ReportResponse:
+      type: object
+      properties:
+        reportId:
+          type: string
+          description: Unique 10-character alphanumeric report ID
+        receivedAt:
+          type: string
+          format: date-time
+          description: Server timestamp when the report was accepted
+    KvCreateStoreRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Initial key name
+        value:
+          type: string
+          description: Value for the initial key (max 1 MB)
+    KvCreateStoreResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric store ID
+        namespace:
+          type: string
+        key:
+          type: string
+        sizeBytes:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for the initial key
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (upsert/delete)
+        expiresAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for upsert and delete operations. Store it safely -- cannot be recovered
+    JsonCreateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric document ID
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (update/delete)
+        sizeBytes:
+          type: integer
+          format: int64
+        expiresAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for update and delete operations. Store it safely -- cannot be recovered
+    HtmlUploadRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: HTML or markdown content to publish
+        filename:
+          type: string
+          description: "Optional original filename used as the tab title fallback and download basename. Trimmed; rejected if it contains path separators or control characters, length > 200, or bare name
+            shorter than 4 chars"
+        showTopBar:
+          type: boolean
+          description: Per-content toggle for the frontend top toolbar. null = use global default (app.ui.show-top-bar-default)
+    HtmlUploadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric page ID
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (update/delete)
+        expiresAt:
+          type: string
+          format: date-time
+        sizeBytes:
+          type: integer
+          format: int64
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for update and delete operations. Store it safely -- cannot be recovered
+    FileUploadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric file ID
+        namespace:
+          type: string
+        filename:
+          type: string
+          description: Original filename as uploaded
+        contentType:
+          type: string
+          description: Detected MIME type (e.g. image/png)
+        sizeBytes:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for browser download
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (delete)
+        expiresAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for delete operation. Store it safely -- cannot be recovered
+    OwnerCheckResponse:
+      type: object
+      properties:
+        type:
+          type: string
+        owner:
+          type: boolean
+    StatsResponse:
+      type: object
+      properties:
+        createdToday:
+          type: integer
+          format: int64
+          description: Resources created in the last 24 hours
+        totalCreated:
+          type: integer
+          format: int64
+          description: All-time resource count
+        viewsToday:
+          type: integer
+          format: int64
+          description: Views in the last 24 hours
+        totalViews:
+          type: integer
+          format: int64
+          description: All-time view count
+        breakdown:
+          type: array
+          description: "Per-type breakdown (html, json, kv, file, site)"
+          items:
+            $ref: "#/components/schemas/TypeBreakdown"
+        createdTodayPublic:
+          type: integer
+          format: int64
+          description: Resources created today in the public namespace
+        createdTodayPrivate:
+          type: integer
+          format: int64
+          description: Resources created today in private namespaces
+        viewsTodayPublic:
+          type: integer
+          format: int64
+          description: Views today on resources in the public namespace
+        viewsTodayPrivate:
+          type: integer
+          format: int64
+          description: Views today on resources in private namespaces
+        totalCreatedPublic:
+          type: integer
+          format: int64
+          description: All-time resources created in the public namespace
+        totalCreatedPrivate:
+          type: integer
+          format: int64
+          description: All-time resources created in private namespaces
+        totalViewsPublic:
+          type: integer
+          format: int64
+          description: All-time views on resources in the public namespace
+        totalViewsPrivate:
+          type: integer
+          format: int64
+          description: All-time views on resources in private namespaces
+        deletedToday:
+          type: integer
+          format: int64
+          description: Resources deleted in the last 24 hours
+        deletedTodayPublic:
+          type: integer
+          format: int64
+          description: Resources deleted today in the public namespace
+        deletedTodayPrivate:
+          type: integer
+          format: int64
+          description: Resources deleted today in private namespaces
+        totalDeleted:
+          type: integer
+          format: int64
+          description: All-time deleted resource count
+        totalDeletedPublic:
+          type: integer
+          format: int64
+          description: All-time deleted resources in the public namespace
+        totalDeletedPrivate:
+          type: integer
+          format: int64
+          description: All-time deleted resources in private namespaces
+    TypeBreakdown:
+      type: object
+      properties:
+        type:
+          type: string
+          description: "Resource type: html, json, kv, file, or site"
+        today:
+          type: integer
+          format: int64
+          description: Created in the last 24 hours
+        total:
+          type: integer
+          format: int64
+          description: All-time count
+        todayPublic:
+          type: integer
+          format: int64
+          description: Created today in the public namespace
+        todayPrivate:
+          type: integer
+          format: int64
+          description: Created today in private namespaces
+        totalPublic:
+          type: integer
+          format: int64
+          description: All-time count in the public namespace
+        totalPrivate:
+          type: integer
+          format: int64
+          description: All-time count in private namespaces
+        todayDeleted:
+          type: integer
+          format: int64
+          description: Deleted in the last 24 hours
+        todayDeletedPublic:
+          type: integer
+          format: int64
+          description: Deleted today in the public namespace
+        todayDeletedPrivate:
+          type: integer
+          format: int64
+          description: Deleted today in private namespaces
+        totalDeleted:
+          type: integer
+          format: int64
+          description: All-time deleted count
+        totalDeletedPublic:
+          type: integer
+          format: int64
+          description: All-time deleted in the public namespace
+        totalDeletedPrivate:
+          type: integer
+          format: int64
+          description: All-time deleted in private namespaces
+    SiteFileInfo:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Relative file path within the site
+        contentType:
+          type: string
+          description: Detected MIME type
+        sizeBytes:
+          type: integer
+          format: int64
+    SiteInfoResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric site ID
+        namespace:
+          type: string
+        entryFile:
+          type: string
+          description: Entry HTML file resolved from the upload
+        fileCount:
+          type: integer
+          format: int32
+        totalSizeBytes:
+          type: integer
+          format: int64
+        files:
+          type: array
+          description: List of all files in the site
+          items:
+            $ref: "#/components/schemas/SiteFileInfo"
+        createdAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        views:
+          type: integer
+          format: int64
+        tags:
+          type: array
+          items:
+            type: string
+    RandomNamespaceResponse:
+      type: object
+      properties:
+        namespace:
+          type: string
+    KvStoreListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric store ID
+        keyCount:
+          type: integer
+          format: int32
+          description: Number of keys in the store
+        createdAt:
+          type: string
+          format: date-time
+          description: When the first key in the store was created
+    KvListKeysResponse:
+      type: object
+      properties:
+        keys:
+          type: array
+          description: All key names in the store
+          items:
+            type: string
+        count:
+          type: integer
+          format: int32
+          description: Total number of keys
+        expiresAt:
+          type: string
+          format: date-time
+          description: When the store expires
+        views:
+          type: integer
+          format: int64
+          description: Aggregated views across all keys in this store
+    KvGetResponse:
+      type: object
+      properties:
+        value:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the value was last written or updated
+        expiresAt:
+          type: string
+          format: date-time
+          description: When the value expires
+        views:
+          type: integer
+          format: int64
+          description: Total number of reads for this key (post-increment)
+    JsonListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric document ID
+        content:
+          type: string
+        size:
+          type: integer
+          format: int64
+        createdAt:
+          type: string
+          format: date-time
+    GalleryItem:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          description: "Resource type: html, json, kv, or file"
+        title:
+          type: string
+          description: Display title derived from content or filename
+        createdAt:
+          type: string
+          format: date-time
+        views:
+          type: integer
+          format: int64
+          description: Total view count
+        visibility:
+          type: string
+          description: Per-item visibility classification — public on default responses; my_public/my_public_password/my_private on mine=true
+          enum:
+          - public
+          - my_public
+          - my_public_password
+          - my_private
+        namespace:
+          type: string
+          description: "Namespace the item lives in — 'public' on default responses; mine=true returns the real namespace (e.g. 'public', 'secret-ns') so the frontend can build correct /{ns}/{id} links"
+    GalleryResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/GalleryItem"
+        total:
+          type: integer
+          format: int64
+          description: Total number of matching items across all pages
+        page:
+          type: integer
+          format: int32
+          description: Current page number (1-based)
+        size:
+          type: integer
+          format: int32
+          description: Items per page
+    FileListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric file ID
+        filename:
+          type: string
+          description: Original filename as uploaded
+        contentType:
+          type: string
+          description: Detected MIME type (e.g. image/png)
+        size:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for browser download
+        createdAt:
+          type: string
+          format: date-time

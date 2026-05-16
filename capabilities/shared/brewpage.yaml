@@ -1,0 +1,266 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage Hosting
+  description: >-
+    BrewPage REST API for instant hosting of HTML pages, Markdown documents,
+    AI artifacts, files, multi-file sites, key-value stores, and JSON
+    documents. Endpoints live under https://brewpage.app/api/ and respond
+    with short, shareable URLs of the form /{ns}/{id}. Mutations require
+    the X-Owner-Token header issued at creation; a User-Agent header is
+    required on every request.
+  tags:
+    - BrewPage
+    - Hosting
+    - HTML
+    - Markdown
+    - AI Artifacts
+    - File Hosting
+    - Developer Tools
+  created: '2026-05-16'
+  modified: '2026-05-16'
+binds:
+  - namespace: env
+    keys:
+      BREWPAGE_BASE_URL: BREWPAGE_BASE_URL
+      BREWPAGE_OWNER_TOKEN: BREWPAGE_OWNER_TOKEN
+      BREWPAGE_USER_AGENT: BREWPAGE_USER_AGENT
+capability:
+  consumes:
+    - type: http
+      namespace: brewpage
+      baseUri: '{{BREWPAGE_BASE_URL}}'
+      description: BrewPage REST API base URL (defaults to https://brewpage.app).
+      authentication:
+        type: none
+        description: >-
+          No registration is required. Creation endpoints are anonymous; the
+          server returns an `ownerToken` that callers send as `X-Owner-Token`
+          on subsequent updates/deletes and on list endpoints to scope output
+          to their own resources.
+      defaultHeaders:
+        - name: User-Agent
+          value: '{{BREWPAGE_USER_AGENT}}'
+          description: REQUIRED on every request. Format AgentName/version.
+      resources:
+        - name: html
+          path: /api/html
+          description: HTML and Markdown page hosting.
+          operations:
+            - name: create
+              method: POST
+              path: /api/html
+              description: Publish a new HTML or Markdown page.
+              outputRawFormat: json
+            - name: get
+              method: GET
+              path: /api/html/{ns}/{id}
+              description: Fetch rendered HTML for a hosted page.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+            - name: getSource
+              method: GET
+              path: /api/html/{ns}/{id}/source
+              description: Return the raw source of a hosted page.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+            - name: update
+              method: PUT
+              path: /api/html/{ns}/{id}
+              description: Replace HTML/Markdown content while preserving the short URL.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+              outputRawFormat: json
+            - name: delete
+              method: DELETE
+              path: /api/html/{ns}/{id}
+              description: Delete a hosted page.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+        - name: files
+          path: /api/files
+          description: Generic file hosting (≤5 MB per file, 1000 files per namespace).
+          operations:
+            - name: upload
+              method: POST
+              path: /api/files
+              description: Upload a file via multipart form.
+              outputRawFormat: json
+            - name: list
+              method: GET
+              path: /api/files
+              description: List files owned by the caller (requires X-Owner-Token).
+              outputRawFormat: json
+            - name: download
+              method: GET
+              path: /api/files/{ns}/{id}
+              description: Download or inline-preview a file.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+            - name: delete
+              method: DELETE
+              path: /api/files/{ns}/{id}
+              description: Delete a file.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+        - name: sites
+          path: /api/sites
+          description: Multi-file static site hosting (ZIP or files+paths multipart).
+          operations:
+            - name: upload
+              method: POST
+              path: /api/sites
+              description: Upload a multi-file site (≤20 MB total, 100 files, 5 MB each).
+              outputRawFormat: json
+            - name: info
+              method: GET
+              path: /api/sites/{ns}/{id}
+              description: Get site metadata and file list (owner-only).
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+            - name: delete
+              method: DELETE
+              path: /api/sites/{ns}/{id}
+              description: Delete a site (all files).
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+        - name: kv
+          path: /api/kv
+          description: Namespaced key-value store (≤1000 keys per store).
+          operations:
+            - name: createStore
+              method: POST
+              path: /api/kv
+              description: Create a new KV store with an initial key/value.
+              outputRawFormat: json
+            - name: listStores
+              method: GET
+              path: /api/kv
+              description: List KV stores owned by the caller.
+              outputRawFormat: json
+            - name: listKeys
+              method: GET
+              path: /api/kv/{ns}/{id}
+              description: List all keys in a KV store.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+            - name: getKey
+              method: GET
+              path: /api/kv/{ns}/{id}/{key}
+              description: Read a single key.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: key, in: path, type: string, required: true}
+            - name: upsertKey
+              method: PUT
+              path: /api/kv/{ns}/{id}/{key}
+              description: Create or update a single key (owner-only).
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: key, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+            - name: deleteKey
+              method: DELETE
+              path: /api/kv/{ns}/{id}/{key}
+              description: Delete a single key.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: key, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+            - name: deleteBucket
+              method: DELETE
+              path: /api/kv/{ns}/{id}
+              description: Delete the entire KV store (all keys).
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+        - name: json
+          path: /api/json
+          description: JSON document store (≤10,000 documents per namespace).
+          operations:
+            - name: create
+              method: POST
+              path: /api/json
+              description: Store a JSON document.
+              outputRawFormat: json
+            - name: list
+              method: GET
+              path: /api/json
+              description: List JSON documents owned by the caller.
+            - name: get
+              method: GET
+              path: /api/json/{ns}/{id}
+              description: Fetch a JSON document.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+            - name: update
+              method: PUT
+              path: /api/json/{ns}/{id}
+              description: Replace a JSON document while keeping the short URL.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+            - name: delete
+              method: DELETE
+              path: /api/json/{ns}/{id}
+              description: Delete a JSON document.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+        - name: discovery
+          path: /api
+          description: Discovery endpoints — gallery, stats, sitemap, namespace suggestions, owner check.
+          operations:
+            - name: gallery
+              method: GET
+              path: /api/gallery
+              description: Browse public content from the `public` namespace.
+            - name: stats
+              method: GET
+              path: /api/stats
+              description: Platform-wide usage statistics.
+            - name: sitemap
+              method: GET
+              path: /api/sitemap.xml
+              description: Dynamic XML sitemap of public content.
+            - name: randomNamespace
+              method: GET
+              path: /api/namespace/random
+              description: Suggest a fresh, collision-free namespace.
+            - name: ownerCheck
+              method: GET
+              path: /api/{ns}/{id}/owner-check
+              description: Lightweight owner-token probe; never increments views.
+              inputParameters:
+                - {name: ns, in: path, type: string, required: true}
+                - {name: id, in: path, type: string, required: true}
+                - {name: X-Owner-Token, in: header, type: string, required: true}
+        - name: reports
+          path: /api/reports
+          description: Abuse reports for hosted content.
+          operations:
+            - name: submit
+              method: POST
+              path: /api/reports
+              description: Submit an abuse report.
+              outputRawFormat: json

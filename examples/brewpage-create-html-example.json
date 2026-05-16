@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://brewpage.app/api/html?ns=public&ttl=15&tags=demo,brewpage",
+    "headers": {
+      "User-Agent": "Claude/4.5",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "content": "<!doctype html><html><head><title>Hello BrewPage</title></head><body><h1>Hello, BrewPage!</h1><p>Instant hosting for HTML.</p></body></html>",
+      "filename": "hello.html",
+      "showTopBar": true
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "id": "abc1234567",
+      "namespace": "public",
+      "link": "https://brewpage.app/public/abc1234567",
+      "ownerLink": "https://brewpage.app/api/html/public/abc1234567",
+      "ownerToken": "owner_8b2f9c4e2a1b4e7c"
+    }
+  }
+}

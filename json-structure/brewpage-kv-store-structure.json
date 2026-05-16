@@ -1,0 +1,29 @@
+{
+  "name": "BrewPage KV Store Structure",
+  "description": "Logical structure for a BrewPage namespaced key-value store and the lifecycle of its keys.",
+  "entity": "KVStore",
+  "fields": [
+    {"name": "id", "type": "string", "required": true, "source": "Server-issued 10-char identifier on POST /api/kv"},
+    {"name": "namespace", "type": "string", "required": true, "source": "Query param `ns`"},
+    {"name": "ownerToken", "type": "string", "required": true, "source": "Issued at creation; required for set/delete via X-Owner-Token"},
+    {"name": "ownerLink", "type": "uri", "source": "Owner-only API URL"},
+    {"name": "ttlDays", "type": "integer", "source": "Query param `ttl` (1..30, default 15)"},
+    {"name": "passwordProtected", "type": "boolean", "source": "True when X-Password set at creation"},
+    {"name": "createdAt", "type": "datetime", "source": "Server timestamp on POST"},
+    {"name": "expiresAt", "type": "datetime", "source": "createdAt + ttlDays"}
+  ],
+  "subEntities": [
+    {
+      "name": "Key",
+      "limit": 1000,
+      "fields": [
+        {"name": "key", "type": "string", "required": true, "source": "Path parameter on PUT /api/kv/{ns}/{id}/{key}"},
+        {"name": "value", "type": "any", "source": "Body field on PUT"},
+        {"name": "updatedAt", "type": "datetime", "source": "Server timestamp on each PUT"}
+      ]
+    }
+  ],
+  "relationships": [
+    {"name": "owner", "type": "belongsTo", "target": "OwnerToken"}
+  ]
+}

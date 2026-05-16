@@ -1,0 +1,65 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "brewpage": "https://brewpage.app/ns#",
+    "HTMLPage": "brewpage:HTMLPage",
+    "MarkdownPage": "brewpage:MarkdownPage",
+    "File": "schema:MediaObject",
+    "Site": "brewpage:Site",
+    "KVStore": "brewpage:KVStore",
+    "JSONDocument": "brewpage:JSONDocument",
+    "ShortLink": "brewpage:ShortLink",
+    "Namespace": "brewpage:Namespace",
+    "AbuseReport": "brewpage:AbuseReport",
+    "OwnerToken": "brewpage:OwnerToken",
+    "id": {
+      "@id": "schema:identifier",
+      "@type": "xsd:string"
+    },
+    "namespace": "brewpage:namespace",
+    "link": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "ownerLink": {
+      "@id": "brewpage:ownerLink",
+      "@type": "@id"
+    },
+    "ownerToken": "brewpage:ownerToken",
+    "filename": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "format": "brewpage:format",
+    "tags": {
+      "@id": "schema:keywords",
+      "@type": "xsd:string"
+    },
+    "ttlDays": "brewpage:ttlDays",
+    "passwordProtected": "brewpage:passwordProtected",
+    "showTopBar": "brewpage:showTopBar",
+    "createdAt": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "expiresAt": {
+      "@id": "schema:expires",
+      "@type": "xsd:dateTime"
+    },
+    "views": "brewpage:views",
+    "downloads": "brewpage:downloads",
+    "size": {
+      "@id": "schema:contentSize",
+      "@type": "xsd:integer"
+    },
+    "contentType": {
+      "@id": "schema:encodingFormat",
+      "@type": "xsd:string"
+    },
+    "entry": "brewpage:entry",
+    "files": "brewpage:files",
+    "content": "schema:text"
+  }
+}

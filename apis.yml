@@ -3,7 +3,15 @@ url: https://raw.githubusercontent.com/api-evangelist/brewpage/refs/heads/main/a
 name: BrewPage
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-description: 'Free instant hosting for HTML, Markdown, AI artifacts, and files. REST API and AI-agent friendly.'
+description: >-
+  BrewPage is a free, no-registration instant hosting service for HTML pages,
+  Markdown documents, AI-agent artifacts, files, and multi-file static sites.
+  It also offers a namespaced key-value store and a JSON document store. The
+  REST API returns short, shareable HTTPS links (https://brewpage.app/{ns}/{id})
+  and an owner token used to update or delete content in place. BrewPage is
+  designed to be AI-agent friendly: it provides an MCP server (brewpage-mcp),
+  a Claude Code skill (brewdoc:publish), and a llms.txt manifest, and it
+  requires a self-identifying User-Agent header on every request.
 created: '2026-05-16'
 modified: '2026-05-16'
 specificationVersion: '0.19'
@@ -14,13 +22,185 @@ tags:
   - AI Artifacts
   - File Hosting
   - Developer Tools
-
-common:
-  - url: https://brewpage.app/
-    type: Website
-  - url: https://brewpage.app/api/openapi.yaml
-    type: Documentation
-  - url: https://brewpage.app/api/openapi.yaml
-    type: APIsJSON
 url-source: https://brewpage.app/
-apis: []
+apis:
+  - aid: brewpage:api
+    name: BrewPage API
+    tags:
+      - Hosting
+      - HTML
+      - Markdown
+      - AI Artifacts
+      - File Hosting
+      - Developer Tools
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    baseURL: https://brewpage.app
+    humanURL: https://brewpage.app/api
+    description: >-
+      The BrewPage REST API. Publish HTML, Markdown, files, and multi-file
+      sites; store key-value pairs and JSON documents; browse the public
+      gallery; check ownership; and submit abuse reports. Endpoints live
+      under /api/ and short links live at /{ns}/{id}. Identical
+      functionality is also available at brewdata.app.
+    properties:
+      - type: Documentation
+        url: https://brewpage.app/api
+      - type: APIReference
+        url: https://kochetkov-ma.github.io/brewpage-openapi/
+      - type: OpenAPI
+        url: openapi/brewpage-openapi.yml
+      - type: Authentication
+        url: https://brewpage.app/llms-full.txt
+      - type: JSONSchema
+        url: json-schema/brewpage-html-page-schema.json
+      - type: JSONSchema
+        url: json-schema/brewpage-file-schema.json
+      - type: JSONSchema
+        url: json-schema/brewpage-kv-store-schema.json
+      - type: JSONSchema
+        url: json-schema/brewpage-json-document-schema.json
+      - type: JSONSchema
+        url: json-schema/brewpage-site-schema.json
+      - type: JSONStructure
+        url: json-structure/brewpage-html-page-structure.json
+      - type: JSONStructure
+        url: json-structure/brewpage-kv-store-structure.json
+      - type: Example
+        url: examples/brewpage-create-html-example.json
+      - type: Example
+        url: examples/brewpage-create-markdown-example.json
+      - type: Example
+        url: examples/brewpage-upload-file-example.json
+      - type: Example
+        url: examples/brewpage-upload-site-example.json
+      - type: Example
+        url: examples/brewpage-upsert-kv-example.json
+common:
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Portal
+    url: https://brewpage.app/
+  - type: GettingStarted
+    url: https://brewpage.app/llms.txt
+  - type: Quickstart
+    url: https://brewpage.app/llms.txt
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: SDK
+    url: https://www.npmjs.com/package/brewpage-mcp
+  - type: Plans
+    url: plans/brewpage-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/brewpage-rate-limits.yml
+  - type: FinOps
+    url: finops/brewpage-finops.yml
+  - type: Integrations
+    data:
+      - name: Model Context Protocol (MCP)
+        description: Official MCP server `brewpage-mcp` exposes BrewPage to any LLM/agent (Claude, Codex, Gemini, Cursor) via the Model Context Protocol.
+      - name: Claude Code
+        description: Claude Code skill `brewdoc:publish` lets users publish from inside Claude Code via a slash command (claude-brewcode marketplace).
+      - name: IndexNow
+        description: BrewPage submits public content to IndexNow for search engine discovery; PUT-based republish is recommended to preserve quota.
+      - name: OpenGraph / Social Bots
+        description: Every short URL exposes `/preview/{ns}/{id}.png` (1200×630) and a `/preview-html/{ns}/{id}` OG stub for link unfurling.
+      - name: Prism.js
+        description: Client-side syntax highlighting for known code/data file previews (JSON, XML, SVG, HTML, CSS, JS, TS, YAML, TOML, Markdown).
+      - name: llms.txt
+        description: BrewPage publishes a /llms.txt and /llms-full.txt manifest for LLM-friendly discovery of the API surface.
+    sources:
+      - https://brewpage.app/llms.txt
+      - https://brewpage.app/llms-full.txt
+    updated: '2026-05-16'
+  - type: SpectralRules
+    url: rules/brewpage-rules.yml
+  - type: Vocabulary
+    url: vocabulary/brewpage-vocabulary.yml
+  - type: NaftikoCapability
+    url: capabilities/agent-artifact-publishing.yaml
+  - type: NaftikoCapability
+    url: capabilities/shared/brewpage.yaml
+  - type: JSON-LD
+    url: json-ld/brewpage-context.jsonld
+  - type: Features
+    data:
+      - name: Instant HTML Hosting
+        description: POST raw HTML or a JSON body to /api/html and receive a 10-char short URL at /{ns}/{id} with no signup.
+      - name: Markdown Rendering
+        description: Pass `format=markdown` to publish Markdown that BrewPage renders to styled HTML at view time.
+      - name: Multi-File Site Hosting
+        description: Upload a ZIP archive or files+paths multipart to /api/sites; entry point auto-detected (index.html preferred); 20 MB / 100 files / 5 MB each.
+      - name: File Hosting
+        description: Upload binary or text files via /api/files (5 MB max). Images, PDFs, video, and audio display inline; ?dl=1 forces download.
+      - name: Key-Value Store
+        description: 1000-key namespaced KV stores via /api/kv with per-key PUT/GET/DELETE and per-store enumeration.
+      - name: JSON Document Store
+        description: 10,000-document collections via /api/json with PUT-in-place semantics on stable short URLs.
+      - name: Update In Place
+        description: PUT to /api/html, /api/json, and /api/kv replaces content while keeping the short URL — agents can iterate without breaking shared links.
+      - name: Owner Token Grouping
+        description: Save the `ownerToken` returned at creation and reuse it via `X-Owner-Token` to group resources under one owner and scope list endpoints.
+      - name: Password Protection
+        description: Set `X-Password` (min 4 chars) at creation to require the same header (or `?p=...`) for reads; passworded items are excluded from the gallery and sitemap.
+      - name: Public Gallery
+        description: GET /api/gallery surfaces content posted to the default `public` namespace without a password — searchable, social-bot friendly, OG-image generated.
+      - name: OpenGraph Preview Images
+        description: Per-content 1200×630 PNG at /preview/{ns}/{id}.png plus an /preview-html stub for social media unfurlers.
+      - name: Short Link Resolver
+        description: GET /{ns}/{id} returns the hosted content; GET /{ns}/{id}/{sub} resolves sub-paths inside multi-file sites.
+      - name: Idempotent Owner Re-POST
+        description: 'A byte-identical POST /api/html to `public/` within 24h returns the existing id (X-Existing-Resource header set) so retries do not duplicate gallery entries.'
+      - name: Abuse Reports
+        description: POST /api/reports lets readers report inappropriate or harmful content for moderation.
+      - name: Random Namespace Suggestion
+        description: GET /api/namespace/random returns a fresh, collision-free kebab-case namespace suggestion.
+      - name: Platform Stats
+        description: GET /api/stats exposes platform-wide usage statistics; GET /api/sitemap.xml exposes a dynamic sitemap of public content.
+      - name: AI-Agent Friendly
+        description: llms.txt and llms-full.txt manifests, an MCP server, a Claude Code skill, and required identifying User-Agent headers make BrewPage first-class for autonomous agents.
+    sources:
+      - https://brewpage.app/
+      - https://brewpage.app/llms.txt
+      - https://brewpage.app/llms-full.txt
+      - https://brewpage.app/api/openapi.yaml
+    updated: '2026-05-16'
+  - type: UseCases
+    data:
+      - name: Share AI-Agent Output
+        description: Drop a Markdown report, generated HTML page, or JSON artifact and share a short URL with a teammate or end user.
+      - name: Iterate On A Stable Link
+        description: Use PUT to refine content at the same short URL across multiple agent iterations without breaking previously shared links.
+      - name: Stand Up A One-Off Microsite
+        description: Upload a ZIP of a static site (docs, demo, status page) and get a 30-day-max hosted URL with relative links between files.
+      - name: Ephemeral File Drop
+        description: Send a PDF, image, or archive (≤5 MB) to a recipient who shouldn't need to sign up — URL expires automatically.
+      - name: Scratch KV Storage For Agents
+        description: Use /api/kv as a free, server-side scratchpad for feature flags, session state, or memoized tool outputs (≤1000 keys per store).
+      - name: Public Knowledge Drop
+        description: Post to the default `public` namespace and let the gallery + sitemap + OG image expose your content to search engines and social.
+      - name: Password-Gated Share
+        description: Apply X-Password to a hosted page or file for lightweight access control without user accounts.
+    sources:
+      - https://brewpage.app/
+      - https://brewpage.app/llms.txt
+    updated: '2026-05-16'
+  - type: Solutions
+    data:
+      - name: Hosted Web Page
+        description: Free HTML/Markdown publishing with short URL, OG images, and password gating.
+      - name: Hosted Files And Sites
+        description: 5 MB files and 20 MB multi-file sites with TTL up to 30 days.
+      - name: Agent State And Documents
+        description: KV stores (1000 keys) and JSON collections (10,000 docs) for stateful agent workflows.
+      - name: AI-Agent Integration
+        description: MCP server, Claude Code skill, llms.txt manifests, and identifying User-Agent contract.
+    sources:
+      - https://brewpage.app/
+      - https://brewpage.app/llms-full.txt
+    updated: '2026-05-16'
+maintainers:
+  - FN: Kin Lane
+    email: info@apievangelist.com
+    url: https://apievangelist.com

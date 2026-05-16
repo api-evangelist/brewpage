@@ -1,0 +1,118 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: BrewPage
+providerId: brewpage
+created: '2026-05-16'
+modified: '2026-05-16'
+reconciled: false
+notes: >-
+  BrewPage is a free service with no commercial billing surface. There is no
+  invoice, no metered price, no subscription, and no customer agreement. The
+  FinOps shape below documents the platform's *capacity* meters (file count,
+  KV keys, document count, storage size, TTL) so that consumers can map
+  BrewPage usage to internal allocation/showback, not so that BrewPage itself
+  can be charged. Set reconciled to true if BrewPage introduces paid tiers.
+tags:
+  - FinOps
+  - FOCUS
+  - Free
+  - Hosting
+description: >-
+  Capacity-oriented FinOps shape for BrewPage. Because the platform is free,
+  the meters track consumption against published structural caps rather than
+  $-denominated charges. Consumers can use these meters for internal
+  allocation (e.g., per-agent or per-team hosting footprint) and for
+  forecasting when migrating to a self-hosted alternative.
+sources:
+  - https://brewpage.app/
+  - https://brewpage.app/llms.txt
+  - https://brewpage.app/llms-full.txt
+  - https://brewpage.app/api/openapi.yaml
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: BrewPage
+serviceCategory: Web Hosting and Storage
+billingModel:
+  pricingCategory: Free
+  billingFrequency: N/A
+  billingCurrency: USD
+  chargeCategories:
+    - Usage
+meters:
+  - name: html_pages_hosted
+    unit: page
+    aggregation: count
+    dimensions:
+      - namespace
+      - format
+      - owner_token
+  - name: files_hosted
+    unit: file
+    aggregation: count
+    dimensions:
+      - namespace
+      - content_type
+      - owner_token
+  - name: file_bytes_stored
+    unit: byte
+    aggregation: sum
+    dimensions:
+      - namespace
+      - owner_token
+  - name: sites_hosted
+    unit: site
+    aggregation: count
+    dimensions:
+      - namespace
+      - owner_token
+  - name: site_files
+    unit: file
+    aggregation: count
+    dimensions:
+      - site_id
+  - name: kv_keys
+    unit: key
+    aggregation: count
+    dimensions:
+      - store_id
+      - owner_token
+  - name: json_documents
+    unit: document
+    aggregation: count
+    dimensions:
+      - namespace
+      - owner_token
+  - name: views_served
+    unit: request
+    aggregation: count
+    dimensions:
+      - resource_type
+      - namespace
+  - name: ttl_days
+    unit: day
+    aggregation: max
+    dimensions:
+      - resource_type
+focusColumns:
+  ServiceName: BrewPage
+  ServiceCategory: Web Hosting and Storage
+  ProviderName: BrewPage
+  PublisherName: BrewPage
+  InvoiceIssuerName: N/A
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  RegionId: global
+principles:
+  - name: Visibility
+    description: Use GET /api/stats for platform-wide usage, and pass X-Owner-Token to the list endpoints (GET /api/kv, /api/json, /api/files) to see only the caller's resources. The Gallery endpoint surfaces public content.
+  - name: Allocation
+    description: Tag resources by namespace at creation (`ns` query param) and by owner-token group across creates to attribute hosting footprint to a team, agent, or feature.
+  - name: Optimization
+    description: Use PUT to iterate on a stable short URL instead of re-POSTing (saves IndexNow quota and avoids duplicate gallery entries). Set TTL as low as the use case allows (1..30 days). For binary artifacts, prefer /api/files over re-encoding into HTML.
+  - name: Accountability
+    description: Every request is logged with IP, User-Agent, method, path, status, and timestamp for 30 days; abuse reports are posted to /api/reports. Owners control deletion via DELETE with X-Owner-Token.
