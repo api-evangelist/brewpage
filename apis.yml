@@ -1,0 +1,26 @@
+aid: brewpage
+url: https://raw.githubusercontent.com/api-evangelist/brewpage/refs/heads/main/apis.yml
+name: BrewPage
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+description: 'Free instant hosting for HTML, Markdown, AI artifacts, and files. REST API and AI-agent friendly.'
+created: '2026-05-16'
+modified: '2026-05-16'
+specificationVersion: '0.19'
+tags:
+  - Hosting
+  - Markdown
+  - HTML
+  - AI Artifacts
+  - File Hosting
+  - Developer Tools
+
+common:
+  - url: https://brewpage.app/
+    type: Website
+  - url: https://brewpage.app/api/openapi.yaml
+    type: Documentation
+  - url: https://brewpage.app/api/openapi.yaml
+    type: APIsJSON
+url-source: https://brewpage.app/
+apis: []
