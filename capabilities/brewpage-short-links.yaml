@@ -1,0 +1,208 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — Short Links
+  description: 'BrewPage API — Short Links. 2 operations. Lead operation: Short Links. Self-contained Naftiko capability covering
+    one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - Short Links
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-short-links
+    baseUri: https://brewpage.app
+    description: BrewPage API — Short Links business capability. Self-contained, no shared references.
+    resources:
+    - name: ns-id
+      path: /{ns}/{id}
+      operations:
+      - name: resolve
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password for protected resources
+        - name: p
+          in: query
+          type: string
+          description: Access password (query alternative to X-Password header)
+        - name: dl
+          in: query
+          type: boolean
+          description: Force download as attachment
+        - name: Range
+          in: header
+          type: string
+        - name: X-Resolve
+          in: header
+          type: string
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: 'Owner token; when supplied, response carries X-Is-Owner: true on match'
+        - name: User-Agent
+          in: header
+          type: string
+    - name: ns-id-sub
+      path: /{ns}/{id}/{sub}
+      operations:
+      - name: resolvewithsub
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: sub
+          in: path
+          type: string
+          required: true
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password for protected resources
+        - name: p
+          in: query
+          type: string
+          description: Access password (query alternative to X-Password header)
+        - name: dl
+          in: query
+          type: boolean
+          description: Force download as attachment
+        - name: X-Resolve
+          in: header
+          type: string
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: 'Owner token; when supplied, response carries X-Is-Owner: true on match'
+        - name: User-Agent
+          in: header
+          type: string
+  exposes:
+  - type: rest
+    namespace: brewpage-short-links-rest
+    port: 8080
+    description: REST adapter for BrewPage API — Short Links. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/{ns}/{id}
+      name: ns-id
+      description: REST surface for ns-id.
+      operations:
+      - method: GET
+        name: resolve
+        description: resolve
+        call: brewpage-short-links.resolve
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Password: rest.X-Password
+          p: rest.p
+          dl: rest.dl
+          Range: rest.Range
+          X-Resolve: rest.X-Resolve
+          X-Owner-Token: rest.X-Owner-Token
+          User-Agent: rest.User-Agent
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/{ns}/{id}/{sub}
+      name: ns-id-sub
+      description: REST surface for ns-id-sub.
+      operations:
+      - method: GET
+        name: resolvewithsub
+        description: resolvewithsub
+        call: brewpage-short-links.resolvewithsub
+        with:
+          ns: rest.ns
+          id: rest.id
+          sub: rest.sub
+          X-Password: rest.X-Password
+          p: rest.p
+          dl: rest.dl
+          X-Resolve: rest.X-Resolve
+          X-Owner-Token: rest.X-Owner-Token
+          User-Agent: rest.User-Agent
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-short-links-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — Short Links. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: resolve
+      description: resolve
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-short-links.resolve
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Password: tools.X-Password
+        p: tools.p
+        dl: tools.dl
+        Range: tools.Range
+        X-Resolve: tools.X-Resolve
+        X-Owner-Token: tools.X-Owner-Token
+        User-Agent: tools.User-Agent
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: resolvewithsub
+      description: resolvewithsub
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-short-links.resolvewithsub
+      with:
+        ns: tools.ns
+        id: tools.id
+        sub: tools.sub
+        X-Password: tools.X-Password
+        p: tools.p
+        dl: tools.dl
+        X-Resolve: tools.X-Resolve
+        X-Owner-Token: tools.X-Owner-Token
+        User-Agent: tools.User-Agent
+      outputParameters:
+      - type: object
+        mapping: $.

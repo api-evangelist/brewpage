@@ -1,0 +1,302 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — Sites
+  description: 'BrewPage API — Sites. 4 operations. Lead operation: BrewPage Upload Site. Self-contained Naftiko capability
+    covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - Sites
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-sites
+    baseUri: https://brewpage.app
+    description: BrewPage API — Sites business capability. Self-contained, no shared references.
+    resources:
+    - name: api-sites
+      path: /api/sites
+      operations:
+      - name: upload
+        method: POST
+        description: BrewPage Upload Site
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: files
+          in: query
+          type: array
+          description: Individual files (alternative to archive)
+        - name: paths
+          in: query
+          type: array
+          description: Relative paths for each file (must match files order)
+        - name: ns
+          in: query
+          type: string
+          description: 'Namespace. Default: public'
+        - name: tags
+          in: query
+          type: string
+          description: Comma-separated tags
+        - name: ttl
+          in: query
+          type: string
+          description: Time to live in days (1-30, default 15). Site auto-deletes after expiry. Accepts '15', '15d' or '15
+            days'
+        - name: entry
+          in: query
+          type: string
+          description: 'Entry file path override (default: auto-detect index.html)'
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Reuse existing owner token to group entities under one owner
+        - name: User-Agent
+          in: header
+          type: string
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: api-sites-ns-id
+      path: /api/sites/{ns}/{id}
+      operations:
+      - name: info
+        method: GET
+        description: BrewPage Get Site Info
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation
+          required: true
+      - name: delete2
+        method: DELETE
+        description: BrewPage Delete Site
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for delete
+          required: true
+    - name: api-sites-ns-id-files-**
+      path: /api/sites/{ns}/{id}/files/**
+      operations:
+      - name: servefile
+        method: GET
+        description: BrewPage Serve Site File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password via header
+        - name: p
+          in: query
+          type: string
+          description: Access password via query param
+        - name: User-Agent
+          in: header
+          type: string
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to bypass password protection when no password supplied
+  exposes:
+  - type: rest
+    namespace: brewpage-sites-rest
+    port: 8080
+    description: REST adapter for BrewPage API — Sites. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/api/sites
+      name: api-sites
+      description: REST surface for api-sites.
+      operations:
+      - method: POST
+        name: upload
+        description: BrewPage Upload Site
+        call: brewpage-sites.upload
+        with:
+          files: rest.files
+          paths: rest.paths
+          ns: rest.ns
+          tags: rest.tags
+          ttl: rest.ttl
+          entry: rest.entry
+          X-Password: rest.X-Password
+          X-Owner-Token: rest.X-Owner-Token
+          User-Agent: rest.User-Agent
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/sites/{ns}/{id}
+      name: api-sites-ns-id
+      description: REST surface for api-sites-ns-id.
+      operations:
+      - method: GET
+        name: info
+        description: BrewPage Get Site Info
+        call: brewpage-sites.info
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: delete2
+        description: BrewPage Delete Site
+        call: brewpage-sites.delete2
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/sites/{ns}/{id}/files/
+      name: api-sites-ns-id-files
+      description: REST surface for api-sites-ns-id-files-**.
+      operations:
+      - method: GET
+        name: servefile
+        description: BrewPage Serve Site File
+        call: brewpage-sites.servefile
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Password: rest.X-Password
+          p: rest.p
+          User-Agent: rest.User-Agent
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-sites-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — Sites. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-upload-site
+      description: BrewPage Upload Site
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: brewpage-sites.upload
+      with:
+        files: tools.files
+        paths: tools.paths
+        ns: tools.ns
+        tags: tools.tags
+        ttl: tools.ttl
+        entry: tools.entry
+        X-Password: tools.X-Password
+        X-Owner-Token: tools.X-Owner-Token
+        User-Agent: tools.User-Agent
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-get-site-info
+      description: BrewPage Get Site Info
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-sites.info
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-delete-site
+      description: BrewPage Delete Site
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: brewpage-sites.delete2
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-serve-site-file
+      description: BrewPage Serve Site File
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-sites.servefile
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Password: tools.X-Password
+        p: tools.p
+        User-Agent: tools.User-Agent
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.

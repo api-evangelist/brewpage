@@ -1,0 +1,134 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — preview
+  description: 'BrewPage API — preview. 2 operations. Lead operation: BrewPage OpenGraph HTML Stub. Self-contained Naftiko
+    capability covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - preview
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-preview
+    baseUri: https://brewpage.app
+    description: BrewPage API — preview business capability. Self-contained, no shared references.
+    resources:
+    - name: preview-html-ns-id
+      path: /preview-html/{ns}/{id}
+      operations:
+      - name: previewhtml
+        method: GET
+        description: BrewPage OpenGraph HTML Stub
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: preview-ns-id}.png
+      path: /preview/{ns}/{id}.png
+      operations:
+      - name: preview
+        method: GET
+        description: BrewPage Per-content OG Image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: If-None-Match
+          in: header
+          type: string
+  exposes:
+  - type: rest
+    namespace: brewpage-preview-rest
+    port: 8080
+    description: REST adapter for BrewPage API — preview. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/preview-html/{ns}/{id}
+      name: preview-html-ns-id
+      description: REST surface for preview-html-ns-id.
+      operations:
+      - method: GET
+        name: previewhtml
+        description: BrewPage OpenGraph HTML Stub
+        call: brewpage-preview.previewhtml
+        with:
+          ns: rest.ns
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/preview/{ns}/id-png
+      name: preview-ns-id-png
+      description: REST surface for preview-ns-id}.png.
+      operations:
+      - method: GET
+        name: preview
+        description: BrewPage Per-content OG Image
+        call: brewpage-preview.preview
+        with:
+          ns: rest.ns
+          id: rest.id
+          If-None-Match: rest.If-None-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-preview-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — preview. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-opengraph-html-stub
+      description: BrewPage OpenGraph HTML Stub
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-preview.previewhtml
+      with:
+        ns: tools.ns
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-per-content-og-image
+      description: BrewPage Per-content OG Image
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-preview.preview
+      with:
+        ns: tools.ns
+        id: tools.id
+        If-None-Match: tools.If-None-Match
+      outputParameters:
+      - type: object
+        mapping: $.

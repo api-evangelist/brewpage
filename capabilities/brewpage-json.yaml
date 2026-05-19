@@ -1,0 +1,321 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — JSON
+  description: 'BrewPage API — JSON. 5 operations. Lead operation: BrewPage List JSON Documents. Self-contained Naftiko capability
+    covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - JSON
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-json
+    baseUri: https://brewpage.app
+    description: BrewPage API — JSON business capability. Self-contained, no shared references.
+    resources:
+    - name: api-json
+      path: /api/json
+      operations:
+      - name: list
+        method: GET
+        description: BrewPage List JSON Documents
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: query
+          type: string
+          description: Namespace
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to filter by ownership. Without token returns empty list
+      - name: create1
+        method: POST
+        description: BrewPage Create JSON Document
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: query
+          type: string
+          description: 'Namespace. Default: public. Pages in ''public'' without password appear in gallery. Custom namespace
+            is created automatically'
+        - name: tags
+          in: query
+          type: string
+          description: Comma-separated tags
+        - name: ttl
+          in: query
+          type: string
+          description: Time to live in days (1-30, default 15). Document auto-deletes after expiry. Accepts '15', '15d' or
+            '15 days'
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password. Empty = public document visible in gallery. With password = hidden from gallery, viewers
+            must enter password or pass ?p= in URL
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Reuse existing owner token to group entities under one owner. If omitted, a new token is generated
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: api-json-ns-id
+      path: /api/json/{ns}/{id}
+      operations:
+      - name: getbyid
+        method: GET
+        description: BrewPage Get JSON Document
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password via header
+        - name: p
+          in: query
+          type: string
+          description: Access password via query param (alternative to X-Password header)
+        - name: User-Agent
+          in: header
+          type: string
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to bypass password protection when no password supplied
+      - name: update
+        method: PUT
+        description: BrewPage Update JSON Document
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for update and delete
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: delete
+        method: DELETE
+        description: BrewPage Delete JSON Document
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for update and delete
+          required: true
+  exposes:
+  - type: rest
+    namespace: brewpage-json-rest
+    port: 8080
+    description: REST adapter for BrewPage API — JSON. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/api/json
+      name: api-json
+      description: REST surface for api-json.
+      operations:
+      - method: GET
+        name: list
+        description: BrewPage List JSON Documents
+        call: brewpage-json.list
+        with:
+          ns: rest.ns
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create1
+        description: BrewPage Create JSON Document
+        call: brewpage-json.create1
+        with:
+          ns: rest.ns
+          tags: rest.tags
+          ttl: rest.ttl
+          X-Password: rest.X-Password
+          X-Owner-Token: rest.X-Owner-Token
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/json/{ns}/{id}
+      name: api-json-ns-id
+      description: REST surface for api-json-ns-id.
+      operations:
+      - method: GET
+        name: getbyid
+        description: BrewPage Get JSON Document
+        call: brewpage-json.getbyid
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Password: rest.X-Password
+          p: rest.p
+          User-Agent: rest.User-Agent
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: update
+        description: BrewPage Update JSON Document
+        call: brewpage-json.update
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: delete
+        description: BrewPage Delete JSON Document
+        call: brewpage-json.delete
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-json-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — JSON. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-list-json-documents
+      description: BrewPage List JSON Documents
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-json.list
+      with:
+        ns: tools.ns
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-create-json-document
+      description: BrewPage Create JSON Document
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: brewpage-json.create1
+      with:
+        ns: tools.ns
+        tags: tools.tags
+        ttl: tools.ttl
+        X-Password: tools.X-Password
+        X-Owner-Token: tools.X-Owner-Token
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-get-json-document
+      description: BrewPage Get JSON Document
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-json.getbyid
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Password: tools.X-Password
+        p: tools.p
+        User-Agent: tools.User-Agent
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-update-json-document
+      description: BrewPage Update JSON Document
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: brewpage-json.update
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-delete-json-document
+      description: BrewPage Delete JSON Document
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: brewpage-json.delete
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.

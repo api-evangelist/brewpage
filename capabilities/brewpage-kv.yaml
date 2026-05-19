@@ -1,0 +1,456 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — KV
+  description: 'BrewPage API — KV. 7 operations. Lead operation: BrewPage List KV Stores. Self-contained Naftiko capability
+    covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - KV
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-kv
+    baseUri: https://brewpage.app
+    description: BrewPage API — KV business capability. Self-contained, no shared references.
+    resources:
+    - name: api-kv
+      path: /api/kv
+      operations:
+      - name: liststores
+        method: GET
+        description: BrewPage List KV Stores
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: query
+          type: string
+          description: Namespace
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to filter by ownership. Without token returns empty list
+      - name: createstore
+        method: POST
+        description: BrewPage Create KV Store
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: query
+          type: string
+          description: 'Namespace. Default: public. Pages in ''public'' without password appear in gallery. Custom namespace
+            is created automatically'
+        - name: tags
+          in: query
+          type: string
+          description: Comma-separated tags
+        - name: ttl
+          in: query
+          type: string
+          description: Time to live in days (1-30, default 15). Store auto-deletes after expiry. Accepts '15', '15d' or '15
+            days'
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password. Empty = public store visible in gallery. With password = hidden from gallery, viewers
+            must enter password or pass ?p= in URL
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Reuse existing owner token to group entities under one owner. If omitted, a new token is generated
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: api-kv-ns-id
+      path: /api/kv/{ns}/{id}
+      operations:
+      - name: listkeys
+        method: GET
+        description: BrewPage List Keys
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password via header
+        - name: p
+          in: query
+          type: string
+          description: Access password via query param (alternative to X-Password header)
+        - name: User-Agent
+          in: header
+          type: string
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to bypass password protection when no password supplied
+      - name: deletebucket
+        method: DELETE
+        description: BrewPage Delete Entire KV Bucket (all Keys Under Ns/id)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for delete
+          required: true
+    - name: api-kv-ns-id-key
+      path: /api/kv/{ns}/{id}/{key}
+      operations:
+      - name: getkey
+        method: GET
+        description: BrewPage Get Key Value
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: key
+          in: path
+          type: string
+          required: true
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password via header
+        - name: p
+          in: query
+          type: string
+          description: Access password via query param (alternative to X-Password header)
+        - name: User-Agent
+          in: header
+          type: string
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to bypass password protection when no password supplied
+      - name: upsertkey
+        method: PUT
+        description: BrewPage Upsert Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: key
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for update and delete
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletekey
+        method: DELETE
+        description: BrewPage Delete Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: key
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for update and delete
+          required: true
+  exposes:
+  - type: rest
+    namespace: brewpage-kv-rest
+    port: 8080
+    description: REST adapter for BrewPage API — KV. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/api/kv
+      name: api-kv
+      description: REST surface for api-kv.
+      operations:
+      - method: GET
+        name: liststores
+        description: BrewPage List KV Stores
+        call: brewpage-kv.liststores
+        with:
+          ns: rest.ns
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createstore
+        description: BrewPage Create KV Store
+        call: brewpage-kv.createstore
+        with:
+          ns: rest.ns
+          tags: rest.tags
+          ttl: rest.ttl
+          X-Password: rest.X-Password
+          X-Owner-Token: rest.X-Owner-Token
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/kv/{ns}/{id}
+      name: api-kv-ns-id
+      description: REST surface for api-kv-ns-id.
+      operations:
+      - method: GET
+        name: listkeys
+        description: BrewPage List Keys
+        call: brewpage-kv.listkeys
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Password: rest.X-Password
+          p: rest.p
+          User-Agent: rest.User-Agent
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletebucket
+        description: BrewPage Delete Entire KV Bucket (all Keys Under Ns/id)
+        call: brewpage-kv.deletebucket
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/kv/{ns}/{id}/{key}
+      name: api-kv-ns-id-key
+      description: REST surface for api-kv-ns-id-key.
+      operations:
+      - method: GET
+        name: getkey
+        description: BrewPage Get Key Value
+        call: brewpage-kv.getkey
+        with:
+          ns: rest.ns
+          id: rest.id
+          key: rest.key
+          X-Password: rest.X-Password
+          p: rest.p
+          User-Agent: rest.User-Agent
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: upsertkey
+        description: BrewPage Upsert Key
+        call: brewpage-kv.upsertkey
+        with:
+          ns: rest.ns
+          id: rest.id
+          key: rest.key
+          X-Owner-Token: rest.X-Owner-Token
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletekey
+        description: BrewPage Delete Key
+        call: brewpage-kv.deletekey
+        with:
+          ns: rest.ns
+          id: rest.id
+          key: rest.key
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-kv-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — KV. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-list-kv-stores
+      description: BrewPage List KV Stores
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-kv.liststores
+      with:
+        ns: tools.ns
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-create-kv-store
+      description: BrewPage Create KV Store
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: brewpage-kv.createstore
+      with:
+        ns: tools.ns
+        tags: tools.tags
+        ttl: tools.ttl
+        X-Password: tools.X-Password
+        X-Owner-Token: tools.X-Owner-Token
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-list-keys
+      description: BrewPage List Keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-kv.listkeys
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Password: tools.X-Password
+        p: tools.p
+        User-Agent: tools.User-Agent
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-delete-entire-kv-bucket
+      description: BrewPage Delete Entire KV Bucket (all Keys Under Ns/id)
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: brewpage-kv.deletebucket
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-get-key-value
+      description: BrewPage Get Key Value
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-kv.getkey
+      with:
+        ns: tools.ns
+        id: tools.id
+        key: tools.key
+        X-Password: tools.X-Password
+        p: tools.p
+        User-Agent: tools.User-Agent
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-upsert-key
+      description: BrewPage Upsert Key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: brewpage-kv.upsertkey
+      with:
+        ns: tools.ns
+        id: tools.id
+        key: tools.key
+        X-Owner-Token: tools.X-Owner-Token
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-delete-key
+      description: BrewPage Delete Key
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: brewpage-kv.deletekey
+      with:
+        ns: tools.ns
+        id: tools.id
+        key: tools.key
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.

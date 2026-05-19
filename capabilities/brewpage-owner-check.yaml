@@ -1,0 +1,88 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — Owner Check
+  description: 'BrewPage API — Owner Check. 1 operations. Lead operation: BrewPage Verify Whether the Supplied X-Owner-Token
+    Owns the Resource. Self-contained Naftiko capability covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - Owner Check
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-owner-check
+    baseUri: https://brewpage.app
+    description: BrewPage API — Owner Check business capability. Self-contained, no shared references.
+    resources:
+    - name: api-ns-id-owner-check
+      path: /api/{ns}/{id}/owner-check
+      operations:
+      - name: ownercheck
+        method: GET
+        description: BrewPage Verify Whether the Supplied X-Owner-Token Owns the Resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to verify (constant-time match)
+  exposes:
+  - type: rest
+    namespace: brewpage-owner-check-rest
+    port: 8080
+    description: REST adapter for BrewPage API — Owner Check. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/api/{ns}/{id}/owner-check
+      name: api-ns-id-owner-check
+      description: REST surface for api-ns-id-owner-check.
+      operations:
+      - method: GET
+        name: ownercheck
+        description: BrewPage Verify Whether the Supplied X-Owner-Token Owns the Resource
+        call: brewpage-owner-check.ownercheck
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-owner-check-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — Owner Check. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-verify-whether-supplied-x
+      description: BrewPage Verify Whether the Supplied X-Owner-Token Owns the Resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-owner-check.ownercheck
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.

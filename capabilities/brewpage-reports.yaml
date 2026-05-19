@@ -1,0 +1,82 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — Reports
+  description: 'BrewPage API — Reports. 1 operations. Lead operation: BrewPage Submit Abuse Report. Self-contained Naftiko
+    capability covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - Reports
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-reports
+    baseUri: https://brewpage.app
+    description: BrewPage API — Reports business capability. Self-contained, no shared references.
+    resources:
+    - name: api-reports
+      path: /api/reports
+      operations:
+      - name: create
+        method: POST
+        description: BrewPage Submit Abuse Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: User-Agent
+          in: header
+          type: string
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: brewpage-reports-rest
+    port: 8080
+    description: REST adapter for BrewPage API — Reports. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/api/reports
+      name: api-reports
+      description: REST surface for api-reports.
+      operations:
+      - method: POST
+        name: create
+        description: BrewPage Submit Abuse Report
+        call: brewpage-reports.create
+        with:
+          User-Agent: rest.User-Agent
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-reports-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — Reports. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-submit-abuse-report
+      description: BrewPage Submit Abuse Report
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: brewpage-reports.create
+      with:
+        User-Agent: tools.User-Agent
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

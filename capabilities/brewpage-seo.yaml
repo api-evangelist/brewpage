@@ -1,0 +1,108 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — SEO
+  description: 'BrewPage API — SEO. 2 operations. Lead operation: BrewPage Dynamic XML Sitemap. Self-contained Naftiko capability
+    covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - SEO
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-seo
+    baseUri: https://brewpage.app
+    description: BrewPage API — SEO business capability. Self-contained, no shared references.
+    resources:
+    - name: api-sitemap.xml
+      path: /api/sitemap.xml
+      operations:
+      - name: sitemap
+        method: GET
+        description: BrewPage Dynamic XML Sitemap
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: key}.txt
+      path: /{key}.txt
+      operations:
+      - name: servekeyfile
+        method: GET
+        description: BrewPage IndexNow Key Verification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          required: true
+  exposes:
+  - type: rest
+    namespace: brewpage-seo-rest
+    port: 8080
+    description: REST adapter for BrewPage API — SEO. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/api/sitemap-xml
+      name: api-sitemap-xml
+      description: REST surface for api-sitemap.xml.
+      operations:
+      - method: GET
+        name: sitemap
+        description: BrewPage Dynamic XML Sitemap
+        call: brewpage-seo.sitemap
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/key-txt
+      name: key-txt
+      description: REST surface for key}.txt.
+      operations:
+      - method: GET
+        name: servekeyfile
+        description: BrewPage IndexNow Key Verification
+        call: brewpage-seo.servekeyfile
+        with:
+          key: rest.key
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-seo-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — SEO. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-dynamic-xml-sitemap
+      description: BrewPage Dynamic XML Sitemap
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-seo.sitemap
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-indexnow-key-verification
+      description: BrewPage IndexNow Key Verification
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-seo.servekeyfile
+      with:
+        key: tools.key
+      outputParameters:
+      - type: object
+        mapping: $.

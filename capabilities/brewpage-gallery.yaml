@@ -1,0 +1,106 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — Gallery
+  description: 'BrewPage API — Gallery. 1 operations. Lead operation: BrewPage Browse Gallery. Self-contained Naftiko capability
+    covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - Gallery
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-gallery
+    baseUri: https://brewpage.app
+    description: BrewPage API — Gallery business capability. Self-contained, no shared references.
+    resources:
+    - name: api-gallery
+      path: /api/gallery
+      operations:
+      - name: getgallery
+        method: GET
+        description: BrewPage Browse Gallery
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: q
+          in: query
+          type: string
+          description: Case-insensitive search by title or tags
+        - name: page
+          in: query
+          type: integer
+          description: Page number (1-based)
+        - name: size
+          in: query
+          type: integer
+          description: Items per page (max 100)
+        - name: sort
+          in: query
+          type: string
+          description: 'Sort order: ''date'' (newest first, default) or ''views'' (most viewed first)'
+        - name: mine
+          in: query
+          type: boolean
+          description: When true, restrict results to the caller's owner_id (requires X-Owner-Token)
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token; required when mine=true
+  exposes:
+  - type: rest
+    namespace: brewpage-gallery-rest
+    port: 8080
+    description: REST adapter for BrewPage API — Gallery. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/api/gallery
+      name: api-gallery
+      description: REST surface for api-gallery.
+      operations:
+      - method: GET
+        name: getgallery
+        description: BrewPage Browse Gallery
+        call: brewpage-gallery.getgallery
+        with:
+          q: rest.q
+          page: rest.page
+          size: rest.size
+          sort: rest.sort
+          mine: rest.mine
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-gallery-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — Gallery. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-browse-gallery
+      description: BrewPage Browse Gallery
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-gallery.getgallery
+      with:
+        q: tools.q
+        page: tools.page
+        size: tools.size
+        sort: tools.sort
+        mine: tools.mine
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.

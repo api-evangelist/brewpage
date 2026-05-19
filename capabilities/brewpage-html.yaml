@@ -1,0 +1,358 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — HTML
+  description: 'BrewPage API — HTML. 5 operations. Lead operation: BrewPage Create HTML Page. Self-contained Naftiko capability
+    covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - HTML
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-html
+    baseUri: https://brewpage.app
+    description: BrewPage API — HTML business capability. Self-contained, no shared references.
+    resources:
+    - name: api-html
+      path: /api/html
+      operations:
+      - name: create2
+        method: POST
+        description: BrewPage Create HTML Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: query
+          type: string
+          description: 'Namespace. Default: public. Pages in ''public'' without password appear in gallery. Custom namespace
+            is created automatically'
+        - name: tags
+          in: query
+          type: string
+          description: Comma-separated tags
+        - name: ttl
+          in: query
+          type: string
+          description: Time to live in days (1-30, default 15). Page auto-deletes after expiry. Accepts '15', '15d' or '15
+            days'
+        - name: format
+          in: query
+          type: string
+          description: Content format. 'html' (default) — stored verbatim. 'markdown' / 'md' — rendered to styled HTML via
+            github-markdown-css. Code/text languages stored and served r
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password. Empty = public page visible in gallery. With password = hidden from gallery, viewers
+            must enter password or pass ?p= in URL
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Reuse existing owner token to group entities under one owner. If omitted, a new token is generated
+        - name: User-Agent
+          in: header
+          type: string
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: api-html-ns-id
+      path: /api/html/{ns}/{id}
+      operations:
+      - name: getbyid1
+        method: GET
+        description: BrewPage Get HTML Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password via header
+        - name: p
+          in: query
+          type: string
+          description: Access password via query param (alternative to X-Password header)
+        - name: User-Agent
+          in: header
+          type: string
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to bypass password protection when no password supplied
+      - name: update1
+        method: PUT
+        description: BrewPage Update HTML Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for update and delete
+          required: true
+        - name: format
+          in: query
+          type: string
+          description: Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml,
+            json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, jav
+        - name: User-Agent
+          in: header
+          type: string
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: delete1
+        method: DELETE
+        description: BrewPage Delete HTML Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for update and delete
+          required: true
+    - name: api-html-ns-id-source
+      path: /api/html/{ns}/{id}/source
+      operations:
+      - name: getsource
+        method: GET
+        description: BrewPage Get HTML Page Raw Source
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for source access
+  exposes:
+  - type: rest
+    namespace: brewpage-html-rest
+    port: 8080
+    description: REST adapter for BrewPage API — HTML. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/api/html
+      name: api-html
+      description: REST surface for api-html.
+      operations:
+      - method: POST
+        name: create2
+        description: BrewPage Create HTML Page
+        call: brewpage-html.create2
+        with:
+          ns: rest.ns
+          tags: rest.tags
+          ttl: rest.ttl
+          format: rest.format
+          X-Password: rest.X-Password
+          X-Owner-Token: rest.X-Owner-Token
+          User-Agent: rest.User-Agent
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/html/{ns}/{id}
+      name: api-html-ns-id
+      description: REST surface for api-html-ns-id.
+      operations:
+      - method: GET
+        name: getbyid1
+        description: BrewPage Get HTML Page
+        call: brewpage-html.getbyid1
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Password: rest.X-Password
+          p: rest.p
+          User-Agent: rest.User-Agent
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: update1
+        description: BrewPage Update HTML Page
+        call: brewpage-html.update1
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+          format: rest.format
+          User-Agent: rest.User-Agent
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: delete1
+        description: BrewPage Delete HTML Page
+        call: brewpage-html.delete1
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/html/{ns}/{id}/source
+      name: api-html-ns-id-source
+      description: REST surface for api-html-ns-id-source.
+      operations:
+      - method: GET
+        name: getsource
+        description: BrewPage Get HTML Page Raw Source
+        call: brewpage-html.getsource
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-html-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — HTML. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-create-html-page
+      description: BrewPage Create HTML Page
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: brewpage-html.create2
+      with:
+        ns: tools.ns
+        tags: tools.tags
+        ttl: tools.ttl
+        format: tools.format
+        X-Password: tools.X-Password
+        X-Owner-Token: tools.X-Owner-Token
+        User-Agent: tools.User-Agent
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-get-html-page
+      description: BrewPage Get HTML Page
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-html.getbyid1
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Password: tools.X-Password
+        p: tools.p
+        User-Agent: tools.User-Agent
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-update-html-page
+      description: BrewPage Update HTML Page
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: brewpage-html.update1
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+        format: tools.format
+        User-Agent: tools.User-Agent
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-delete-html-page
+      description: BrewPage Delete HTML Page
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: brewpage-html.delete1
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-get-html-page-raw
+      description: BrewPage Get HTML Page Raw Source
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-html.getsource
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.

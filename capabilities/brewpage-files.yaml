@@ -1,0 +1,278 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — Files
+  description: 'BrewPage API — Files. 4 operations. Lead operation: BrewPage List Files. Self-contained Naftiko capability
+    covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - Files
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-files
+    baseUri: https://brewpage.app
+    description: BrewPage API — Files business capability. Self-contained, no shared references.
+    resources:
+    - name: api-files
+      path: /api/files
+      operations:
+      - name: list1
+        method: GET
+        description: BrewPage List Files
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: query
+          type: string
+          description: Namespace
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to filter by ownership. Without token returns empty list
+      - name: upload1
+        method: POST
+        description: BrewPage Upload File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: query
+          type: string
+          description: 'Namespace. Default: public. Pages in ''public'' without password appear in gallery. Custom namespace
+            is created automatically'
+        - name: tags
+          in: query
+          type: string
+          description: Comma-separated tags
+        - name: ttl
+          in: query
+          type: string
+          description: Time to live in days (1-30, default 15). File auto-deletes after expiry. Accepts '15', '15d' or '15
+            days'
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password. Empty = public file visible in gallery. With password = hidden from gallery, viewers
+            must enter password or pass ?p= in URL
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Reuse existing owner token to group entities under one owner. If omitted, a new token is generated
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: api-files-ns-id
+      path: /api/files/{ns}/{id}
+      operations:
+      - name: download
+        method: GET
+        description: BrewPage Download File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Password
+          in: header
+          type: string
+          description: Access password via header
+        - name: p
+          in: query
+          type: string
+          description: Access password via query param (alternative to X-Password header)
+        - name: dl
+          in: query
+          type: boolean
+          description: Force download as attachment
+        - name: Range
+          in: header
+          type: string
+        - name: User-Agent
+          in: header
+          type: string
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token to bypass password protection when no password supplied
+      - name: delete3
+        method: DELETE
+        description: BrewPage Delete File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ns
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: X-Owner-Token
+          in: header
+          type: string
+          description: Owner token returned at creation. Required for update and delete
+          required: true
+  exposes:
+  - type: rest
+    namespace: brewpage-files-rest
+    port: 8080
+    description: REST adapter for BrewPage API — Files. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/api/files
+      name: api-files
+      description: REST surface for api-files.
+      operations:
+      - method: GET
+        name: list1
+        description: BrewPage List Files
+        call: brewpage-files.list1
+        with:
+          ns: rest.ns
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: upload1
+        description: BrewPage Upload File
+        call: brewpage-files.upload1
+        with:
+          ns: rest.ns
+          tags: rest.tags
+          ttl: rest.ttl
+          X-Password: rest.X-Password
+          X-Owner-Token: rest.X-Owner-Token
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/files/{ns}/{id}
+      name: api-files-ns-id
+      description: REST surface for api-files-ns-id.
+      operations:
+      - method: GET
+        name: download
+        description: BrewPage Download File
+        call: brewpage-files.download
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Password: rest.X-Password
+          p: rest.p
+          dl: rest.dl
+          Range: rest.Range
+          User-Agent: rest.User-Agent
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: delete3
+        description: BrewPage Delete File
+        call: brewpage-files.delete3
+        with:
+          ns: rest.ns
+          id: rest.id
+          X-Owner-Token: rest.X-Owner-Token
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-files-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — Files. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-list-files
+      description: BrewPage List Files
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-files.list1
+      with:
+        ns: tools.ns
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-upload-file
+      description: BrewPage Upload File
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: brewpage-files.upload1
+      with:
+        ns: tools.ns
+        tags: tools.tags
+        ttl: tools.ttl
+        X-Password: tools.X-Password
+        X-Owner-Token: tools.X-Owner-Token
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-download-file
+      description: BrewPage Download File
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-files.download
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Password: tools.X-Password
+        p: tools.p
+        dl: tools.dl
+        Range: tools.Range
+        User-Agent: tools.User-Agent
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: brewpage-delete-file
+      description: BrewPage Delete File
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: brewpage-files.delete3
+      with:
+        ns: tools.ns
+        id: tools.id
+        X-Owner-Token: tools.X-Owner-Token
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,76 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BrewPage API — Stats
+  description: 'BrewPage API — Stats. 1 operations. Lead operation: BrewPage Get Platform Stats. Self-contained Naftiko capability
+    covering one Brewpage business surface.'
+  tags:
+  - Brewpage
+  - Stats
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BREWPAGE_API_KEY: BREWPAGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: brewpage-stats
+    baseUri: https://brewpage.app
+    description: BrewPage API — Stats business capability. Self-contained, no shared references.
+    resources:
+    - name: api-stats
+      path: /api/stats
+      operations:
+      - name: getstats
+        method: GET
+        description: BrewPage Get Platform Stats
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tz
+          in: query
+          type: string
+          description: 'IANA timezone id for the ''today'' boundary. Defaults to UTC. Example: Europe/Lisbon'
+  exposes:
+  - type: rest
+    namespace: brewpage-stats-rest
+    port: 8080
+    description: REST adapter for BrewPage API — Stats. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/api/stats
+      name: api-stats
+      description: REST surface for api-stats.
+      operations:
+      - method: GET
+        name: getstats
+        description: BrewPage Get Platform Stats
+        call: brewpage-stats.getstats
+        with:
+          tz: rest.tz
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: brewpage-stats-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BrewPage API — Stats. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: brewpage-get-platform-stats
+      description: BrewPage Get Platform Stats
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: brewpage-stats.getstats
+      with:
+        tz: tools.tz
+      outputParameters:
+      - type: object
+        mapping: $.
