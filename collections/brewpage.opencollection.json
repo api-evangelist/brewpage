@@ -1,0 +1,1393 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "KV",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Get Key Value",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/kv/:ns/:id/:key",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param (alternative to X-Password header)"
+              }
+            ]
+          },
+          "docs": "Returns the value and last update timestamp for a specific key"
+        },
+        {
+          "info": {
+            "name": "BrewPage Upsert Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://brewpage.app/api/kv/:ns/:id/:key",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a key in the store; max 1000 keys per store"
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/kv/:ns/:id/:key",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a single key from the store; deleting the last key does not remove the store"
+        },
+        {
+          "info": {
+            "name": "BrewPage List KV Stores",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/kv",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace"
+              }
+            ]
+          },
+          "docs": "Returns all KV stores owned by the given token in the namespace. Returns empty list without token"
+        },
+        {
+          "info": {
+            "name": "BrewPage Create KV Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/kv",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+              },
+              {
+                "name": "tags",
+                "value": "demo,test",
+                "type": "query",
+                "description": "Comma-separated tags"
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "Time to live in days (1-30, default 15). Store auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new store with an initial key-value pair and returns a shareable link. Reuse existing owner token to group entities under one owner"
+        },
+        {
+          "info": {
+            "name": "BrewPage List Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/kv/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param (alternative to X-Password header)"
+              }
+            ]
+          },
+          "docs": "Returns all key names and total count for a store"
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete Entire KV Bucket (all Keys Under Ns/id)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/kv/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently removes all keys in the store; requires the owner token returned at creation"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "JSON",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Get JSON Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/json/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param (alternative to X-Password header)"
+              }
+            ]
+          },
+          "docs": "Returns raw JSON content with application/json content type"
+        },
+        {
+          "info": {
+            "name": "BrewPage Update JSON Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://brewpage.app/api/json/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces document content; requires the owner token returned at creation"
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete JSON Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/json/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently removes the document"
+        },
+        {
+          "info": {
+            "name": "BrewPage List JSON Documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/json",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace"
+              }
+            ]
+          },
+          "docs": "Returns documents owned by the given token. Empty list without token"
+        },
+        {
+          "info": {
+            "name": "BrewPage Create JSON Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/json",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+              },
+              {
+                "name": "tags",
+                "value": "demo,test",
+                "type": "query",
+                "description": "Comma-separated tags"
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "Time to live in days (1-30, default 15). Document auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Stores any valid JSON and returns a shareable link. Reuse existing owner token to group entities under one owner"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "HTML",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Get HTML Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/html/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param (alternative to X-Password header)"
+              }
+            ]
+          },
+          "docs": "Returns rendered HTML content; password-protected pages require X-Password header or ?p= query param"
+        },
+        {
+          "info": {
+            "name": "BrewPage Update HTML Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://brewpage.app/api/html/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt). When omitted, the row's stored format is preserved. Body field 'format' on HtmlUpdateRequest takes precedence over the query param when both are present."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces page content; requires the owner token returned at creation. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code) bodies — see /llms-full.txt."
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete HTML Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/html/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently removes page and frees the short URL"
+        },
+        {
+          "info": {
+            "name": "BrewPage Create HTML Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/html",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+              },
+              {
+                "name": "tags",
+                "value": "demo,test",
+                "type": "query",
+                "description": "Comma-separated tags"
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "Time to live in days (1-30, default 15). Page auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Content format. 'html' (default) — stored verbatim. 'markdown' / 'md' — rendered to styled HTML via github-markdown-css. Code/text languages stored and served raw with format-specific MIME (text/csv, application/json, text/xml, text/plain) plus X-Content-Type-Options: nosniff: yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Stores HTML or markdown content and returns a shareable link. Reuse existing owner token to group entities under one owner. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code) and application/octet-stream bodies — see /llms-full.txt."
+        },
+        {
+          "info": {
+            "name": "BrewPage Get HTML Page Raw Source",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/html/:ns/:id/source",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the raw user-submitted content (pre-render, pre-sanitize) plus metadata for republish. Owner-only — requires the owner token returned at creation."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sites",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Upload Site",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/sites",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "files",
+                "value": "",
+                "type": "query",
+                "description": "Individual files (alternative to archive)"
+              },
+              {
+                "name": "paths",
+                "value": "",
+                "type": "query",
+                "description": "Relative paths for each file (must match files order)"
+              },
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace. Default: public"
+              },
+              {
+                "name": "tags",
+                "value": "demo,portfolio",
+                "type": "query",
+                "description": "Comma-separated tags"
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "Time to live in days (1-30, default 15). Site auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+              },
+              {
+                "name": "entry",
+                "value": "",
+                "type": "query",
+                "description": "Entry file path override (default: auto-detect index.html)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload a multi-file HTML site as a ZIP archive or as individual files with paths. Returns a link to the published site"
+        },
+        {
+          "info": {
+            "name": "BrewPage Get Site Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/sites/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns site metadata and file list. Requires owner token"
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete Site",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/sites/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently removes the site and all its files from storage"
+        },
+        {
+          "info": {
+            "name": "BrewPage Serve Site File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/sites/:ns/:id/files/**",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param"
+              }
+            ]
+          },
+          "docs": "Serves an individual file from the site with correct content type"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Submit Abuse Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/reports",
+            "headers": [
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Records a public report about a resource hosted on brewpage.app for moderator review"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage List Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/files",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace"
+              }
+            ]
+          },
+          "docs": "Returns files owned by the given token. Empty list without token"
+        },
+        {
+          "info": {
+            "name": "BrewPage Upload File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/files",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+              },
+              {
+                "name": "tags",
+                "value": "demo,test",
+                "type": "query",
+                "description": "Comma-separated tags"
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "Time to live in days (1-30, default 15). File auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Stores a file via multipart upload and returns a download link. Only safe file types accepted. Reuse existing owner token to group entities under one owner"
+        },
+        {
+          "info": {
+            "name": "BrewPage Download File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/files/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "Range",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param (alternative to X-Password header)"
+              },
+              {
+                "name": "dl",
+                "value": "",
+                "type": "query",
+                "description": "Force download as attachment"
+              }
+            ]
+          },
+          "docs": "Returns file inline for previewable types (images, PDF, media) or as attachment. Add ?dl=1 to force download."
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete File",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/files/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently removes the file from storage"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Short Links",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "resolve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "Range",
+                "value": ""
+              },
+              {
+                "name": "X-Resolve",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password (query alternative to X-Password header)"
+              },
+              {
+                "name": "dl",
+                "value": "",
+                "type": "query",
+                "description": "Force download as attachment"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "resolveWithSub",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/:ns/:id/:sub",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Resolve",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "sub",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password (query alternative to X-Password header)"
+              },
+              {
+                "name": "dl",
+                "value": "",
+                "type": "query",
+                "description": "Force download as attachment"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SEO",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage IndexNow Key Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/:key.txt",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Serves the IndexNow verification key file for search engine crawlers"
+        },
+        {
+          "info": {
+            "name": "BrewPage Dynamic XML Sitemap",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/sitemap.xml"
+          },
+          "docs": "Generates sitemap with static pages and all public gallery entries. Caddy should route /sitemap.xml to this endpoint"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "preview",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Per-content OG Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/preview/:ns/:id.png",
+            "headers": [
+              {
+                "name": "If-None-Match",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns 1200×630 PNG, cached, with ETag/If-None-Match support; falls back to /og-image.png?v=2 on any failure"
+        },
+        {
+          "info": {
+            "name": "BrewPage OpenGraph HTML Stub",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/preview-html/:ns/:id",
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Tiny HTML response with og:title/og:description/og:image meta tags for social-bot unfurls"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Owner Check",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Verify Whether the Supplied X-Owner-Token Owns the Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/:ns/:id/owner-check",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns `{isOwner, type}`. Constant-time BCrypt match. 404 when the resource does not exist (or has expired). 200 with `isOwner:false` when the X-Owner-Token header is absent."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Stats",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Get Platform Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/stats",
+            "params": [
+              {
+                "name": "tz",
+                "value": "",
+                "type": "query",
+                "description": "IANA timezone id for the 'today' boundary. Defaults to UTC. Example: Europe/Lisbon"
+              }
+            ]
+          },
+          "docs": "Returns today's and all-time creation/view counts with per-type breakdown. Optional 'tz' query param (IANA id) controls the boundary of 'today'; defaults to UTC."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Namespace",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Suggest a Random Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/namespace/random"
+          },
+          "docs": "Returns a fresh `<word>-<word>-NN` namespace from the EFF Short Wordlist that does not collide with any existing resource. Pure read; no resource is allocated."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Gallery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Browse Gallery",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/gallery",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive search by title or tags"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "size",
+                "value": "20",
+                "type": "query",
+                "description": "Items per page (max 100)"
+              },
+              {
+                "name": "sort",
+                "value": "date",
+                "type": "query",
+                "description": "Sort order: 'date' (newest first, default) or 'views' (most viewed first)"
+              },
+              {
+                "name": "mine",
+                "value": "",
+                "type": "query",
+                "description": "When true, restrict results to the caller's owner_id (requires X-Owner-Token)"
+              }
+            ]
+          },
+          "docs": "Lists public pages (public namespace, no password) with optional case-insensitive search by title/tags. When `mine=true` and `X-Owner-Token` is supplied, results are restricted to the caller's own public publications."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
