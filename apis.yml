@@ -2,7 +2,7 @@ aid: brewpage
 url: https://raw.githubusercontent.com/api-evangelist/brewpage/refs/heads/main/apis.yml
 name: BrewPage
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 description: >-
   BrewPage is a free, no-registration instant hosting service for HTML pages, Markdown documents, AI-agent artifacts,
   files, and multi-file static sites. It also offers a namespaced key-value store and a JSON document store. The REST
@@ -31,7 +31,7 @@ apis:
       - AI Artifacts
       - File Hosting
       - Developer Tools
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://brewpage.app
     humanURL: https://brewpage.app/api
     description: >-
