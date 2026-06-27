@@ -61,15 +61,15 @@ apis:
         url: json-structure/brewpage-html-page-structure.json
       - type: JSONStructure
         url: json-structure/brewpage-kv-store-structure.json
-      - type: Example
+      - type: Examples
         url: examples/brewpage-create-html-example.json
-      - type: Example
+      - type: Examples
         url: examples/brewpage-create-markdown-example.json
-      - type: Example
+      - type: Examples
         url: examples/brewpage-upload-file-example.json
-      - type: Example
+      - type: Examples
         url: examples/brewpage-upload-site-example.json
-      - type: Example
+      - type: Examples
         url: examples/brewpage-upsert-kv-example.json
 common:
   - type: Documentation
@@ -80,11 +80,11 @@ common:
     url: https://brewpage.app/
   - type: GettingStarted
     url: https://brewpage.app/llms.txt
-  - type: Quickstart
+  - type: GettingStarted
     url: https://brewpage.app/llms.txt
   - type: Authentication
     url: https://brewpage.app/llms-full.txt
-  - type: SDK
+  - type: SDKs
     url: https://www.npmjs.com/package/brewpage-mcp
   - type: Plans
     url: plans/brewpage-plans-pricing.yml
