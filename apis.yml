@@ -72,6 +72,8 @@ apis:
       - type: Examples
         url: examples/brewpage-upsert-kv-example.json
 common:
+  - type: DomainSecurity
+    url: security/brewpage-domain-security.yml
   - type: Documentation
     url: https://brewpage.app/api
   - type: APIReference
