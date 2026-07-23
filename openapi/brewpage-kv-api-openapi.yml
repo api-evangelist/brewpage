@@ -1,0 +1,477 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files KV API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: KV
+  description: Key-Value store with up to 1000 keys per namespace
+paths:
+  /api/kv/{ns}/{id}/{key}:
+    get:
+      tags:
+      - KV
+      summary: BrewPage Get Key Value
+      description: Returns the value and last update timestamp for a specific key
+      operationId: getKey
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Key value
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvGetResponse'
+        '403':
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvGetResponse'
+        '404':
+          description: Store or key not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvGetResponse'
+    put:
+      tags:
+      - KV
+      summary: BrewPage Upsert Key
+      description: Creates or updates a key in the store; max 1000 keys per store
+      operationId: upsertKey
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KvUpsertKeyRequest'
+        required: true
+      responses:
+        '200':
+          description: Key upserted
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvUpsertKeyResponse'
+        '403':
+          description: Missing or wrong owner token
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvUpsertKeyResponse'
+        '404':
+          description: Store not found or expired
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvUpsertKeyResponse'
+        '409':
+          description: Key limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvUpsertKeyResponse'
+    delete:
+      tags:
+      - KV
+      summary: BrewPage Delete Key
+      description: Removes a single key from the store; deleting the last key does not remove the store
+      operationId: deleteKey
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Key deleted
+        '403':
+          description: Missing or wrong owner token
+        '404':
+          description: Store or key not found
+  /api/kv:
+    get:
+      tags:
+      - KV
+      summary: BrewPage List KV Stores
+      description: Returns all KV stores owned by the given token in the namespace. Returns empty list without token
+      operationId: listStores
+      parameters:
+      - name: ns
+        in: query
+        description: Namespace
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to filter by ownership. Without token returns empty list
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Store list
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KvStoreListResponse'
+    post:
+      tags:
+      - KV
+      summary: BrewPage Create KV Store
+      description: Creates a new store with an initial key-value pair and returns a shareable link. Reuse existing owner token to group entities under one owner
+      operationId: createStore
+      parameters:
+      - name: ns
+        in: query
+        description: 'Namespace. Default: public. Pages in ''public'' without password appear in gallery. Custom namespace is created automatically'
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: demo,test
+      - name: ttl
+        in: query
+        description: Time to live in days (1-30, default 15). Store auto-deletes after expiry. Accepts '15', '15d' or '15 days'
+        required: false
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password. Empty = public store visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Reuse existing owner token to group entities under one owner. If omitted, a new token is generated
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KvCreateStoreRequest'
+        required: true
+      responses:
+        '201':
+          description: Store created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvCreateStoreResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvCreateStoreResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvCreateStoreResponse'
+  /api/kv/{ns}/{id}:
+    get:
+      tags:
+      - KV
+      summary: BrewPage List Keys
+      description: Returns all key names and total count for a store
+      operationId: listKeys
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Key list
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvListKeysResponse'
+        '403':
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvListKeysResponse'
+        '404':
+          description: Store not found or expired
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/KvListKeysResponse'
+    delete:
+      tags:
+      - KV
+      summary: BrewPage Delete Entire KV Bucket (all Keys Under Ns/id)
+      description: Permanently removes all keys in the store; requires the owner token returned at creation
+      operationId: deleteBucket
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Bucket deleted
+        '403':
+          description: Missing or wrong owner token
+        '404':
+          description: Store not found or expired
+components:
+  schemas:
+    KvCreateStoreResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric store ID
+        namespace:
+          type: string
+        key:
+          type: string
+        sizeBytes:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for the initial key
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (upsert/delete)
+        expiresAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for upsert and delete operations. Store it safely -- cannot be recovered
+    KvCreateStoreRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Initial key name
+        value:
+          type: string
+          description: Value for the initial key (max 1 MB)
+    KvUpsertKeyRequest:
+      type: object
+      properties:
+        value:
+          type: string
+          description: New value for the key (max 1 MB)
+    KvGetResponse:
+      type: object
+      properties:
+        value:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the value was last written or updated
+        expiresAt:
+          type: string
+          format: date-time
+          description: When the value expires
+        views:
+          type: integer
+          format: int64
+          description: Total number of reads for this key (post-increment)
+    KvStoreListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric store ID
+        keyCount:
+          type: integer
+          format: int32
+          description: Number of keys in the store
+        createdAt:
+          type: string
+          format: date-time
+          description: When the first key in the store was created
+    KvListKeysResponse:
+      type: object
+      properties:
+        keys:
+          type: array
+          description: All key names in the store
+          items:
+            type: string
+        count:
+          type: integer
+          format: int32
+          description: Total number of keys
+        expiresAt:
+          type: string
+          format: date-time
+          description: When the store expires
+        views:
+          type: integer
+          format: int64
+          description: Aggregated views across all keys in this store
+    KvUpsertKeyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        key:
+          type: string
+        sizeBytes:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for this key
+        ownerLink:
+          type: string
+          description: API URL for programmatic access

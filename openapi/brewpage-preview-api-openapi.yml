@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files preview API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: preview
+  description: OpenGraph metadata for social bots
+paths:
+  /preview/{ns}/{id}.png:
+    get:
+      tags:
+      - preview
+      summary: BrewPage Per-content OG Image
+      description: Returns 1200×630 PNG, cached, with ETag/If-None-Match support; falls back to /og-image.png?v=2 on any failure
+      operationId: preview
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: If-None-Match
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: PNG image bytes
+          content:
+            image/png:
+              schema:
+                type: object
+        '302':
+          description: Fallback to static og-image.png (flag off, no source, generation error, oversized)
+          content:
+            image/png:
+              schema:
+                type: object
+        '304':
+          description: Not modified (If-None-Match matched current ETag)
+          content:
+            image/png:
+              schema:
+                type: object
+        '429':
+          description: Per-IP rate limit exceeded
+          content:
+            image/png:
+              schema:
+                type: object
+  /preview-html/{ns}/{id}:
+    get:
+      tags:
+      - preview
+      summary: BrewPage OpenGraph HTML Stub
+      description: Tiny HTML response with og:title/og:description/og:image meta tags for social-bot unfurls
+      operationId: previewHtml
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: HTML stub with OG meta (or generic stub when resource is missing)
+          content:
+            text/html:
+              schema:
+                type: string

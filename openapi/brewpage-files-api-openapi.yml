@@ -1,0 +1,278 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: Files
+  description: File hosting up to 5 MB per file, 1000 files per namespace
+paths:
+  /api/files:
+    get:
+      tags:
+      - Files
+      summary: BrewPage List Files
+      description: Returns files owned by the given token. Empty list without token
+      operationId: list_1
+      parameters:
+      - name: ns
+        in: query
+        description: Namespace
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to filter by ownership. Without token returns empty list
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: File list
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileListResponse'
+    post:
+      tags:
+      - Files
+      summary: BrewPage Upload File
+      description: Stores a file via multipart upload and returns a download link. Only safe file types accepted. Reuse existing owner token to group entities under one owner
+      operationId: upload_1
+      parameters:
+      - name: ns
+        in: query
+        description: 'Namespace. Default: public. Pages in ''public'' without password appear in gallery. Custom namespace is created automatically'
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: demo,test
+      - name: ttl
+        in: query
+        description: Time to live in days (1-30, default 15). File auto-deletes after expiry. Accepts '15', '15d' or '15 days'
+        required: false
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password. Empty = public file visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Reuse existing owner token to group entities under one owner. If omitted, a new token is generated
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+              - file
+      responses:
+        '201':
+          description: File uploaded
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FileUploadResponse'
+        '400':
+          description: Invalid request or file too large
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FileUploadResponse'
+        '415':
+          description: Unsupported file type
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FileUploadResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FileUploadResponse'
+  /api/files/{ns}/{id}:
+    get:
+      tags:
+      - Files
+      summary: BrewPage Download File
+      description: Returns file inline for previewable types (images, PDF, media) or as attachment. Add ?dl=1 to force download.
+      operationId: download
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: dl
+        in: query
+        description: Force download as attachment
+        required: false
+        schema:
+          type: boolean
+      - name: Range
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: File content
+          content:
+            '*/*':
+              schema:
+                type: object
+        '403':
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                type: object
+        '404':
+          description: File not found or expired
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Files
+      summary: BrewPage Delete File
+      description: Permanently removes the file from storage
+      operationId: delete_3
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: File deleted
+        '403':
+          description: Missing or wrong owner token
+        '404':
+          description: File not found or expired
+components:
+  schemas:
+    FileListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric file ID
+        filename:
+          type: string
+          description: Original filename as uploaded
+        contentType:
+          type: string
+          description: Detected MIME type (e.g. image/png)
+        size:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for browser download
+        createdAt:
+          type: string
+          format: date-time
+    FileUploadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric file ID
+        namespace:
+          type: string
+        filename:
+          type: string
+          description: Original filename as uploaded
+        contentType:
+          type: string
+          description: Detected MIME type (e.g. image/png)
+        sizeBytes:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for browser download
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (delete)
+        expiresAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for delete operation. Store it safely -- cannot be recovered

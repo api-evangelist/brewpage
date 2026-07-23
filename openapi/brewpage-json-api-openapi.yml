@@ -1,0 +1,314 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files JSON API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: JSON
+  description: JSON document store with up to 10,000 docs per collection
+paths:
+  /api/json/{ns}/{id}:
+    get:
+      tags:
+      - JSON
+      summary: BrewPage Get JSON Document
+      description: Returns raw JSON content with application/json content type
+      operationId: getById
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: JSON content
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Document not found or expired
+          content:
+            '*/*':
+              schema:
+                type: string
+    put:
+      tags:
+      - JSON
+      summary: BrewPage Update JSON Document
+      description: Replaces document content; requires the owner token returned at creation
+      operationId: update
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: Document updated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JsonUpdateResponse'
+        '403':
+          description: Missing or wrong owner token
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JsonUpdateResponse'
+        '404':
+          description: Document not found or expired
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JsonUpdateResponse'
+    delete:
+      tags:
+      - JSON
+      summary: BrewPage Delete JSON Document
+      description: Permanently removes the document
+      operationId: delete
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Document deleted
+        '403':
+          description: Missing or wrong owner token
+        '404':
+          description: Document not found or expired
+  /api/json:
+    get:
+      tags:
+      - JSON
+      summary: BrewPage List JSON Documents
+      description: Returns documents owned by the given token. Empty list without token
+      operationId: list
+      parameters:
+      - name: ns
+        in: query
+        description: Namespace
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to filter by ownership. Without token returns empty list
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Document list
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JsonListResponse'
+    post:
+      tags:
+      - JSON
+      summary: BrewPage Create JSON Document
+      description: Stores any valid JSON and returns a shareable link. Reuse existing owner token to group entities under one owner
+      operationId: create_1
+      parameters:
+      - name: ns
+        in: query
+        description: 'Namespace. Default: public. Pages in ''public'' without password appear in gallery. Custom namespace is created automatically'
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: demo,test
+      - name: ttl
+        in: query
+        description: Time to live in days (1-30, default 15). Document auto-deletes after expiry. Accepts '15', '15d' or '15 days'
+        required: false
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password. Empty = public document visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Reuse existing owner token to group entities under one owner. If omitted, a new token is generated
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '201':
+          description: Document created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JsonCreateResponse'
+        '400':
+          description: Invalid JSON or request parameters
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JsonCreateResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JsonCreateResponse'
+components:
+  schemas:
+    JsonListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric document ID
+        content:
+          type: string
+        size:
+          type: integer
+          format: int64
+        createdAt:
+          type: string
+          format: date-time
+    JsonUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access
+        sizeBytes:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+    JsonCreateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric document ID
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (update/delete)
+        sizeBytes:
+          type: integer
+          format: int64
+        expiresAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for update and delete operations. Store it safely -- cannot be recovered

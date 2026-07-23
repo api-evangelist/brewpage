@@ -1,0 +1,169 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files Stats API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: Stats
+  description: Platform-wide usage statistics
+paths:
+  /api/stats:
+    get:
+      tags:
+      - Stats
+      summary: BrewPage Get Platform Stats
+      description: Returns today's and all-time creation/view counts with per-type breakdown. Optional 'tz' query param (IANA id) controls the boundary of 'today'; defaults to UTC.
+      operationId: getStats
+      parameters:
+      - name: tz
+        in: query
+        description: 'IANA timezone id for the ''today'' boundary. Defaults to UTC. Example: Europe/Lisbon'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Platform statistics
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+components:
+  schemas:
+    StatsResponse:
+      type: object
+      properties:
+        createdToday:
+          type: integer
+          format: int64
+          description: Resources created in the last 24 hours
+        totalCreated:
+          type: integer
+          format: int64
+          description: All-time resource count
+        viewsToday:
+          type: integer
+          format: int64
+          description: Views in the last 24 hours
+        totalViews:
+          type: integer
+          format: int64
+          description: All-time view count
+        breakdown:
+          type: array
+          description: Per-type breakdown (html, json, kv, file, site)
+          items:
+            $ref: '#/components/schemas/TypeBreakdown'
+        createdTodayPublic:
+          type: integer
+          format: int64
+          description: Resources created today in the public namespace
+        createdTodayPrivate:
+          type: integer
+          format: int64
+          description: Resources created today in private namespaces
+        viewsTodayPublic:
+          type: integer
+          format: int64
+          description: Views today on resources in the public namespace
+        viewsTodayPrivate:
+          type: integer
+          format: int64
+          description: Views today on resources in private namespaces
+        totalCreatedPublic:
+          type: integer
+          format: int64
+          description: All-time resources created in the public namespace
+        totalCreatedPrivate:
+          type: integer
+          format: int64
+          description: All-time resources created in private namespaces
+        totalViewsPublic:
+          type: integer
+          format: int64
+          description: All-time views on resources in the public namespace
+        totalViewsPrivate:
+          type: integer
+          format: int64
+          description: All-time views on resources in private namespaces
+        deletedToday:
+          type: integer
+          format: int64
+          description: Resources deleted in the last 24 hours
+        deletedTodayPublic:
+          type: integer
+          format: int64
+          description: Resources deleted today in the public namespace
+        deletedTodayPrivate:
+          type: integer
+          format: int64
+          description: Resources deleted today in private namespaces
+        totalDeleted:
+          type: integer
+          format: int64
+          description: All-time deleted resource count
+        totalDeletedPublic:
+          type: integer
+          format: int64
+          description: All-time deleted resources in the public namespace
+        totalDeletedPrivate:
+          type: integer
+          format: int64
+          description: All-time deleted resources in private namespaces
+    TypeBreakdown:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'Resource type: html, json, kv, file, or site'
+        today:
+          type: integer
+          format: int64
+          description: Created in the last 24 hours
+        total:
+          type: integer
+          format: int64
+          description: All-time count
+        todayPublic:
+          type: integer
+          format: int64
+          description: Created today in the public namespace
+        todayPrivate:
+          type: integer
+          format: int64
+          description: Created today in private namespaces
+        totalPublic:
+          type: integer
+          format: int64
+          description: All-time count in the public namespace
+        totalPrivate:
+          type: integer
+          format: int64
+          description: All-time count in private namespaces
+        todayDeleted:
+          type: integer
+          format: int64
+          description: Deleted in the last 24 hours
+        todayDeletedPublic:
+          type: integer
+          format: int64
+          description: Deleted today in the public namespace
+        todayDeletedPrivate:
+          type: integer
+          format: int64
+          description: Deleted today in private namespaces
+        totalDeleted:
+          type: integer
+          format: int64
+          description: All-time deleted count
+        totalDeletedPublic:
+          type: integer
+          format: int64
+          description: All-time deleted in the public namespace
+        totalDeletedPrivate:
+          type: integer
+          format: int64
+          description: All-time deleted in private namespaces

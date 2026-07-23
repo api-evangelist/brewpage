@@ -1,0 +1,337 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files Sites API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: Sites
+  description: Multi-file HTML site hosting via ZIP or folder upload
+paths:
+  /api/sites:
+    post:
+      tags:
+      - Sites
+      summary: BrewPage Upload Site
+      description: Upload a multi-file HTML site as a ZIP archive or as individual files with paths. Returns a link to the published site
+      operationId: upload
+      parameters:
+      - name: files
+        in: query
+        description: Individual files (alternative to archive)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            format: binary
+      - name: paths
+        in: query
+        description: Relative paths for each file (must match files order)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: ns
+        in: query
+        description: 'Namespace. Default: public'
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: demo,portfolio
+      - name: ttl
+        in: query
+        description: Time to live in days (1-30, default 15). Site auto-deletes after expiry. Accepts '15', '15d' or '15 days'
+        required: false
+        schema:
+          type: string
+      - name: entry
+        in: query
+        description: 'Entry file path override (default: auto-detect index.html)'
+        required: false
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Reuse existing owner token to group entities under one owner
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                archive:
+                  type: string
+                  format: binary
+                  description: ZIP archive containing site files
+      responses:
+        '201':
+          description: Site uploaded
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SiteUploadResponse'
+        '400':
+          description: Invalid request, no HTML files, or limits exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SiteUploadResponse'
+        '415':
+          description: Unsupported file type in archive
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SiteUploadResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SiteUploadResponse'
+  /api/sites/{ns}/{id}:
+    get:
+      tags:
+      - Sites
+      summary: BrewPage Get Site Info
+      description: Returns site metadata and file list. Requires owner token
+      operationId: info
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Site info
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SiteInfoResponse'
+        '403':
+          description: Missing or wrong owner token
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SiteInfoResponse'
+        '404':
+          description: Site not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SiteInfoResponse'
+    delete:
+      tags:
+      - Sites
+      summary: BrewPage Delete Site
+      description: Permanently removes the site and all its files from storage
+      operationId: delete_2
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Site deleted
+        '403':
+          description: Missing or wrong owner token
+        '404':
+          description: Site not found
+  /api/sites/{ns}/{id}/files/**:
+    get:
+      tags:
+      - Sites
+      summary: BrewPage Serve Site File
+      description: Serves an individual file from the site with correct content type
+      operationId: serveFile
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: File content
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+        '403':
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+        '404':
+          description: Site or file not found
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+components:
+  schemas:
+    SiteUploadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric site ID
+        namespace:
+          type: string
+        entryFile:
+          type: string
+          description: Entry HTML file resolved from the upload (e.g. index.html)
+        link:
+          type: string
+          description: Public URL to view the site
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (info, delete)
+        fileCount:
+          type: integer
+          format: int32
+        totalSizeBytes:
+          type: integer
+          format: int64
+        expiresAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for info and delete operations. Store it safely -- cannot be recovered
+    SiteInfoResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric site ID
+        namespace:
+          type: string
+        entryFile:
+          type: string
+          description: Entry HTML file resolved from the upload
+        fileCount:
+          type: integer
+          format: int32
+        totalSizeBytes:
+          type: integer
+          format: int64
+        files:
+          type: array
+          description: List of all files in the site
+          items:
+            $ref: '#/components/schemas/SiteFileInfo'
+        createdAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        views:
+          type: integer
+          format: int64
+        tags:
+          type: array
+          items:
+            type: string
+    SiteFileInfo:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Relative file path within the site
+        contentType:
+          type: string
+          description: Detected MIME type
+        sizeBytes:
+          type: integer
+          format: int64

@@ -1,0 +1,86 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files Reports API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: Reports
+  description: Abuse reports for hosted content
+paths:
+  /api/reports:
+    post:
+      tags:
+      - Reports
+      summary: BrewPage Submit Abuse Report
+      description: Records a public report about a resource hosted on brewpage.app for moderator review
+      operationId: create
+      parameters:
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+        required: true
+      responses:
+        '201':
+          description: Report accepted
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+components:
+  schemas:
+    ReportResponse:
+      type: object
+      properties:
+        reportId:
+          type: string
+          description: Unique 10-character alphanumeric report ID
+        receivedAt:
+          type: string
+          format: date-time
+          description: Server timestamp when the report was accepted
+    ReportRequest:
+      type: object
+      properties:
+        reportedUrl:
+          type: string
+          description: Full URL of the reported resource on brewpage.app or brewdata.app
+        category:
+          type: string
+          description: Abuse category
+          enum:
+          - cannot_delete
+          - spam
+          - phishing
+          - malware
+          - copyright
+          - harassment
+          - illegal
+          - other
+        description:
+          type: string
+          description: Reporter description (10..5000 chars)
+        reporterEmail:
+          type: string
+          description: Optional reporter email for follow-up
+        resourceNamespace:
+          type: string
+          description: Optional namespace of the reported resource (e.g. 'public'). When supplied with resourceId takes priority over URL parsing.
+        resourceId:
+          type: string
+          description: Optional 10-character short ID of the reported resource. When supplied with resourceNamespace takes priority over URL parsing.

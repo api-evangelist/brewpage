@@ -1,0 +1,121 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files Gallery API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: Gallery
+  description: Browse public content from the 'public' namespace without password protection
+paths:
+  /api/gallery:
+    get:
+      tags:
+      - Gallery
+      summary: BrewPage Browse Gallery
+      description: Lists public pages (public namespace, no password) with optional case-insensitive search by title/tags. When `mine=true` and `X-Owner-Token` is supplied, results are restricted to the caller's own public publications.
+      operationId: getGallery
+      parameters:
+      - name: q
+        in: query
+        description: Case-insensitive search by title or tags
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page number (1-based)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+        example: 1
+      - name: size
+        in: query
+        description: Items per page (max 100)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+        example: 20
+      - name: sort
+        in: query
+        description: 'Sort order: ''date'' (newest first, default) or ''views'' (most viewed first)'
+        required: false
+        schema:
+          type: string
+          default: date
+        example: date
+      - name: mine
+        in: query
+        description: When true, restrict results to the caller's owner_id (requires X-Owner-Token)
+        required: false
+        schema:
+          type: boolean
+      - name: X-Owner-Token
+        in: header
+        description: Owner token; required when mine=true
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Paginated gallery items
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GalleryResponse'
+components:
+  schemas:
+    GalleryItem:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          description: 'Resource type: html, json, kv, or file'
+        title:
+          type: string
+          description: Display title derived from content or filename
+        createdAt:
+          type: string
+          format: date-time
+        views:
+          type: integer
+          format: int64
+          description: Total view count
+        visibility:
+          type: string
+          description: Per-item visibility classification — public on default responses; my_public/my_public_password/my_private on mine=true
+          enum:
+          - public
+          - my_public
+          - my_public_password
+          - my_private
+        namespace:
+          type: string
+          description: Namespace the item lives in — 'public' on default responses; mine=true returns the real namespace (e.g. 'public', 'secret-ns') so the frontend can build correct /{ns}/{id} links
+    GalleryResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GalleryItem'
+        total:
+          type: integer
+          format: int64
+          description: Total number of matching items across all pages
+        page:
+          type: integer
+          format: int32
+          description: Current page number (1-based)
+        size:
+          type: integer
+          format: int32
+          description: Items per page

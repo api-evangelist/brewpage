@@ -1,0 +1,361 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files HTML API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: HTML
+  description: HTML page hosting with markdown support
+paths:
+  /api/html/{ns}/{id}:
+    get:
+      tags:
+      - HTML
+      summary: BrewPage Get HTML Page
+      description: Returns rendered HTML content; password-protected pages require X-Password header or ?p= query param
+      operationId: getById_1
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password via header
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password via query param (alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to bypass password protection when no password supplied
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: HTML content
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Wrong password
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Page not found or expired
+          content:
+            '*/*':
+              schema:
+                type: string
+    put:
+      tags:
+      - HTML
+      summary: BrewPage Update HTML Page
+      description: Replaces page content; requires the owner token returned at creation. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code) bodies — see /llms-full.txt.
+      operationId: update_1
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt). When omitted, the row's stored format is preserved. Body field 'format' on HtmlUpdateRequest takes precedence over the query param when both are present.
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HtmlUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: Page updated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HtmlUpdateResponse'
+        '403':
+          description: Missing or wrong owner token
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HtmlUpdateResponse'
+        '404':
+          description: Page not found or expired
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HtmlUpdateResponse'
+    delete:
+      tags:
+      - HTML
+      summary: BrewPage Delete HTML Page
+      description: Permanently removes page and frees the short URL
+      operationId: delete_1
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for update and delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Page deleted
+        '403':
+          description: Missing or wrong owner token
+        '404':
+          description: Page not found or expired
+  /api/html:
+    post:
+      tags:
+      - HTML
+      summary: BrewPage Create HTML Page
+      description: Stores HTML or markdown content and returns a shareable link. Reuse existing owner token to group entities under one owner. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code) and application/octet-stream bodies — see /llms-full.txt.
+      operationId: create_2
+      parameters:
+      - name: ns
+        in: query
+        description: 'Namespace. Default: public. Pages in ''public'' without password appear in gallery. Custom namespace is created automatically'
+        required: false
+        schema:
+          type: string
+          default: public
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: tags
+        in: query
+        description: Comma-separated tags
+        required: false
+        schema:
+          type: string
+        example: demo,test
+      - name: ttl
+        in: query
+        description: Time to live in days (1-30, default 15). Page auto-deletes after expiry. Accepts '15', '15d' or '15 days'
+        required: false
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: 'Content format. ''html'' (default) — stored verbatim. ''markdown'' / ''md'' — rendered to styled HTML via github-markdown-css. Code/text languages stored and served raw with format-specific MIME (text/csv, application/json, text/xml, text/plain) plus X-Content-Type-Options: nosniff: yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt'
+        required: false
+        schema:
+          type: string
+          default: html
+      - name: X-Password
+        in: header
+        description: Access password. Empty = public page visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Reuse existing owner token to group entities under one owner. If omitted, a new token is generated
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HtmlUploadRequest'
+        required: true
+      responses:
+        '201':
+          description: Page created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HtmlUploadResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HtmlUploadResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HtmlUploadResponse'
+  /api/html/{ns}/{id}/source:
+    get:
+      tags:
+      - HTML
+      summary: BrewPage Get HTML Page Raw Source
+      description: Returns the raw user-submitted content (pre-render, pre-sanitize) plus metadata for republish. Owner-only — requires the owner token returned at creation.
+      operationId: getSource
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9-]{1,32}$
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token returned at creation. Required for source access
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Raw source body and metadata
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: 'Owner token missing (code: OWNER_TOKEN_REQUIRED)'
+          content:
+            '*/*':
+              schema:
+                type: object
+        '403':
+          description: Wrong owner token
+          content:
+            '*/*':
+              schema:
+                type: object
+        '404':
+          description: Page not found or expired
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    HtmlUploadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric page ID
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (update/delete)
+        expiresAt:
+          type: string
+          format: date-time
+        sizeBytes:
+          type: integer
+          format: int64
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for update and delete operations. Store it safely -- cannot be recovered
+    HtmlUpdateRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: New HTML content to replace existing page
+        format:
+          type: string
+          description: Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt). When omitted, the row's stored format is preserved. Takes precedence over the 'format' query param when both are present.
+    HtmlUploadRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: HTML or markdown content to publish
+        filename:
+          type: string
+          description: Optional original filename used as the tab title fallback and download basename. Trimmed; rejected if it contains path separators or control characters, length > 200, or bare name shorter than 4 chars
+        showTopBar:
+          type: boolean
+          description: Per-content toggle for the frontend top toolbar. null = use global default (app.ui.show-top-bar-default)
+    HtmlUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access
+        expiresAt:
+          type: string
+          format: date-time
+        sizeBytes:
+          type: integer
+          format: int64

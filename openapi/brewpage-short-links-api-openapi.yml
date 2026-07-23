@@ -1,0 +1,136 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files Short Links API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: Short Links
+  description: Short URL resolver for sharing
+paths:
+  /{ns}/{id}:
+    get:
+      tags:
+      - Short Links
+      operationId: resolve
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password for protected resources
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password (query alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: dl
+        in: query
+        description: Force download as attachment
+        required: false
+        schema:
+          type: boolean
+      - name: Range
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Resolve
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: 'Owner token; when supplied, response carries X-Is-Owner: true on match'
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /{ns}/{id}/{sub}:
+    get:
+      tags:
+      - Short Links
+      operationId: resolveWithSub
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: sub
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Password
+        in: header
+        description: Access password for protected resources
+        required: false
+        schema:
+          type: string
+      - name: p
+        in: query
+        description: Access password (query alternative to X-Password header)
+        required: false
+        schema:
+          type: string
+      - name: dl
+        in: query
+        description: Force download as attachment
+        required: false
+        schema:
+          type: boolean
+      - name: X-Resolve
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: 'Owner token; when supplied, response carries X-Is-Owner: true on match'
+        required: false
+        schema:
+          type: string
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object

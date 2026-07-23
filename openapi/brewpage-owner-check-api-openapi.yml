@@ -1,0 +1,52 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files Owner Check API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: Owner Check
+  description: Lightweight owner-token probe; never increments views or returns content
+paths:
+  /api/{ns}/{id}/owner-check:
+    get:
+      tags:
+      - Owner Check
+      summary: BrewPage Verify Whether the Supplied X-Owner-Token Owns the Resource
+      description: Returns `{isOwner, type}`. Constant-time BCrypt match. 404 when the resource does not exist (or has expired). 200 with `isOwner:false` when the X-Owner-Token header is absent.
+      operationId: ownerCheck
+      parameters:
+      - name: ns
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Owner-Token
+        in: header
+        description: Owner token to verify (constant-time match)
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OwnerCheckResponse'
+components:
+  schemas:
+    OwnerCheckResponse:
+      type: object
+      properties:
+        type:
+          type: string
+        owner:
+          type: boolean

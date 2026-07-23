@@ -1,0 +1,52 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files SEO API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: SEO
+  description: Search engine optimization endpoints
+paths:
+  /{key}.txt:
+    get:
+      tags:
+      - SEO
+      summary: BrewPage IndexNow Key Verification
+      description: Serves the IndexNow verification key file for search engine crawlers
+      operationId: serveKeyFile
+      parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Key file content
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: Unknown key
+          content:
+            text/plain:
+              schema:
+                type: string
+  /api/sitemap.xml:
+    get:
+      tags:
+      - SEO
+      summary: BrewPage Dynamic XML Sitemap
+      description: Generates sitemap with static pages and all public gallery entries. Caddy should route /sitemap.xml to this endpoint
+      operationId: sitemap
+      responses:
+        '200':
+          description: Sitemap XML
+          content:
+            application/xml:
+              schema:
+                type: string

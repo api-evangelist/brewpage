@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: BrewPage Files Namespace API
+  description: Free instant hosting for HTML, Markdown, AI artifacts and files
+  version: 1.51.1
+servers:
+- url: https://brewpage.app
+  description: Generated server url
+tags:
+- name: Namespace
+  description: Fresh, collision-free namespace suggestions
+paths:
+  /api/namespace/random:
+    get:
+      tags:
+      - Namespace
+      summary: BrewPage Suggest a Random Namespace
+      description: Returns a fresh `<word>-<word>-NN` namespace from the EFF Short Wordlist that does not collide with any existing resource. Pure read; no resource is allocated.
+      operationId: random
+      responses:
+        '200':
+          description: Namespace suggested
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RandomNamespaceResponse'
+        '503':
+          description: Namespace pool exhausted — retry budget hit consecutive collisions
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RandomNamespaceResponse'
+components:
+  schemas:
+    RandomNamespaceResponse:
+      type: object
+      properties:
+        namespace:
+          type: string
