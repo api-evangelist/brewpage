@@ -2,7 +2,19 @@ aid: brewpage
 url: https://raw.githubusercontent.com/api-evangelist/brewpage/refs/heads/main/apis.yml
 name: BrewPage
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: free
+  onboarding: open
+  trial: false
+  try_now: true
+  public: true
+  label: Free · Open access
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/brewpage.png
 description: >-
   BrewPage is a free, no-registration instant hosting service for HTML pages, Markdown documents, AI-agent artifacts,
   files, and multi-file static sites. It also offers a namespaced key-value store and a JSON document store. The REST
@@ -22,55 +34,526 @@ tags:
   - Developer Tools
 url-source: https://brewpage.app/
 apis:
-  - aid: brewpage:api
-    name: BrewPage API
-    tags:
-      - Hosting
-      - HTML
-      - Markdown
-      - AI Artifacts
-      - File Hosting
-      - Developer Tools
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://brewpage.app
-    humanURL: https://brewpage.app/api
-    description: >-
-      The BrewPage REST API. Publish HTML, Markdown, files, and multi-file sites; store key-value pairs and JSON
-      documents; browse the public gallery; check ownership; and submit abuse reports. Endpoints live under /api/ and
-      short links live at /{ns}/{id}. Identical functionality is also available at brewdata.app.
-    properties:
-      - type: Documentation
-        url: https://brewpage.app/api
-      - type: APIReference
-        url: https://kochetkov-ma.github.io/brewpage-openapi/
-      - type: OpenAPI
-        url: openapi/brewpage-openapi.yml
-      - type: Authentication
-        url: https://brewpage.app/llms-full.txt
-      - type: JSONSchema
-        url: json-schema/brewpage-html-page-schema.json
-      - type: JSONSchema
-        url: json-schema/brewpage-file-schema.json
-      - type: JSONSchema
-        url: json-schema/brewpage-kv-store-schema.json
-      - type: JSONSchema
-        url: json-schema/brewpage-json-document-schema.json
-      - type: JSONSchema
-        url: json-schema/brewpage-site-schema.json
-      - type: JSONStructure
-        url: json-structure/brewpage-html-page-structure.json
-      - type: JSONStructure
-        url: json-structure/brewpage-kv-store-structure.json
-      - type: Examples
-        url: examples/brewpage-create-html-example.json
-      - type: Examples
-        url: examples/brewpage-create-markdown-example.json
-      - type: Examples
-        url: examples/brewpage-upload-file-example.json
-      - type: Examples
-        url: examples/brewpage-upload-site-example.json
-      - type: Examples
-        url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-files-api
+  name: BrewPage Files API
+  description: File hosting up to 5 MB per file, 1000 files per namespace
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - Files
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-files-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-gallery-api
+  name: BrewPage Gallery API
+  description: Browse public content from the 'public' namespace without password protection
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - Gallery
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-gallery-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-html-api
+  name: BrewPage HTML API
+  description: HTML page hosting with markdown support
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - HTML
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-html-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-json-api
+  name: BrewPage JSON API
+  description: JSON document store with up to 10,000 docs per collection
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - JSON
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-json-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-kv-api
+  name: BrewPage KV API
+  description: Key-Value store with up to 1000 keys per namespace
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - KV
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-kv-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-namespace-api
+  name: BrewPage Namespace API
+  description: Fresh, collision-free namespace suggestions
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - Namespace
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-namespace-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-owner-check-api
+  name: BrewPage Owner Check API
+  description: Lightweight owner-token probe; never increments views or returns content
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - Owner Check
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-owner-check-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-preview-api
+  name: BrewPage preview API
+  description: OpenGraph metadata for social bots
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - preview
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-preview-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-reports-api
+  name: BrewPage Reports API
+  description: Abuse reports for hosted content
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-reports-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-seo-api
+  name: BrewPage SEO API
+  description: Search engine optimization endpoints
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - SEO
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-seo-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-short-links-api
+  name: BrewPage Short Links API
+  description: Short URL resolver for sharing
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - Short Links
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-short-links-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-sites-api
+  name: BrewPage Sites API
+  description: Multi-file HTML site hosting via ZIP or folder upload
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - Sites
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-sites-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
+- aid: brewpage:brewpage-stats-api
+  name: BrewPage Stats API
+  description: Platform-wide usage statistics
+  humanURL: https://brewpage.app/api
+  baseURL: https://brewpage.app
+  tags:
+  - Stats
+  properties:
+  - type: OpenAPI
+    url: openapi/brewpage-stats-api-openapi.yml
+  - type: Documentation
+    url: https://brewpage.app/api
+  - type: APIReference
+    url: https://kochetkov-ma.github.io/brewpage-openapi/
+  - type: Authentication
+    url: https://brewpage.app/llms-full.txt
+  - type: JSONSchema
+    url: json-schema/brewpage-html-page-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-file-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-kv-store-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-json-document-schema.json
+  - type: JSONSchema
+    url: json-schema/brewpage-site-schema.json
+  - type: JSONStructure
+    url: json-structure/brewpage-html-page-structure.json
+  - type: JSONStructure
+    url: json-structure/brewpage-kv-store-structure.json
+  - type: Examples
+    url: examples/brewpage-create-html-example.json
+  - type: Examples
+    url: examples/brewpage-create-markdown-example.json
+  - type: Examples
+    url: examples/brewpage-upload-file-example.json
+  - type: Examples
+    url: examples/brewpage-upload-site-example.json
+  - type: Examples
+    url: examples/brewpage-upsert-kv-example.json
 common:
   - type: AgenticAccess
     url: agentic-access/brewpage-agentic-access.yml
