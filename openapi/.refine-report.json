@@ -1,0 +1,38 @@
+{
+  "provider": "brewpage",
+  "sources": [
+    "brewpage-files-api-openapi.yml",
+    "brewpage-gallery-api-openapi.yml",
+    "brewpage-html-api-openapi.yml",
+    "brewpage-json-api-openapi.yml",
+    "brewpage-kv-api-openapi.yml",
+    "brewpage-namespace-api-openapi.yml",
+    "brewpage-owner-check-api-openapi.yml",
+    "brewpage-preview-api-openapi.yml",
+    "brewpage-reports-api-openapi.yml",
+    "brewpage-seo-api-openapi.yml",
+    "brewpage-short-links-api-openapi.yml",
+    "brewpage-sites-api-openapi.yml",
+    "brewpage-stats-api-openapi.yml"
+  ],
+  "outputs": [
+    "brewpage-files-api-openapi.yml",
+    "brewpage-gallery-api-openapi.yml",
+    "brewpage-html-api-openapi.yml",
+    "brewpage-json-api-openapi.yml",
+    "brewpage-kv-api-openapi.yml",
+    "brewpage-namespace-api-openapi.yml",
+    "brewpage-owner-check-api-openapi.yml",
+    "brewpage-preview-api-openapi.yml",
+    "brewpage-reports-api-openapi.yml",
+    "brewpage-seo-api-openapi.yml",
+    "brewpage-short-links-api-openapi.yml",
+    "brewpage-sites-api-openapi.yml",
+    "brewpage-stats-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
