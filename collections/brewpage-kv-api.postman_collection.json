@@ -1,0 +1,1911 @@
+{
+  "item": [
+    {
+      "id": "0c92b49b-5e8c-4bc3-a1f2-93cc170e7fe2",
+      "name": "KV",
+      "description": {
+        "content": "Key-Value store with up to 1000 keys per namespace",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b21587ce-6d91-411b-b6d9-1b46d174f5cc",
+          "name": "BrewPage Get Key Value",
+          "request": {
+            "name": "BrewPage Get Key Value",
+            "description": {
+              "content": "Returns the value and last update timestamp for a specific key",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "kv",
+                ":ns",
+                ":id",
+                ":key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "p",
+                  "value": "<string>",
+                  "description": "Access password via query param (alternative to X-Password header)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Access password via header",
+                "key": "X-Password",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "description": "Owner token to bypass password protection when no password supplied",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8e50e2cd-8b24-4626-bd85-ea7c8364a063",
+              "name": "Key value",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"value\": \"string\",\n  \"updatedAt\": \"1966-09-08T02:41:39.499Z\",\n  \"expiresAt\": \"1984-04-07T14:04:53.066Z\",\n  \"views\": 5168\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6b49361e-28bf-407d-9f4d-b9aefc3b6ce5",
+              "name": "Wrong password",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"value\": \"string\",\n  \"updatedAt\": \"1966-09-08T02:41:39.499Z\",\n  \"expiresAt\": \"1984-04-07T14:04:53.066Z\",\n  \"views\": 5168\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fdc5424d-9d33-4f89-8191-5a5dfb474d54",
+              "name": "Store or key not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"value\": \"string\",\n  \"updatedAt\": \"1966-09-08T02:41:39.499Z\",\n  \"expiresAt\": \"1984-04-07T14:04:53.066Z\",\n  \"views\": 5168\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "667c5236-d325-4b44-929c-2f4836fba773",
+          "name": "BrewPage Upsert Key",
+          "request": {
+            "name": "BrewPage Upsert Key",
+            "description": {
+              "content": "Creates or updates a key in the store; max 1000 keys per store",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "kv",
+                ":ns",
+                ":id",
+                ":key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Owner token returned at creation. Required for update and delete",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "189d613b-394a-41f3-8f29-58407a770b5a",
+              "name": "Key upserted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"value\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"key\": \"string\",\n  \"sizeBytes\": 3982,\n  \"link\": \"string\",\n  \"ownerLink\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "abf28b56-6225-440b-8790-1023fd89149d",
+              "name": "Missing or wrong owner token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"value\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"key\": \"string\",\n  \"sizeBytes\": 3982,\n  \"link\": \"string\",\n  \"ownerLink\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efd7a373-5ce0-4576-9b85-041704882a31",
+              "name": "Store not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"value\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"key\": \"string\",\n  \"sizeBytes\": 3982,\n  \"link\": \"string\",\n  \"ownerLink\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e2610e5-96a2-4e32-8155-32003d432382",
+              "name": "Key limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"value\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"key\": \"string\",\n  \"sizeBytes\": 3982,\n  \"link\": \"string\",\n  \"ownerLink\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46851aed-bbab-4119-adbf-15bb8031b839",
+          "name": "BrewPage Delete Key",
+          "request": {
+            "name": "BrewPage Delete Key",
+            "description": {
+              "content": "Removes a single key from the store; deleting the last key does not remove the store",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "kv",
+                ":ns",
+                ":id",
+                ":key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Owner token returned at creation. Required for update and delete",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fcc99d90-2c39-42ac-80f0-e67bdd5e6652",
+              "name": "Key deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "17905642-43c2-4c88-899e-ecaa5edce239",
+              "name": "Missing or wrong owner token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "80563689-2ef3-4de4-b6d1-dc801f99bcde",
+              "name": "Store or key not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f01b6bcc-969b-46f5-99d9-1aec83645876",
+          "name": "BrewPage List KV Stores",
+          "request": {
+            "name": "BrewPage List KV Stores",
+            "description": {
+              "content": "Returns all KV stores owned by the given token in the namespace. Returns empty list without token",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "kv"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ns",
+                  "value": "public",
+                  "description": "Namespace"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Owner token to filter by ownership. Without token returns empty list",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fed04bc8-061d-40cf-af39-e81d79a1ff70",
+              "name": "Store list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Owner token to filter by ownership. Without token returns empty list",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"keyCount\": 2507,\n    \"createdAt\": \"2010-07-08T21:20:11.251Z\"\n  },\n  {\n    \"id\": \"string\",\n    \"keyCount\": 8933,\n    \"createdAt\": \"2009-03-21T18:44:45.747Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6d0da5ce-83f6-4dca-a221-9d075ce70dcf",
+          "name": "BrewPage Create KV Store",
+          "request": {
+            "name": "BrewPage Create KV Store",
+            "description": {
+              "content": "Creates a new store with an initial key-value pair and returns a shareable link. Reuse existing owner token to group entities under one owner",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "kv"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ns",
+                  "value": "public",
+                  "description": "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "tags",
+                  "value": "<string>",
+                  "description": "Comma-separated tags"
+                },
+                {
+                  "disabled": false,
+                  "key": "ttl",
+                  "value": "<string>",
+                  "description": "Time to live in days (1-30, default 15). Store auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Access password. Empty = public store visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL",
+                "key": "X-Password",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"<string>\",\n  \"value\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "142e7c48-2c2a-490e-8fc1-0bca77227ced",
+              "name": "Store created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,test"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password. Empty = public store visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key\": \"<string>\",\n  \"value\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"key\": \"string\",\n  \"sizeBytes\": 2365,\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"expiresAt\": \"1969-03-09T04:35:53.530Z\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99176b35-ce7e-4dfd-bc56-3ec009ce9c39",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,test"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password. Empty = public store visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key\": \"<string>\",\n  \"value\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"key\": \"string\",\n  \"sizeBytes\": 2365,\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"expiresAt\": \"1969-03-09T04:35:53.530Z\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "313038d5-c5ce-4926-b670-f9489446cab6",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,test"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password. Empty = public store visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key\": \"<string>\",\n  \"value\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"key\": \"string\",\n  \"sizeBytes\": 2365,\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"expiresAt\": \"1969-03-09T04:35:53.530Z\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9e15e279-ac27-4637-9e1c-243abe2d4fc9",
+          "name": "BrewPage List Keys",
+          "request": {
+            "name": "BrewPage List Keys",
+            "description": {
+              "content": "Returns all key names and total count for a store",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "kv",
+                ":ns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "p",
+                  "value": "<string>",
+                  "description": "Access password via query param (alternative to X-Password header)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Access password via header",
+                "key": "X-Password",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "description": "Owner token to bypass password protection when no password supplied",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cf013c81-5764-4a20-ab4c-51e185201730",
+              "name": "Key list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"keys\": [\n    \"string\",\n    \"string\"\n  ],\n  \"count\": 6197,\n  \"expiresAt\": \"2006-04-14T03:51:45.292Z\",\n  \"views\": 3600\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "48516429-da06-4b8f-951f-d28f3a426517",
+              "name": "Wrong password",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"keys\": [\n    \"string\",\n    \"string\"\n  ],\n  \"count\": 6197,\n  \"expiresAt\": \"2006-04-14T03:51:45.292Z\",\n  \"views\": 3600\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7ede52a-5f41-4027-a8d1-88a5b589f4ee",
+              "name": "Store not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"keys\": [\n    \"string\",\n    \"string\"\n  ],\n  \"count\": 6197,\n  \"expiresAt\": \"2006-04-14T03:51:45.292Z\",\n  \"views\": 3600\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6f991a35-a025-4920-962a-3172611e6bc7",
+          "name": "BrewPage Delete Entire KV Bucket (all Keys Under Ns/id)",
+          "request": {
+            "name": "BrewPage Delete Entire KV Bucket (all Keys Under Ns/id)",
+            "description": {
+              "content": "Permanently removes all keys in the store; requires the owner token returned at creation",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "kv",
+                ":ns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Owner token returned at creation. Required for delete",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c805f287-b26b-4349-867f-54c38c656019",
+              "name": "Bucket deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0670b78d-08a4-412b-8ea0-9f4cf07c920f",
+              "name": "Missing or wrong owner token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e2767481-4962-4b33-a9ff-10c2a1e9fca9",
+              "name": "Store not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "kv",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://brewpage.app",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "01bdc1ea-8e78-4ad2-bda2-31f584069ac0",
+    "name": "BrewPage Files KV API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Free instant hosting for HTML, Markdown, AI artifacts and files",
+      "type": "text/plain"
+    }
+  }
+}

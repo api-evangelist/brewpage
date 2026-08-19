@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files Owner Check API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Owner Check",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Verify Whether the Supplied X-Owner-Token Owns the Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/:ns/:id/owner-check",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns `{isOwner, type}`. Constant-time BCrypt match. 404 when the resource does not exist (or has expired). 200 with `isOwner:false` when the X-Owner-Token header is absent."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,217 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files HTML API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "HTML",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Get HTML Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/html/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param (alternative to X-Password header)"
+              }
+            ]
+          },
+          "docs": "Returns rendered HTML content; password-protected pages require X-Password header or ?p= query param"
+        },
+        {
+          "info": {
+            "name": "BrewPage Update HTML Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://brewpage.app/api/html/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt). When omitted, the row's stored format is preserved. Body field 'format' on HtmlUpdateRequest takes precedence over the query param when both are present."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces page content; requires the owner token returned at creation. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code) bodies — see /llms-full.txt."
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete HTML Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/html/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently removes page and frees the short URL"
+        },
+        {
+          "info": {
+            "name": "BrewPage Create HTML Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/html",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+              },
+              {
+                "name": "tags",
+                "value": "demo,test",
+                "type": "query",
+                "description": "Comma-separated tags"
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "Time to live in days (1-30, default 15). Page auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Content format. 'html' (default) — stored verbatim. 'markdown' / 'md' — rendered to styled HTML via github-markdown-css. Code/text languages stored and served raw with format-specific MIME (text/csv, application/json, text/xml, text/plain) plus X-Content-Type-Options: nosniff: yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Stores HTML or markdown content and returns a shareable link. Reuse existing owner token to group entities under one owner. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code) and application/octet-stream bodies — see /llms-full.txt."
+        },
+        {
+          "info": {
+            "name": "BrewPage Get HTML Page Raw Source",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/html/:ns/:id/source",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the raw user-submitted content (pre-render, pre-sanitize) plus metadata for republish. Owner-only — requires the owner token returned at creation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

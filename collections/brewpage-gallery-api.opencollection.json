@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files Gallery API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Gallery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Browse Gallery",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/gallery",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive search by title or tags"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "size",
+                "value": "20",
+                "type": "query",
+                "description": "Items per page (max 100)"
+              },
+              {
+                "name": "sort",
+                "value": "date",
+                "type": "query",
+                "description": "Sort order: 'date' (newest first, default) or 'views' (most viewed first)"
+              },
+              {
+                "name": "mine",
+                "value": "",
+                "type": "query",
+                "description": "When true, restrict results to the caller's owner_id (requires X-Owner-Token)"
+              }
+            ]
+          },
+          "docs": "Lists public pages (public namespace, no password) with optional case-insensitive search by title/tags. When `mine=true` and `X-Owner-Token` is supplied, results are restricted to the caller's own public publications."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

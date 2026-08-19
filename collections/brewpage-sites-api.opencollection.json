@@ -1,0 +1,186 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files Sites API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sites",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Upload Site",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/sites",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "files",
+                "value": "",
+                "type": "query",
+                "description": "Individual files (alternative to archive)"
+              },
+              {
+                "name": "paths",
+                "value": "",
+                "type": "query",
+                "description": "Relative paths for each file (must match files order)"
+              },
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace. Default: public"
+              },
+              {
+                "name": "tags",
+                "value": "demo,portfolio",
+                "type": "query",
+                "description": "Comma-separated tags"
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "Time to live in days (1-30, default 15). Site auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+              },
+              {
+                "name": "entry",
+                "value": "",
+                "type": "query",
+                "description": "Entry file path override (default: auto-detect index.html)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload a multi-file HTML site as a ZIP archive or as individual files with paths. Returns a link to the published site"
+        },
+        {
+          "info": {
+            "name": "BrewPage Get Site Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/sites/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns site metadata and file list. Requires owner token"
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete Site",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/sites/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently removes the site and all its files from storage"
+        },
+        {
+          "info": {
+            "name": "BrewPage Serve Site File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/sites/:ns/:id/files/**",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param"
+              }
+            ]
+          },
+          "docs": "Serves an individual file from the site with correct content type"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

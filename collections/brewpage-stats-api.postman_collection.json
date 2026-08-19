@@ -1,0 +1,116 @@
+{
+  "item": [
+    {
+      "id": "c072ce6e-6193-468f-9571-7cc3934b07c0",
+      "name": "Stats",
+      "description": {
+        "content": "Platform-wide usage statistics",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d61f2e51-c703-4197-8657-9a97f2eae3c2",
+          "name": "BrewPage Get Platform Stats",
+          "request": {
+            "name": "BrewPage Get Platform Stats",
+            "description": {
+              "content": "Returns today's and all-time creation/view counts with per-type breakdown. Optional 'tz' query param (IANA id) controls the boundary of 'today'; defaults to UTC.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "stats"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "tz",
+                  "value": "<string>",
+                  "description": "IANA timezone id for the 'today' boundary. Defaults to UTC. Example: Europe/Lisbon"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "898f60a4-af88-433e-9731-e01166a19911",
+              "name": "Platform statistics",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tz",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"createdToday\": 1834,\n  \"totalCreated\": 1444,\n  \"viewsToday\": 6371,\n  \"totalViews\": 5457,\n  \"breakdown\": [\n    {\n      \"type\": \"string\",\n      \"today\": 4736,\n      \"total\": 7731,\n      \"todayPublic\": 3011,\n      \"todayPrivate\": 3014,\n      \"totalPublic\": 9353,\n      \"totalPrivate\": 1889,\n      \"todayDeleted\": 5386,\n      \"todayDeletedPublic\": 9819,\n      \"todayDeletedPrivate\": 1335,\n      \"totalDeleted\": 8095,\n      \"totalDeletedPublic\": 575,\n      \"totalDeletedPrivate\": 5252\n    },\n    {\n      \"type\": \"string\",\n      \"today\": 350,\n      \"total\": 7735,\n      \"todayPublic\": 6066,\n      \"todayPrivate\": 4955,\n      \"totalPublic\": 9086,\n      \"totalPrivate\": 755,\n      \"todayDeleted\": 5513,\n      \"todayDeletedPublic\": 9469,\n      \"todayDeletedPrivate\": 6528,\n      \"totalDeleted\": 1171,\n      \"totalDeletedPublic\": 1456,\n      \"totalDeletedPrivate\": 4999\n    }\n  ],\n  \"createdTodayPublic\": 8465,\n  \"createdTodayPrivate\": 9147,\n  \"viewsTodayPublic\": 3361,\n  \"viewsTodayPrivate\": 2381,\n  \"totalCreatedPublic\": 7626,\n  \"totalCreatedPrivate\": 2362,\n  \"totalViewsPublic\": 9732,\n  \"totalViewsPrivate\": 5970,\n  \"deletedToday\": 6237,\n  \"deletedTodayPublic\": 1808,\n  \"deletedTodayPrivate\": 1711,\n  \"totalDeleted\": 4312,\n  \"totalDeletedPublic\": 9890,\n  \"totalDeletedPrivate\": 3720\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://brewpage.app",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9f4dd3f6-05e7-4c1c-8355-96ccde996243",
+    "name": "BrewPage Files Stats API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Free instant hosting for HTML, Markdown, AI artifacts and files",
+      "type": "text/plain"
+    }
+  }
+}

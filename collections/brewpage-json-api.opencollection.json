@@ -1,0 +1,193 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files JSON API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "JSON",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Get JSON Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/json/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param (alternative to X-Password header)"
+              }
+            ]
+          },
+          "docs": "Returns raw JSON content with application/json content type"
+        },
+        {
+          "info": {
+            "name": "BrewPage Update JSON Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://brewpage.app/api/json/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces document content; requires the owner token returned at creation"
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete JSON Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/json/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently removes the document"
+        },
+        {
+          "info": {
+            "name": "BrewPage List JSON Documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/json",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace"
+              }
+            ]
+          },
+          "docs": "Returns documents owned by the given token. Empty list without token"
+        },
+        {
+          "info": {
+            "name": "BrewPage Create JSON Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/json",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+              },
+              {
+                "name": "tags",
+                "value": "demo,test",
+                "type": "query",
+                "description": "Comma-separated tags"
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "Time to live in days (1-30, default 15). Document auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Stores any valid JSON and returns a shareable link. Reuse existing owner token to group entities under one owner"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

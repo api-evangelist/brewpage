@@ -1,0 +1,398 @@
+{
+  "item": [
+    {
+      "id": "b86a1f20-dca4-470b-b313-1f96f69a6b2b",
+      "name": "Short Links",
+      "description": {
+        "content": "Short URL resolver for sharing",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "87f0bce0-3382-4c92-a6f9-cb9b0285ddac",
+          "name": "resolve",
+          "request": {
+            "name": "resolve",
+            "description": {},
+            "url": {
+              "path": [
+                ":ns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "p",
+                  "value": "<string>",
+                  "description": "Access password (query alternative to X-Password header)"
+                },
+                {
+                  "disabled": false,
+                  "key": "dl",
+                  "value": "<boolean>",
+                  "description": "Force download as attachment"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Access password for protected resources",
+                "key": "X-Password",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "Range",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "key": "X-Resolve",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "description": "Owner token; when supplied, response carries X-Is-Owner: true on match",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "746bc693-4ff3-4927-9e49-43af016d1367",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dl",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password for protected resources",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Range",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Resolve",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token; when supplied, response carries X-Is-Owner: true on match",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cb109c6d-354c-4d9a-a739-a3edd8d60d3a",
+          "name": "resolve With Sub",
+          "request": {
+            "name": "resolve With Sub",
+            "description": {},
+            "url": {
+              "path": [
+                ":ns",
+                ":id",
+                ":sub"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "p",
+                  "value": "<string>",
+                  "description": "Access password (query alternative to X-Password header)"
+                },
+                {
+                  "disabled": false,
+                  "key": "dl",
+                  "value": "<boolean>",
+                  "description": "Force download as attachment"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sub",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Access password for protected resources",
+                "key": "X-Password",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "X-Resolve",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "description": "Owner token; when supplied, response carries X-Is-Owner: true on match",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c48ed616-d80a-447c-832d-be2cbfeabd0e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":ns",
+                    ":id",
+                    ":sub"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dl",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sub",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password for protected resources",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-Resolve",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token; when supplied, response carries X-Is-Owner: true on match",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://brewpage.app",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2d79244f-87eb-4dbd-b53f-0ccbd6b3d29d",
+    "name": "BrewPage Files Short Links API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Free instant hosting for HTML, Markdown, AI artifacts and files",
+      "type": "text/plain"
+    }
+  }
+}

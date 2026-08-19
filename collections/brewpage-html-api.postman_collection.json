@@ -1,0 +1,1506 @@
+{
+  "item": [
+    {
+      "id": "0f76fdf1-81f3-4cd6-aa8b-f73699c78d50",
+      "name": "HTML",
+      "description": {
+        "content": "HTML page hosting with markdown support",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "27969d33-7665-484a-9611-bbec21b216aa",
+          "name": "BrewPage Get HTML Page",
+          "request": {
+            "name": "BrewPage Get HTML Page",
+            "description": {
+              "content": "Returns rendered HTML content; password-protected pages require X-Password header or ?p= query param",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "html",
+                ":ns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "p",
+                  "value": "<string>",
+                  "description": "Access password via query param (alternative to X-Password header)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Access password via header",
+                "key": "X-Password",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "description": "Owner token to bypass password protection when no password supplied",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8ca14684-cf8c-4b16-9a4d-80e33d4d57ef",
+              "name": "HTML content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "04d2384f-0ee5-4f77-80b1-c6a609d0db3c",
+              "name": "Wrong password",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fb795e1f-e0d6-44a0-ba3e-082372bab791",
+              "name": "Page not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "caaa8005-7b9a-4768-b6f0-8a92848796a2",
+          "name": "BrewPage Update HTML Page",
+          "request": {
+            "name": "BrewPage Update HTML Page",
+            "description": {
+              "content": "Replaces page content; requires the owner token returned at creation. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code) bodies — see /llms-full.txt.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "html",
+                ":ns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "<string>",
+                  "description": "Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt). When omitted, the row's stored format is preserved. Body field 'format' on HtmlUpdateRequest takes precedence over the query param when both are present."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Owner token returned at creation. Required for update and delete",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"<string>\",\n  \"format\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "30a1f0c0-5e27-4c41-95c7-30383aa37593",
+              "name": "Page updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"<string>\",\n  \"format\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"expiresAt\": \"2013-04-26T08:49:58.973Z\",\n  \"sizeBytes\": 7330\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37bf0d59-3513-46af-ae23-42b9da1ffd16",
+              "name": "Missing or wrong owner token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"<string>\",\n  \"format\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"expiresAt\": \"2013-04-26T08:49:58.973Z\",\n  \"sizeBytes\": 7330\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d1a544d-a6af-4762-949d-2d145260ca53",
+              "name": "Page not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"<string>\",\n  \"format\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"expiresAt\": \"2013-04-26T08:49:58.973Z\",\n  \"sizeBytes\": 7330\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1a4769ca-42f9-41aa-a926-973af3c2d4ae",
+          "name": "BrewPage Delete HTML Page",
+          "request": {
+            "name": "BrewPage Delete HTML Page",
+            "description": {
+              "content": "Permanently removes page and frees the short URL",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "html",
+                ":ns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Owner token returned at creation. Required for update and delete",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "846ea9c6-c02c-4f09-b52f-2f74c7dfda34",
+              "name": "Page deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f3f9f2b6-041c-4076-84f1-f25becbb1eab",
+              "name": "Missing or wrong owner token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cbaad900-e8ca-4c1b-b450-cda4ddd93c1f",
+              "name": "Page not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for update and delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "57b63092-f4d4-44f3-b953-1b48b757ee18",
+          "name": "BrewPage Create HTML Page",
+          "request": {
+            "name": "BrewPage Create HTML Page",
+            "description": {
+              "content": "Stores HTML or markdown content and returns a shareable link. Reuse existing owner token to group entities under one owner. Also accepts raw text/* (HTML, Markdown, YAML, XML, CSV, code) and application/octet-stream bodies — see /llms-full.txt.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "html"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ns",
+                  "value": "public",
+                  "description": "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "tags",
+                  "value": "<string>",
+                  "description": "Comma-separated tags"
+                },
+                {
+                  "disabled": false,
+                  "key": "ttl",
+                  "value": "<string>",
+                  "description": "Time to live in days (1-30, default 15). Page auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "html",
+                  "description": "Content format. 'html' (default) — stored verbatim. 'markdown' / 'md' — rendered to styled HTML via github-markdown-css. Code/text languages stored and served raw with format-specific MIME (text/csv, application/json, text/xml, text/plain) plus X-Content-Type-Options: nosniff: yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Access password. Empty = public page visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL",
+                "key": "X-Password",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"<string>\",\n  \"filename\": \"<string>\",\n  \"showTopBar\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "beec8c04-47ec-4c38-84a0-75d56aaee825",
+              "name": "Page created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,test"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "html"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password. Empty = public page visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"<string>\",\n  \"filename\": \"<string>\",\n  \"showTopBar\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"expiresAt\": \"2016-07-10T08:59:16.316Z\",\n  \"sizeBytes\": 5035,\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1801b9a2-807b-4b3e-a1a0-4a05eff2e74b",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,test"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "html"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password. Empty = public page visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"<string>\",\n  \"filename\": \"<string>\",\n  \"showTopBar\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"expiresAt\": \"2016-07-10T08:59:16.316Z\",\n  \"sizeBytes\": 5035,\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1175087-95b4-47a2-b1b5-3459dfcbb1d2",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,test"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "html"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password. Empty = public page visible in gallery. With password = hidden from gallery, viewers must enter password or pass ?p= in URL",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner. If omitted, a new token is generated",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"<string>\",\n  \"filename\": \"<string>\",\n  \"showTopBar\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"expiresAt\": \"2016-07-10T08:59:16.316Z\",\n  \"sizeBytes\": 5035,\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0bc894ac-bef6-4fed-9ec3-19ed92ace096",
+          "name": "BrewPage Get HTML Page Raw Source",
+          "request": {
+            "name": "BrewPage Get HTML Page Raw Source",
+            "description": {
+              "content": "Returns the raw user-submitted content (pre-render, pre-sanitize) plus metadata for republish. Owner-only — requires the owner token returned at creation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "html",
+                ":ns",
+                ":id",
+                "source"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Owner token returned at creation. Required for source access",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "42bed04d-56e0-40e4-9699-e962ac24f4c8",
+              "name": "Raw source body and metadata",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id",
+                    "source"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Owner token returned at creation. Required for source access",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98a15d0a-97bc-4af7-a6ea-5822605a1906",
+              "name": "Owner token missing (code: OWNER_TOKEN_REQUIRED)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id",
+                    "source"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Owner token returned at creation. Required for source access",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1e49772-06e2-47cd-b3fc-b9c865b27633",
+              "name": "Wrong owner token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id",
+                    "source"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Owner token returned at creation. Required for source access",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6b9a2d6-a6bd-4928-bf5a-0fe3a41d9980",
+              "name": "Page not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "html",
+                    ":ns",
+                    ":id",
+                    "source"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Owner token returned at creation. Required for source access",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://brewpage.app",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "cf3346b3-79e7-4a6b-a727-3992cf8b0dbe",
+    "name": "BrewPage Files HTML API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Free instant hosting for HTML, Markdown, AI artifacts and files",
+      "type": "text/plain"
+    }
+  }
+}

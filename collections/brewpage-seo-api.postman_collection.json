@@ -1,0 +1,219 @@
+{
+  "item": [
+    {
+      "id": "6bfa16f4-9163-4930-bf71-1f1bee10bf14",
+      "name": "SEO",
+      "description": {
+        "content": "Search engine optimization endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6a0a3f08-6f93-40d9-9c0d-4077df970ae4",
+          "name": "BrewPage IndexNow Key Verification",
+          "request": {
+            "name": "BrewPage IndexNow Key Verification",
+            "description": {
+              "content": "Serves the IndexNow verification key file for search engine crawlers",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "{{key}}.txt"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "713dcf63-3a94-495a-9639-95a80d743777",
+              "name": "Key file content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "{{key}}.txt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6f5f024a-e710-442a-aebe-1d94242d4ee1",
+              "name": "Unknown key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "{{key}}.txt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e3e5ee82-e6fd-4f01-8829-14eb4d7ca894",
+          "name": "BrewPage Dynamic XML Sitemap",
+          "request": {
+            "name": "BrewPage Dynamic XML Sitemap",
+            "description": {
+              "content": "Generates sitemap with static pages and all public gallery entries. Caddy should route /sitemap.xml to this endpoint",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "sitemap.xml"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5d35c488-e581-4c75-bdb4-47276c679142",
+              "name": "Sitemap XML",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sitemap.xml"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/xml"
+                }
+              ],
+              "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>(string)</element>",
+              "cookie": [],
+              "_postman_previewlanguage": "xml"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://brewpage.app",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) ",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "key"
+    }
+  ],
+  "info": {
+    "_postman_id": "bc95f72c-ffb2-4596-8500-5e78abb76e42",
+    "name": "BrewPage Files SEO API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Free instant hosting for HTML, Markdown, AI artifacts and files",
+      "type": "text/plain"
+    }
+  }
+}

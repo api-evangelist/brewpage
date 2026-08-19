@@ -1,0 +1,1298 @@
+{
+  "item": [
+    {
+      "id": "27e53cec-0f7d-465b-8678-c4aa215e6948",
+      "name": "Sites",
+      "description": {
+        "content": "Multi-file HTML site hosting via ZIP or folder upload",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9a19f2df-0c4a-4d0a-b180-9dfcf65ce515",
+          "name": "BrewPage Upload Site",
+          "request": {
+            "name": "BrewPage Upload Site",
+            "description": {
+              "content": "Upload a multi-file HTML site as a ZIP archive or as individual files with paths. Returns a link to the published site",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "sites"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "files",
+                  "value": "<binary>",
+                  "description": "Individual files (alternative to archive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "files",
+                  "value": "<binary>",
+                  "description": "Individual files (alternative to archive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "paths",
+                  "value": "<string>",
+                  "description": "Relative paths for each file (must match files order)"
+                },
+                {
+                  "disabled": false,
+                  "key": "paths",
+                  "value": "<string>",
+                  "description": "Relative paths for each file (must match files order)"
+                },
+                {
+                  "disabled": false,
+                  "key": "ns",
+                  "value": "public",
+                  "description": "Namespace. Default: public"
+                },
+                {
+                  "disabled": false,
+                  "key": "tags",
+                  "value": "<string>",
+                  "description": "Comma-separated tags"
+                },
+                {
+                  "disabled": false,
+                  "key": "ttl",
+                  "value": "<string>",
+                  "description": "Time to live in days (1-30, default 15). Site auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+                },
+                {
+                  "disabled": false,
+                  "key": "entry",
+                  "value": "<string>",
+                  "description": "Entry file path override (default: auto-detect index.html)"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Access password",
+                "key": "X-Password",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Reuse existing owner token to group entities under one owner",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"archive\": \"<binary>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2df8a0ee-6733-459f-8318-fa80794fb83e",
+              "name": "Site uploaded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "files",
+                      "value": "<binary>"
+                    },
+                    {
+                      "key": "files",
+                      "value": "<binary>"
+                    },
+                    {
+                      "key": "paths",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paths",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,portfolio"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entry",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"archive\": \"<binary>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"entryFile\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"fileCount\": 418,\n  \"totalSizeBytes\": 9055,\n  \"expiresAt\": \"1998-06-04T11:22:13.706Z\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df59b652-356d-4bb6-a948-539e94e7642a",
+              "name": "Invalid request, no HTML files, or limits exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "files",
+                      "value": "<binary>"
+                    },
+                    {
+                      "key": "files",
+                      "value": "<binary>"
+                    },
+                    {
+                      "key": "paths",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paths",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,portfolio"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entry",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"archive\": \"<binary>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"entryFile\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"fileCount\": 418,\n  \"totalSizeBytes\": 9055,\n  \"expiresAt\": \"1998-06-04T11:22:13.706Z\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12c91cbc-9ebe-4243-81e4-a5c8b8eb1dd1",
+              "name": "Unsupported file type in archive",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "files",
+                      "value": "<binary>"
+                    },
+                    {
+                      "key": "files",
+                      "value": "<binary>"
+                    },
+                    {
+                      "key": "paths",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paths",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,portfolio"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entry",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"archive\": \"<binary>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"entryFile\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"fileCount\": 418,\n  \"totalSizeBytes\": 9055,\n  \"expiresAt\": \"1998-06-04T11:22:13.706Z\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8835c03a-a6c0-4f6f-96d6-2d17dded0a49",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "files",
+                      "value": "<binary>"
+                    },
+                    {
+                      "key": "files",
+                      "value": "<binary>"
+                    },
+                    {
+                      "key": "paths",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paths",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ns",
+                      "value": "public"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "demo,portfolio"
+                    },
+                    {
+                      "key": "ttl",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entry",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Reuse existing owner token to group entities under one owner",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"archive\": \"<binary>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"entryFile\": \"string\",\n  \"link\": \"string\",\n  \"ownerLink\": \"string\",\n  \"fileCount\": 418,\n  \"totalSizeBytes\": 9055,\n  \"expiresAt\": \"1998-06-04T11:22:13.706Z\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ownerToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f24d19d1-e51b-4307-b8e7-d5e535d94222",
+          "name": "BrewPage Get Site Info",
+          "request": {
+            "name": "BrewPage Get Site Info",
+            "description": {
+              "content": "Returns site metadata and file list. Requires owner token",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "sites",
+                ":ns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Owner token returned at creation",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b10d4a17-9385-4f26-8b3c-cc163e902e74",
+              "name": "Site info",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"entryFile\": \"string\",\n  \"fileCount\": 449,\n  \"totalSizeBytes\": 4351,\n  \"files\": [\n    {\n      \"path\": \"string\",\n      \"contentType\": \"string\",\n      \"sizeBytes\": 4652\n    },\n    {\n      \"path\": \"string\",\n      \"contentType\": \"string\",\n      \"sizeBytes\": 3794\n    }\n  ],\n  \"createdAt\": \"1963-09-25T10:27:32.501Z\",\n  \"expiresAt\": \"1993-05-15T20:10:12.274Z\",\n  \"views\": 5608,\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c8850a9a-42f9-4357-8c6d-2a429d36ea4f",
+              "name": "Missing or wrong owner token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"entryFile\": \"string\",\n  \"fileCount\": 449,\n  \"totalSizeBytes\": 4351,\n  \"files\": [\n    {\n      \"path\": \"string\",\n      \"contentType\": \"string\",\n      \"sizeBytes\": 4652\n    },\n    {\n      \"path\": \"string\",\n      \"contentType\": \"string\",\n      \"sizeBytes\": 3794\n    }\n  ],\n  \"createdAt\": \"1963-09-25T10:27:32.501Z\",\n  \"expiresAt\": \"1993-05-15T20:10:12.274Z\",\n  \"views\": 5608,\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "541114ca-f7b7-4a49-bdea-878b12441a26",
+              "name": "Site not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"namespace\": \"string\",\n  \"entryFile\": \"string\",\n  \"fileCount\": 449,\n  \"totalSizeBytes\": 4351,\n  \"files\": [\n    {\n      \"path\": \"string\",\n      \"contentType\": \"string\",\n      \"sizeBytes\": 4652\n    },\n    {\n      \"path\": \"string\",\n      \"contentType\": \"string\",\n      \"sizeBytes\": 3794\n    }\n  ],\n  \"createdAt\": \"1963-09-25T10:27:32.501Z\",\n  \"expiresAt\": \"1993-05-15T20:10:12.274Z\",\n  \"views\": 5608,\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "072e8d0e-6034-4578-bae9-cf1900111114",
+          "name": "BrewPage Delete Site",
+          "request": {
+            "name": "BrewPage Delete Site",
+            "description": {
+              "content": "Permanently removes the site and all its files from storage",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "sites",
+                ":ns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Owner token returned at creation. Required for delete",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3c9ff6e6-694b-4c77-9d9d-91378dc6d664",
+              "name": "Site deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1f427341-bb6d-4539-bbc2-9446dad13e29",
+              "name": "Missing or wrong owner token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9abbcb84-cdcf-4eb1-adfd-14b64c4f8469",
+              "name": "Site not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites",
+                    ":ns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Owner token returned at creation. Required for delete",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a74060d3-839e-4166-baa8-fdf9efb31586",
+          "name": "BrewPage Serve Site File",
+          "request": {
+            "name": "BrewPage Serve Site File",
+            "description": {
+              "content": "Serves an individual file from the site with correct content type",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "sites",
+                ":ns",
+                ":id",
+                "files",
+                "**"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "p",
+                  "value": "<string>",
+                  "description": "Access password via query param"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Access password via header",
+                "key": "X-Password",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "description": "Owner token to bypass password protection when no password supplied",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b5bb425f-f251-4339-85d4-3431c0c76308",
+              "name": "File content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites",
+                    ":ns",
+                    ":id",
+                    "files",
+                    "**"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "523a6765-55ac-459c-9b49-501d49bc7e02",
+              "name": "Wrong password",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites",
+                    ":ns",
+                    ":id",
+                    "files",
+                    "**"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f340cd09-2f01-4b14-8517-e668e2a9e24a",
+              "name": "Site or file not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sites",
+                    ":ns",
+                    ":id",
+                    "files",
+                    "**"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "p",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Access password via header",
+                    "key": "X-Password",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Owner token to bypass password protection when no password supplied",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://brewpage.app",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "fc8491b4-be69-499b-b18e-b3d046fe8248",
+    "name": "BrewPage Files Sites API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Free instant hosting for HTML, Markdown, AI artifacts and files",
+      "type": "text/plain"
+    }
+  }
+}

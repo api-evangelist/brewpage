@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files Reports API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Submit Abuse Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/reports",
+            "headers": [
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Records a public report about a resource hosted on brewpage.app for moderator review"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

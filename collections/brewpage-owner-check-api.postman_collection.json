@@ -1,0 +1,150 @@
+{
+  "item": [
+    {
+      "id": "2412a55a-613b-494d-abb8-60ee3ce5a978",
+      "name": "Owner Check",
+      "description": {
+        "content": "Lightweight owner-token probe; never increments views or returns content",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0adae28e-c004-4ca8-b9aa-23baa2cb6611",
+          "name": "BrewPage Verify Whether the Supplied X-Owner-Token Owns the Resource",
+          "request": {
+            "name": "BrewPage Verify Whether the Supplied X-Owner-Token Owns the Resource",
+            "description": {
+              "content": "Returns `{isOwner, type}`. Constant-time BCrypt match. 404 when the resource does not exist (or has expired). 200 with `isOwner:false` when the X-Owner-Token header is absent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                ":ns",
+                ":id",
+                "owner-check"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ns",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Owner token to verify (constant-time match)",
+                "key": "X-Owner-Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7c2804f2-bf3c-41d2-a5ab-0ed5ef1e6ef9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    ":ns",
+                    ":id",
+                    "owner-check"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ns",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Owner token to verify (constant-time match)",
+                    "key": "X-Owner-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"owner\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://brewpage.app",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e749e606-3c85-4ea7-af31-3bbeb874e625",
+    "name": "BrewPage Files Owner Check API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Free instant hosting for HTML, Markdown, AI artifacts and files",
+      "type": "text/plain"
+    }
+  }
+}

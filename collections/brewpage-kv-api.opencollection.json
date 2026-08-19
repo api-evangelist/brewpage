@@ -1,0 +1,280 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files KV API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "KV",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Get Key Value",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/kv/:ns/:id/:key",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param (alternative to X-Password header)"
+              }
+            ]
+          },
+          "docs": "Returns the value and last update timestamp for a specific key"
+        },
+        {
+          "info": {
+            "name": "BrewPage Upsert Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://brewpage.app/api/kv/:ns/:id/:key",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a key in the store; max 1000 keys per store"
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/kv/:ns/:id/:key",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a single key from the store; deleting the last key does not remove the store"
+        },
+        {
+          "info": {
+            "name": "BrewPage List KV Stores",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/kv",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace"
+              }
+            ]
+          },
+          "docs": "Returns all KV stores owned by the given token in the namespace. Returns empty list without token"
+        },
+        {
+          "info": {
+            "name": "BrewPage Create KV Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://brewpage.app/api/kv",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "query",
+                "description": "Namespace. Default: public. Pages in 'public' without password appear in gallery. Custom namespace is created automatically"
+              },
+              {
+                "name": "tags",
+                "value": "demo,test",
+                "type": "query",
+                "description": "Comma-separated tags"
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "Time to live in days (1-30, default 15). Store auto-deletes after expiry. Accepts '15', '15d' or '15 days'"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new store with an initial key-value pair and returns a shareable link. Reuse existing owner token to group entities under one owner"
+        },
+        {
+          "info": {
+            "name": "BrewPage List Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/kv/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password via query param (alternative to X-Password header)"
+              }
+            ]
+          },
+          "docs": "Returns all key names and total count for a store"
+        },
+        {
+          "info": {
+            "name": "BrewPage Delete Entire KV Bucket (all Keys Under Ns/id)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://brewpage.app/api/kv/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently removes all keys in the store; requires the owner token returned at creation"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

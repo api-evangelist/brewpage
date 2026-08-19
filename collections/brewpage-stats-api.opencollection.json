@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files Stats API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Stats",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Get Platform Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/stats",
+            "params": [
+              {
+                "name": "tz",
+                "value": "",
+                "type": "query",
+                "description": "IANA timezone id for the 'today' boundary. Defaults to UTC. Example: Europe/Lisbon"
+              }
+            ]
+          },
+          "docs": "Returns today's and all-time creation/view counts with per-type breakdown. Optional 'tz' query param (IANA id) controls the boundary of 'today'; defaults to UTC."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

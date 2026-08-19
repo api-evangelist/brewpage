@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files Namespace API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Namespace",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage Suggest a Random Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/namespace/random"
+          },
+          "docs": "Returns a fresh `<word>-<word>-NN` namespace from the EFF Short Wordlist that does not collide with any existing resource. Pure read; no resource is allocated."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,131 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files Short Links API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Short Links",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "resolve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/:ns/:id",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "Range",
+                "value": ""
+              },
+              {
+                "name": "X-Resolve",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password (query alternative to X-Password header)"
+              },
+              {
+                "name": "dl",
+                "value": "",
+                "type": "query",
+                "description": "Force download as attachment"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "resolveWithSub",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/:ns/:id/:sub",
+            "headers": [
+              {
+                "name": "X-Password",
+                "value": ""
+              },
+              {
+                "name": "X-Resolve",
+                "value": ""
+              },
+              {
+                "name": "X-Owner-Token",
+                "value": ""
+              },
+              {
+                "name": "User-Agent",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ns",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "sub",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "p",
+                "value": "",
+                "type": "query",
+                "description": "Access password (query alternative to X-Password header)"
+              },
+              {
+                "name": "dl",
+                "value": "",
+                "type": "query",
+                "description": "Force download as attachment"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

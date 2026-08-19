@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "BrewPage Files SEO API",
+    "version": "1.51.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SEO",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BrewPage IndexNow Key Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/:key.txt",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Serves the IndexNow verification key file for search engine crawlers"
+        },
+        {
+          "info": {
+            "name": "BrewPage Dynamic XML Sitemap",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://brewpage.app/api/sitemap.xml"
+          },
+          "docs": "Generates sitemap with static pages and all public gallery entries. Caddy should route /sitemap.xml to this endpoint"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

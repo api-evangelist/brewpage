@@ -1,0 +1,187 @@
+{
+  "item": [
+    {
+      "id": "6306a584-c4c1-4abb-8a34-c27e92cbf62a",
+      "name": "Reports",
+      "description": {
+        "content": "Abuse reports for hosted content",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f9b624eb-9002-474c-92b6-9eab11b6ed28",
+          "name": "BrewPage Submit Abuse Report",
+          "request": {
+            "name": "BrewPage Submit Abuse Report",
+            "description": {
+              "content": "Records a public report about a resource hosted on brewpage.app for moderator review",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "reports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "User-Agent",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reportedUrl\": \"<string>\",\n  \"category\": \"<string>\",\n  \"description\": \"<string>\",\n  \"reporterEmail\": \"<string>\",\n  \"resourceNamespace\": \"<string>\",\n  \"resourceId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "075d7a55-44b2-474c-814f-1b4128d66e29",
+              "name": "Report accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reportedUrl\": \"<string>\",\n  \"category\": \"<string>\",\n  \"description\": \"<string>\",\n  \"reporterEmail\": \"<string>\",\n  \"resourceNamespace\": \"<string>\",\n  \"resourceId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"reportId\": \"string\",\n  \"receivedAt\": \"1963-03-20T12:45:37.041Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9a5f7672-94f5-40aa-8e06-28d470f9b799",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "User-Agent",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reportedUrl\": \"<string>\",\n  \"category\": \"<string>\",\n  \"description\": \"<string>\",\n  \"reporterEmail\": \"<string>\",\n  \"resourceNamespace\": \"<string>\",\n  \"resourceId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"reportId\": \"string\",\n  \"receivedAt\": \"1963-03-20T12:45:37.041Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://brewpage.app",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f70a0889-94bd-4631-ab66-d4f267caa49e",
+    "name": "BrewPage Files Reports API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Free instant hosting for HTML, Markdown, AI artifacts and files",
+      "type": "text/plain"
+    }
+  }
+}
