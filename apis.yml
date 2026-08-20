@@ -40,6 +40,8 @@ apis:
   humanURL: https://brewpage.app/api
   baseURL: https://brewpage.app
   tags:
+  - File
+  tags_raw:
   - Files
   properties:
   - type: OpenAPI
@@ -320,6 +322,8 @@ apis:
   humanURL: https://brewpage.app/api
   baseURL: https://brewpage.app
   tags:
+  - Preview
+  tags_raw:
   - preview
   properties:
   - type: OpenAPI
