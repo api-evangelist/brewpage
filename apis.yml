@@ -334,7 +334,7 @@ apis:
   humanURL: https://brewpage.app/api
   baseURL: https://brewpage.app
   tags:
-  - preview
+  - Preview
   tags_raw:
   - preview
   properties:
