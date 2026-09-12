@@ -571,6 +571,8 @@ apis:
   - type: Examples
     url: examples/brewpage-upsert-kv-example.json
 common:
+  - type: Website
+    url: https://www.brewpage.app/
   - type: AgenticAccess
     url: agentic-access/brewpage-agentic-access.yml
   - type: DomainSecurity
