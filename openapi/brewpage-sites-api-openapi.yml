@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: BrewPage Files Sites API
+  title: BrewPage Sites API
   description: Free instant hosting for HTML, Markdown, AI artifacts and files
   version: 1.51.1
 servers:
@@ -255,39 +255,18 @@ paths:
                 format: byte
 components:
   schemas:
-    SiteUploadResponse:
+    SiteFileInfo:
       type: object
       properties:
-        id:
+        path:
           type: string
-          description: Unique 10-character alphanumeric site ID
-        namespace:
+          description: Relative file path within the site
+        contentType:
           type: string
-        entryFile:
-          type: string
-          description: Entry HTML file resolved from the upload (e.g. index.html)
-        link:
-          type: string
-          description: Public URL to view the site
-        ownerLink:
-          type: string
-          description: API URL for programmatic access (info, delete)
-        fileCount:
-          type: integer
-          format: int32
-        totalSizeBytes:
+          description: Detected MIME type
+        sizeBytes:
           type: integer
           format: int64
-        expiresAt:
-          type: string
-          format: date-time
-        tags:
-          type: array
-          items:
-            type: string
-        ownerToken:
-          type: string
-          description: Secret token required for info and delete operations. Store it safely -- cannot be recovered
     SiteInfoResponse:
       type: object
       properties:
@@ -323,15 +302,36 @@ components:
           type: array
           items:
             type: string
-    SiteFileInfo:
+    SiteUploadResponse:
       type: object
       properties:
-        path:
+        id:
           type: string
-          description: Relative file path within the site
-        contentType:
+          description: Unique 10-character alphanumeric site ID
+        namespace:
           type: string
-          description: Detected MIME type
-        sizeBytes:
+        entryFile:
+          type: string
+          description: Entry HTML file resolved from the upload (e.g. index.html)
+        link:
+          type: string
+          description: Public URL to view the site
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (info, delete)
+        fileCount:
+          type: integer
+          format: int32
+        totalSizeBytes:
           type: integer
           format: int64
+        expiresAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for info and delete operations. Store it safely -- cannot be recovered

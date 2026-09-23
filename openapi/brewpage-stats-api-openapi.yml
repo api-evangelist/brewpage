@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: BrewPage Files Stats API
+  title: BrewPage Stats API
   description: Free instant hosting for HTML, Markdown, AI artifacts and files
   version: 1.51.1
 servers:
@@ -33,6 +33,60 @@ paths:
                 $ref: '#/components/schemas/StatsResponse'
 components:
   schemas:
+    TypeBreakdown:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'Resource type: html, json, kv, file, or site'
+        today:
+          type: integer
+          format: int64
+          description: Created in the last 24 hours
+        total:
+          type: integer
+          format: int64
+          description: All-time count
+        todayPublic:
+          type: integer
+          format: int64
+          description: Created today in the public namespace
+        todayPrivate:
+          type: integer
+          format: int64
+          description: Created today in private namespaces
+        totalPublic:
+          type: integer
+          format: int64
+          description: All-time count in the public namespace
+        totalPrivate:
+          type: integer
+          format: int64
+          description: All-time count in private namespaces
+        todayDeleted:
+          type: integer
+          format: int64
+          description: Deleted in the last 24 hours
+        todayDeletedPublic:
+          type: integer
+          format: int64
+          description: Deleted today in the public namespace
+        todayDeletedPrivate:
+          type: integer
+          format: int64
+          description: Deleted today in private namespaces
+        totalDeleted:
+          type: integer
+          format: int64
+          description: All-time deleted count
+        totalDeletedPublic:
+          type: integer
+          format: int64
+          description: All-time deleted in the public namespace
+        totalDeletedPrivate:
+          type: integer
+          format: int64
+          description: All-time deleted in private namespaces
     StatsResponse:
       type: object
       properties:
@@ -113,57 +167,3 @@ components:
           type: integer
           format: int64
           description: All-time deleted resources in private namespaces
-    TypeBreakdown:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'Resource type: html, json, kv, file, or site'
-        today:
-          type: integer
-          format: int64
-          description: Created in the last 24 hours
-        total:
-          type: integer
-          format: int64
-          description: All-time count
-        todayPublic:
-          type: integer
-          format: int64
-          description: Created today in the public namespace
-        todayPrivate:
-          type: integer
-          format: int64
-          description: Created today in private namespaces
-        totalPublic:
-          type: integer
-          format: int64
-          description: All-time count in the public namespace
-        totalPrivate:
-          type: integer
-          format: int64
-          description: All-time count in private namespaces
-        todayDeleted:
-          type: integer
-          format: int64
-          description: Deleted in the last 24 hours
-        todayDeletedPublic:
-          type: integer
-          format: int64
-          description: Deleted today in the public namespace
-        todayDeletedPrivate:
-          type: integer
-          format: int64
-          description: Deleted today in private namespaces
-        totalDeleted:
-          type: integer
-          format: int64
-          description: All-time deleted count
-        totalDeletedPublic:
-          type: integer
-          format: int64
-          description: All-time deleted in the public namespace
-        totalDeletedPrivate:
-          type: integer
-          format: int64
-          description: All-time deleted in private namespaces

@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: BrewPage Files API
   description: Free instant hosting for HTML, Markdown, AI artifacts and files
@@ -222,27 +222,6 @@ paths:
           description: File not found or expired
 components:
   schemas:
-    FileListResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique 10-character alphanumeric file ID
-        filename:
-          type: string
-          description: Original filename as uploaded
-        contentType:
-          type: string
-          description: Detected MIME type (e.g. image/png)
-        size:
-          type: integer
-          format: int64
-        link:
-          type: string
-          description: Public short URL for browser download
-        createdAt:
-          type: string
-          format: date-time
     FileUploadResponse:
       type: object
       properties:
@@ -276,3 +255,24 @@ components:
         ownerToken:
           type: string
           description: Secret token required for delete operation. Store it safely -- cannot be recovered
+    FileListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric file ID
+        filename:
+          type: string
+          description: Original filename as uploaded
+        contentType:
+          type: string
+          description: Detected MIME type (e.g. image/png)
+        size:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for browser download
+        createdAt:
+          type: string
+          format: date-time

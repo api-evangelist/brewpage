@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: BrewPage Files HTML API
+  title: BrewPage HTML API
   description: Free instant hosting for HTML, Markdown, AI artifacts and files
   version: 1.51.1
 servers:
@@ -319,27 +319,6 @@ components:
         ownerToken:
           type: string
           description: Secret token required for update and delete operations. Store it safely -- cannot be recovered
-    HtmlUpdateRequest:
-      type: object
-      properties:
-        content:
-          type: string
-          description: New HTML content to replace existing page
-        format:
-          type: string
-          description: Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt). When omitted, the row's stored format is preserved. Takes precedence over the 'format' query param when both are present.
-    HtmlUploadRequest:
-      type: object
-      properties:
-        content:
-          type: string
-          description: HTML or markdown content to publish
-        filename:
-          type: string
-          description: Optional original filename used as the tab title fallback and download basename. Trimmed; rejected if it contains path separators or control characters, length > 200, or bare name shorter than 4 chars
-        showTopBar:
-          type: boolean
-          description: Per-content toggle for the frontend top toolbar. null = use global default (app.ui.show-top-bar-default)
     HtmlUpdateResponse:
       type: object
       properties:
@@ -359,3 +338,24 @@ components:
         sizeBytes:
           type: integer
           format: int64
+    HtmlUploadRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: HTML or markdown content to publish
+        filename:
+          type: string
+          description: Optional original filename used as the tab title fallback and download basename. Trimmed; rejected if it contains path separators or control characters, length > 200, or bare name shorter than 4 chars
+        showTopBar:
+          type: boolean
+          description: Per-content toggle for the frontend top toolbar. null = use global default (app.ui.show-top-bar-default)
+    HtmlUpdateRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: New HTML content to replace existing page
+        format:
+          type: string
+          description: Optional new content format on republish. Accepts 'html', 'markdown'/'md', or any code format (yaml, json, xml, csv, tsv, log, toml, ini, sql, sh, bat, env, javascript, typescript, tsx, jsx, css, properties, docker, txt). When omitted, the row's stored format is preserved. Takes precedence over the 'format' query param when both are present.

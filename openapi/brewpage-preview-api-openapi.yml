@@ -1,19 +1,19 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: BrewPage Files preview API
+  title: BrewPage Preview API
   description: Free instant hosting for HTML, Markdown, AI artifacts and files
   version: 1.51.1
 servers:
 - url: https://brewpage.app
   description: Generated server url
 tags:
-- name: preview
+- name: Preview
   description: OpenGraph metadata for social bots
 paths:
   /preview/{ns}/{id}.png:
     get:
       tags:
-      - preview
+      - Preview
       summary: BrewPage Per-content OG Image
       description: Returns 1200×630 PNG, cached, with ETag/If-None-Match support; falls back to /og-image.png?v=2 on any failure
       operationId: preview
@@ -61,7 +61,7 @@ paths:
   /preview-html/{ns}/{id}:
     get:
       tags:
-      - preview
+      - Preview
       summary: BrewPage OpenGraph HTML Stub
       description: Tiny HTML response with og:title/og:description/og:image meta tags for social-bot unfurls
       operationId: previewHtml

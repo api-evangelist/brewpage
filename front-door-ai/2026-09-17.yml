@@ -1,0 +1,34 @@
+# Front Door AI Index — brewpage — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: brewpage
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.brewpage.app
+  final_host: brewpage.app
+  ownership: own
+  owner: brewpage
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 60
+  host_score: 60
+  density: 44.18
+  words: 1358
+  tiers:
+    agentic: 28
+    core: 12
+    model: 20
+  ambiguous: 11
+  top_terms:
+    Claude: 16
+    MCP: 12
+    AI: 11
+    agent: 11
+    llms.txt: 7
+    AI agent: 5
+    prompts: 4
+    Gemini: 3
+    ChatGPT: 1
+    ML: 1

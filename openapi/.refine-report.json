@@ -1,19 +1,7 @@
 {
   "provider": "brewpage",
   "sources": [
-    "brewpage-files-api-openapi.yml",
-    "brewpage-gallery-api-openapi.yml",
-    "brewpage-html-api-openapi.yml",
-    "brewpage-json-api-openapi.yml",
-    "brewpage-kv-api-openapi.yml",
-    "brewpage-namespace-api-openapi.yml",
-    "brewpage-owner-check-api-openapi.yml",
-    "brewpage-preview-api-openapi.yml",
-    "brewpage-reports-api-openapi.yml",
-    "brewpage-seo-api-openapi.yml",
-    "brewpage-short-links-api-openapi.yml",
-    "brewpage-sites-api-openapi.yml",
-    "brewpage-stats-api-openapi.yml"
+    "_original/brewpage-openapi.yml"
   ],
   "outputs": [
     "brewpage-files-api-openapi.yml",
@@ -23,16 +11,34 @@
     "brewpage-kv-api-openapi.yml",
     "brewpage-namespace-api-openapi.yml",
     "brewpage-owner-check-api-openapi.yml",
-    "brewpage-preview-api-openapi.yml",
     "brewpage-reports-api-openapi.yml",
     "brewpage-seo-api-openapi.yml",
     "brewpage-short-links-api-openapi.yml",
     "brewpage-sites-api-openapi.yml",
-    "brewpage-stats-api-openapi.yml"
+    "brewpage-stats-api-openapi.yml",
+    "brewpage-preview-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "brewpage-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "brewpage-files-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-gallery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-html-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-json-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-kv-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-namespace-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-owner-check-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-preview-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-seo-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-short-links-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-sites-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "brewpage-stats-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: BrewPage Files Short Links API
+  title: BrewPage Short Links API
   description: Free instant hosting for HTML, Markdown, AI artifacts and files
   version: 1.51.1
 servers:
@@ -72,6 +72,8 @@ paths:
             '*/*':
               schema:
                 type: object
+      summary: Resolve
+      x-summary-source: derived
   /{ns}/{id}/{sub}:
     get:
       tags:
@@ -134,3 +136,5 @@ paths:
             '*/*':
               schema:
                 type: object
+      summary: Resolve with sub
+      x-summary-source: derived
