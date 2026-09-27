@@ -71,6 +71,25 @@ paths:
                 $ref: '#/components/schemas/GalleryResponse'
 components:
   schemas:
+    GalleryResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GalleryItem'
+        total:
+          type: integer
+          format: int64
+          description: Total number of matching items across all pages
+        page:
+          type: integer
+          format: int32
+          description: Current page number (1-based)
+        size:
+          type: integer
+          format: int32
+          description: Items per page
     GalleryItem:
       type: object
       properties:
@@ -100,22 +119,3 @@ components:
         namespace:
           type: string
           description: Namespace the item lives in — 'public' on default responses; mine=true returns the real namespace (e.g. 'public', 'secret-ns') so the frontend can build correct /{ns}/{id} links
-    GalleryResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/GalleryItem'
-        total:
-          type: integer
-          format: int64
-          description: Total number of matching items across all pages
-        page:
-          type: integer
-          format: int32
-          description: Current page number (1-based)
-        size:
-          type: integer
-          format: int32
-          description: Items per page

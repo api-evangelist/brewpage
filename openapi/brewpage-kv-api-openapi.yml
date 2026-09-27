@@ -362,23 +362,44 @@ paths:
           description: Store not found or expired
 components:
   schemas:
-    KvGetResponse:
+    KvListKeysResponse:
       type: object
       properties:
-        value:
-          type: string
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the value was last written or updated
+        keys:
+          type: array
+          description: All key names in the store
+          items:
+            type: string
+        count:
+          type: integer
+          format: int32
+          description: Total number of keys
         expiresAt:
           type: string
           format: date-time
-          description: When the value expires
+          description: When the store expires
         views:
           type: integer
           format: int64
-          description: Total number of reads for this key (post-increment)
+          description: Aggregated views across all keys in this store
+    KvUpsertKeyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        key:
+          type: string
+        sizeBytes:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for this key
+        ownerLink:
+          type: string
+          description: API URL for programmatic access
     KvCreateStoreResponse:
       type: object
       properties:
@@ -408,32 +429,23 @@ components:
         ownerToken:
           type: string
           description: Secret token required for upsert and delete operations. Store it safely -- cannot be recovered
-    KvUpsertKeyRequest:
+    KvGetResponse:
       type: object
       properties:
         value:
           type: string
-          description: New value for the key (max 1 MB)
-    KvListKeysResponse:
-      type: object
-      properties:
-        keys:
-          type: array
-          description: All key names in the store
-          items:
-            type: string
-        count:
-          type: integer
-          format: int32
-          description: Total number of keys
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the value was last written or updated
         expiresAt:
           type: string
           format: date-time
-          description: When the store expires
+          description: When the value expires
         views:
           type: integer
           format: int64
-          description: Aggregated views across all keys in this store
+          description: Total number of reads for this key (post-increment)
     KvStoreListResponse:
       type: object
       properties:
@@ -448,24 +460,12 @@ components:
           type: string
           format: date-time
           description: When the first key in the store was created
-    KvUpsertKeyResponse:
+    KvUpsertKeyRequest:
       type: object
       properties:
-        id:
+        value:
           type: string
-        namespace:
-          type: string
-        key:
-          type: string
-        sizeBytes:
-          type: integer
-          format: int64
-        link:
-          type: string
-          description: Public short URL for this key
-        ownerLink:
-          type: string
-          description: API URL for programmatic access
+          description: New value for the key (max 1 MB)
     KvCreateStoreRequest:
       type: object
       properties:

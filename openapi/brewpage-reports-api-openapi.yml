@@ -44,6 +44,16 @@ paths:
                 $ref: '#/components/schemas/ReportResponse'
 components:
   schemas:
+    ReportResponse:
+      type: object
+      properties:
+        reportId:
+          type: string
+          description: Unique 10-character alphanumeric report ID
+        receivedAt:
+          type: string
+          format: date-time
+          description: Server timestamp when the report was accepted
     ReportRequest:
       type: object
       properties:
@@ -74,13 +84,3 @@ components:
         resourceId:
           type: string
           description: Optional 10-character short ID of the reported resource. When supplied with resourceNamespace takes priority over URL parsing.
-    ReportResponse:
-      type: object
-      properties:
-        reportId:
-          type: string
-          description: Unique 10-character alphanumeric report ID
-        receivedAt:
-          type: string
-          format: date-time
-          description: Server timestamp when the report was accepted

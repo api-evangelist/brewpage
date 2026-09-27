@@ -255,18 +255,6 @@ paths:
                 format: byte
 components:
   schemas:
-    SiteFileInfo:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Relative file path within the site
-        contentType:
-          type: string
-          description: Detected MIME type
-        sizeBytes:
-          type: integer
-          format: int64
     SiteInfoResponse:
       type: object
       properties:
@@ -302,6 +290,18 @@ components:
           type: array
           items:
             type: string
+    SiteFileInfo:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Relative file path within the site
+        contentType:
+          type: string
+          description: Detected MIME type
+        sizeBytes:
+          type: integer
+          format: int64
     SiteUploadResponse:
       type: object
       properties:
