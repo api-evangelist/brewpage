@@ -255,6 +255,39 @@ paths:
                 format: byte
 components:
   schemas:
+    SiteUploadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric site ID
+        namespace:
+          type: string
+        entryFile:
+          type: string
+          description: Entry HTML file resolved from the upload (e.g. index.html)
+        link:
+          type: string
+          description: Public URL to view the site
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (info, delete)
+        fileCount:
+          type: integer
+          format: int32
+        totalSizeBytes:
+          type: integer
+          format: int64
+        expiresAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for info and delete operations. Store it safely -- cannot be recovered
     SiteInfoResponse:
       type: object
       properties:
@@ -302,36 +335,3 @@ components:
         sizeBytes:
           type: integer
           format: int64
-    SiteUploadResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique 10-character alphanumeric site ID
-        namespace:
-          type: string
-        entryFile:
-          type: string
-          description: Entry HTML file resolved from the upload (e.g. index.html)
-        link:
-          type: string
-          description: Public URL to view the site
-        ownerLink:
-          type: string
-          description: API URL for programmatic access (info, delete)
-        fileCount:
-          type: integer
-          format: int32
-        totalSizeBytes:
-          type: integer
-          format: int64
-        expiresAt:
-          type: string
-          format: date-time
-        tags:
-          type: array
-          items:
-            type: string
-        ownerToken:
-          type: string
-          description: Secret token required for info and delete operations. Store it safely -- cannot be recovered

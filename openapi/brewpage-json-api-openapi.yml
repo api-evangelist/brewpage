@@ -249,36 +249,6 @@ paths:
                 $ref: '#/components/schemas/JsonCreateResponse'
 components:
   schemas:
-    JsonCreateResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique 10-character alphanumeric document ID
-        namespace:
-          type: string
-        link:
-          type: string
-          description: Public short URL for browser viewing
-        ownerLink:
-          type: string
-          description: API URL for programmatic access (update/delete)
-        sizeBytes:
-          type: integer
-          format: int64
-        expiresAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        tags:
-          type: array
-          items:
-            type: string
-        ownerToken:
-          type: string
-          description: Secret token required for update and delete operations. Store it safely -- cannot be recovered
     JsonListResponse:
       type: object
       properties:
@@ -312,3 +282,33 @@ components:
         updatedAt:
           type: string
           format: date-time
+    JsonCreateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric document ID
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access (update/delete)
+        sizeBytes:
+          type: integer
+          format: int64
+        expiresAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        ownerToken:
+          type: string
+          description: Secret token required for update and delete operations. Store it safely -- cannot be recovered
