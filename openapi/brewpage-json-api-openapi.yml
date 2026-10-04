@@ -249,39 +249,6 @@ paths:
                 $ref: '#/components/schemas/JsonCreateResponse'
 components:
   schemas:
-    JsonListResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique 10-character alphanumeric document ID
-        content:
-          type: string
-        size:
-          type: integer
-          format: int64
-        createdAt:
-          type: string
-          format: date-time
-    JsonUpdateResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        namespace:
-          type: string
-        link:
-          type: string
-          description: Public short URL for browser viewing
-        ownerLink:
-          type: string
-          description: API URL for programmatic access
-        sizeBytes:
-          type: integer
-          format: int64
-        updatedAt:
-          type: string
-          format: date-time
     JsonCreateResponse:
       type: object
       properties:
@@ -312,3 +279,36 @@ components:
         ownerToken:
           type: string
           description: Secret token required for update and delete operations. Store it safely -- cannot be recovered
+    JsonUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        link:
+          type: string
+          description: Public short URL for browser viewing
+        ownerLink:
+          type: string
+          description: API URL for programmatic access
+        sizeBytes:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+    JsonListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric document ID
+        content:
+          type: string
+        size:
+          type: integer
+          format: int64
+        createdAt:
+          type: string
+          format: date-time

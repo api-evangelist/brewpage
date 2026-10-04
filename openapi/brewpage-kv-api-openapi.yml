@@ -362,64 +362,6 @@ paths:
           description: Store not found or expired
 components:
   schemas:
-    KvUpsertKeyResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        namespace:
-          type: string
-        key:
-          type: string
-        sizeBytes:
-          type: integer
-          format: int64
-        link:
-          type: string
-          description: Public short URL for this key
-        ownerLink:
-          type: string
-          description: API URL for programmatic access
-    KvCreateStoreRequest:
-      type: object
-      properties:
-        key:
-          type: string
-          description: Initial key name
-        value:
-          type: string
-          description: Value for the initial key (max 1 MB)
-    KvStoreListResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique 10-character alphanumeric store ID
-        keyCount:
-          type: integer
-          format: int32
-          description: Number of keys in the store
-        createdAt:
-          type: string
-          format: date-time
-          description: When the first key in the store was created
-    KvGetResponse:
-      type: object
-      properties:
-        value:
-          type: string
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the value was last written or updated
-        expiresAt:
-          type: string
-          format: date-time
-          description: When the value expires
-        views:
-          type: integer
-          format: int64
-          description: Total number of reads for this key (post-increment)
     KvCreateStoreResponse:
       type: object
       properties:
@@ -449,12 +391,6 @@ components:
         ownerToken:
           type: string
           description: Secret token required for upsert and delete operations. Store it safely -- cannot be recovered
-    KvUpsertKeyRequest:
-      type: object
-      properties:
-        value:
-          type: string
-          description: New value for the key (max 1 MB)
     KvListKeysResponse:
       type: object
       properties:
@@ -475,3 +411,67 @@ components:
           type: integer
           format: int64
           description: Aggregated views across all keys in this store
+    KvGetResponse:
+      type: object
+      properties:
+        value:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the value was last written or updated
+        expiresAt:
+          type: string
+          format: date-time
+          description: When the value expires
+        views:
+          type: integer
+          format: int64
+          description: Total number of reads for this key (post-increment)
+    KvUpsertKeyRequest:
+      type: object
+      properties:
+        value:
+          type: string
+          description: New value for the key (max 1 MB)
+    KvCreateStoreRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Initial key name
+        value:
+          type: string
+          description: Value for the initial key (max 1 MB)
+    KvUpsertKeyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        key:
+          type: string
+        sizeBytes:
+          type: integer
+          format: int64
+        link:
+          type: string
+          description: Public short URL for this key
+        ownerLink:
+          type: string
+          description: API URL for programmatic access
+    KvStoreListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique 10-character alphanumeric store ID
+        keyCount:
+          type: integer
+          format: int32
+          description: Number of keys in the store
+        createdAt:
+          type: string
+          format: date-time
+          description: When the first key in the store was created
