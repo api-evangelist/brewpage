@@ -1,4 +1,4 @@
-# BrewPage (brewpage)
+# BrewPage
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,87 +66,186 @@
 
 BrewPage is a free, no-registration instant hosting service for HTML pages, Markdown documents, AI-agent artifacts, files, and multi-file static sites. It also offers a namespaced key-value store and a JSON document store. The REST API returns short, shareable HTTPS links (https://brewpage.app/{ns}/{id}) and an owner token used to update or delete content in place. BrewPage is designed to be AI-agent friendly: it provides an MCP server (brewpage-mcp), a Claude Code skill (brewdoc:publish), and a llms.txt manifest, and it requires a self-identifying User-Agent header on every request.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/brewpage/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/brewpage/refs/heads/main/apis.yml)
+**Areas:** Hosting · Markdown · HTML · AI Artifacts · File Hosting · Developer Tools
 
-## Scope
+## BrewPage on APIs.io
 
-- **Type:** Index
+Everything profiled for BrewPage is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/brewpage/](https://apis.io/providers/brewpage/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (13)
 
-- Hosting
-- Markdown
-- HTML
-- AI Artifacts
-- File Hosting
-- Developer Tools
+- [BrewPage Files API](https://apis.io/apis/brewpage/brewpage-files-api/) — File hosting up to 5 MB per file, 1000 files per namespace
+- [BrewPage Gallery API](https://apis.io/apis/brewpage/brewpage-gallery-api/) — Browse public content from the 'public' namespace without password protection
+- [BrewPage HTML API](https://apis.io/apis/brewpage/brewpage-html-api/) — HTML page hosting with markdown support
+- [BrewPage JSON API](https://apis.io/apis/brewpage/brewpage-json-api/) — JSON document store with up to 10,000 docs per collection
+- [BrewPage KV API](https://apis.io/apis/brewpage/brewpage-kv-api/) — Key-Value store with up to 1000 keys per namespace
+- [BrewPage Namespace API](https://apis.io/apis/brewpage/brewpage-namespace-api/) — Fresh, collision-free namespace suggestions
+- [BrewPage Owner Check API](https://apis.io/apis/brewpage/brewpage-owner-check-api/) — Lightweight owner-token probe; never increments views or returns content
+- [BrewPage Preview API](https://apis.io/apis/brewpage/brewpage-preview-api/) — OpenGraph metadata for social bots
+- [BrewPage Reports API](https://apis.io/apis/brewpage/brewpage-reports-api/) — Abuse reports for hosted content
+- [BrewPage SEO API](https://apis.io/apis/brewpage/brewpage-seo-api/) — Search engine optimization endpoints
+- [BrewPage Short Links API](https://apis.io/apis/brewpage/brewpage-short-links-api/) — Short URL resolver for sharing
+- [BrewPage Sites API](https://apis.io/apis/brewpage/brewpage-sites-api/) — Multi-file HTML site hosting via ZIP or folder upload
+- [BrewPage Stats API](https://apis.io/apis/brewpage/brewpage-stats-api/) — Platform-wide usage statistics
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-16
-- **Modified:** 2026-05-19
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Agentic access (1)
 
-### BrewPage API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-The BrewPage REST API. Publish HTML, Markdown, files, and multi-file sites; store key-value pairs and JSON documents; browse the public gallery; check ownership; and submit abuse reports. Endpoints live under /api/ and short links live at /{ns}/{id}. Identical functionality is also available at brewdata.app.
+- [Brewpage Agentic Access](https://apis.io/agentic-access/brewpage/brewpage-agentic-access/)
 
-- **Human URL:** [https://brewpage.app/api](https://brewpage.app/api)
-- **Base URL:** `https://brewpage.app`
+#### JSON Schema (5)
 
-#### Tags
+The data models the API reads and writes.
 
-- Hosting
-- HTML
-- Markdown
-- AI Artifacts
-- File Hosting
-- Developer Tools
+- [BrewPage File](https://apis.io/schemas/brewpage/brewpage-file/)
+- [BrewPage HTML Page](https://apis.io/schemas/brewpage/brewpage-html-page/)
+- [BrewPage JSON Document](https://apis.io/schemas/brewpage/brewpage-json-document/)
+- [BrewPage KV Store](https://apis.io/schemas/brewpage/brewpage-kv-store/)
+- [BrewPage Multi-File Site](https://apis.io/schemas/brewpage/brewpage-site/)
 
-#### Properties
+#### JSON Structure (2)
 
+Data models expressed in JSON Structure.
+
+- [Brewpage Html Page Structure](https://apis.io/json-structure/brewpage/brewpage-html-page-structure/)
+- [Brewpage Kv Store Structure](https://apis.io/json-structure/brewpage/brewpage-kv-store-structure/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Brewpage Context](https://apis.io/jsonld/brewpage/brewpage-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Brewpage Vocabulary](https://apis.io/vocabularies/brewpage/brewpage-vocabulary/)
+
+#### Examples (5)
+
+Example requests and responses.
+
+- [Brewpage Create Html Example](https://apis.io/examples/brewpage/brewpage-create-html-example/)
+- [Brewpage Create Markdown Example](https://apis.io/examples/brewpage/brewpage-create-markdown-example/)
+- [Brewpage Upload File Example](https://apis.io/examples/brewpage/brewpage-upload-file-example/)
+- [Brewpage Upload Site Example](https://apis.io/examples/brewpage/brewpage-upload-site-example/)
+- [Brewpage Upsert Kv Example](https://apis.io/examples/brewpage/brewpage-upsert-kv-example/)
+
+#### Collections (13)
+
+Postman and Open Collection request collections.
+
+- [BrewPage API](https://apis.io/collections/brewpage/open-brewpage/)
+- [BrewPage Files API](https://apis.io/collections/brewpage/open-brewpage-files-api/)
+- [BrewPage Files Gallery API](https://apis.io/collections/brewpage/open-brewpage-gallery-api/)
+- [BrewPage Files HTML API](https://apis.io/collections/brewpage/open-brewpage-html-api/)
+- [BrewPage Files JSON API](https://apis.io/collections/brewpage/open-brewpage-json-api/)
+- [BrewPage Files KV API](https://apis.io/collections/brewpage/open-brewpage-kv-api/)
+- [BrewPage Files Namespace API](https://apis.io/collections/brewpage/open-brewpage-namespace-api/)
+- [BrewPage Files Owner Check API](https://apis.io/collections/brewpage/open-brewpage-owner-check-api/)
+- [BrewPage Files Reports API](https://apis.io/collections/brewpage/open-brewpage-reports-api/)
+- [BrewPage Files SEO API](https://apis.io/collections/brewpage/open-brewpage-seo-api/)
+- [BrewPage Files Short Links API](https://apis.io/collections/brewpage/open-brewpage-short-links-api/)
+- [BrewPage Files Sites API](https://apis.io/collections/brewpage/open-brewpage-sites-api/)
+- [BrewPage Files Stats API](https://apis.io/collections/brewpage/open-brewpage-stats-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [BrewPage — jsonschema rules](https://apis.io/rules/brewpage/brewpage-jsonschema-spectral-rules/)
+- [BrewPage API Rules](https://apis.io/rules/brewpage/brewpage-rules/)
+
+#### Security (1)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Brewpage Domain Security](https://apis.io/security/brewpage/brewpage-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Brewpage Plans Pricing](https://apis.io/plans/brewpage/brewpage-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Brewpage Rate Limits](https://apis.io/rate-limits/brewpage/brewpage-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Brewpage Finops](https://apis.io/finops/brewpage/brewpage-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.brewpage.app/)
 - [Documentation](https://brewpage.app/api)
-- [API Reference](https://kochetkov-ma.github.io/brewpage-openapi/)
-- [OpenAPI](openapi/brewpage-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/brewpage.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/brewpage.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Authentication](https://brewpage.app/llms-full.txt)
-- [JSON Schema](json-schema/brewpage-html-page-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/brewpage-file-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/brewpage-kv-store-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/brewpage-json-document-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/brewpage-site-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Structure](json-structure/brewpage-html-page-structure.json)
-- [JSON Structure](json-structure/brewpage-kv-store-structure.json)
-- [Example](examples/brewpage-create-html-example.json)
-- [Example](examples/brewpage-create-markdown-example.json)
-- [Example](examples/brewpage-upload-file-example.json)
-- [Example](examples/brewpage-upload-site-example.json)
-- [Example](examples/brewpage-upsert-kv-example.json)
+- [Getting started](https://brewpage.app/llms.txt)
+- [API reference](https://kochetkov-ma.github.io/brewpage-openapi/)
 
-## Common Properties
+## API Evangelist rating
 
-- [Documentation](https://brewpage.app/api)
-- [API Reference](https://kochetkov-ma.github.io/brewpage-openapi/)
-- [Portal](https://brewpage.app/)
-- [Getting Started](https://brewpage.app/llms.txt)
-- [Quickstart](https://brewpage.app/llms.txt)
-- [Authentication](https://brewpage.app/llms-full.txt)
-- [SDK](https://www.npmjs.com/package/brewpage-mcp)
-- [Plans](plans/brewpage-plans-pricing.yml)
-- [Rate Limits](rate-limits/brewpage-rate-limits.yml)
-- [Fin Ops](finops/brewpage-finops.yml)
-- [Integrations](undefined)
-- [Spectral Rules](rules/brewpage-rules.yml)
-- [Vocabulary](vocabulary/brewpage-vocabulary.yml)
-- [JSON-LD](json-ld/brewpage-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [Features](undefined)
-- [Use Cases](undefined)
-- [Solutions](undefined)
+**Kin Score 41.5** — developing · rubric 0.25.0 · scored 2026-10-23
 
-## Maintainers
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 68.1 |
+| Contract governance | 27.3 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 58.3 |
+| Access clarity | 5.3 |
 
-**FN:** Kin Lane
-**Email:** info@apievangelist.com
-**URL:** https://apievangelist.com
+**Agent readiness 26.8** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 16.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/brewpage/](https://apis.io/providers/brewpage/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for BrewPage: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/brewpage/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
